@@ -13,17 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('grades', function (Blueprint $table) {
+        Schema::create('surveys', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('year_id');
-            $table->string('level');
-            $table->string('initial',5);
-            $table->string('tag',5);
-            $table->string('title_zh')->nullable();
+            $table->string('title_cn');
             $table->string('title_en')->nullable();
-            $table->text('description')->nullable();
-            $table->integer('version')->default(0);
-            $table->boolean('active')->default(true);
+            $table->text('description_cn')->nullable();
+            $table->text('description_en')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->boolean('published')->default(false);
             $table->timestamps();
         });
     }
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('grades');
+        Schema::dropIfExists('surveys');
     }
 };

@@ -41,18 +41,13 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
-    Route::get('/admin',function(){
-        return Inertia::render('Admin/Panel');
-    })->name('admin');
-    Route::get('/settings',function(){
-        return Inertia::render('Admin/Settings');
-    })->name('settings');
-    Route::resource('/supplier',SupplierController::class);
+    Route::prefix('admin')->group(function(){
+        Route::resource('/surveys',App\Http\Controllers\Admin\SurveyController::class);
+        Route::resource('/questions',App\Http\Controllers\Admin\QuestionController::class);
+    });
 });
 
-Route::get('/test',function(){
-    return Inertia::render('Welcome');
-});
+Route::resource('/questionnaire',App\Http\Controllers\QuestionnaireController::class);
 
 Route::resource('/payments',PaymentSpaController::class);
 Route::resource('/subjects',SubjectController::class);
