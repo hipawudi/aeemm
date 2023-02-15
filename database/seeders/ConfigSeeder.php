@@ -16,28 +16,12 @@ class ConfigSeeder extends Seeder
     public function run()
     {
         DB::table('configs')->insert([
-            'key' => 'grades',
-            'value' => '[{"value":"P1","label":"P1"},{"value":"P2","label":"P2"},{"value":"P3","label":"P3"}]',
+            'key' => 'room_status',
+            'value' => '[{"value":"AVAILABLE","label":"可用"},{"value":"MAINTENACE","label":"維修中"},{"value":"CLOSED","label":"不開放"}]',
         ]);
         DB::table('configs')->insert([
-            'key' => 'student_state',
-            'value' => '{"ACT": "Active","RES": "Resigned"}',
-        ]);
-        DB::table('configs')->insert([
-            'key' => 'stream',
-            'value' => '{"ART":"Art Stream","SCI":"Science Stream}',
-        ]);
-        DB::table('configs')->insert([
-            'key' => 'year_creation',
-            'value' => '{ "kgrade":3, "kklass":3, "kgradeDefault":0, "kklassDefault":0, "pgrade":6, "pklass":5, "pgradeDefault":6, "pklassDefault":4, "sgrade":6, "sklass":5, "sgradeDefault":6, "sklassDefault":4, }',
-        ]);
-        // DB::table('configs')->insert([
-        //     'key' => 'current_year',
-        //     'value' => 1,
-        // ]);
-        DB::table('configs')->insert([
-            'key'=>'score_columns',
-            'value' =>'[{"REG":"平時分"},{"TST":"測驗分"},{"CLS":"課堂表現"},{"EXM":"考試分"}]'
+            'key' => 'room_types',
+            'value' => '[{"value":"REGULAR","label":"一般教室"},{"value":"COMPUTER","label":"電腦室"},{"value":"HALL","label":"禮堂"}]',
         ]);
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('course_id');
-            $table->string('code');
+            $table->string('subset');
             $table->string('title_zh');
             $table->string('title_en')->nullable();
             $table->date('apply_start')->nullable();

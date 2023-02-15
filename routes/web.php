@@ -39,6 +39,7 @@ Route::middleware([
         });
         Route::resource('/courses',App\Http\Controllers\Admin\CourseController::class);
         Route::resource('/offers',App\Http\Controllers\Admin\OfferController::class);
+        Route::resource('/rooms',App\Http\Controllers\Admin\RoomController::class);
         Route::get('/scheduler',[App\Http\Controllers\Admin\SchedulerController::class,'index']);
         Route::post('/scheduler/available_rooms',[App\Http\Controllers\Admin\SchedulerController::class,'availableRooms']);
     });

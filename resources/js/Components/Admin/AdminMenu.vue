@@ -63,23 +63,23 @@
   };
   const list = [{
     key: '1',
-    title: 'Essentials',
+    title: '學校管理',
     children: [{
       key: '1.1',
-      title: 'Years',
-      url:'/essential/years',
+      title: '課程規劃',
+      url:'/admin/courses',
     },{
       key: '1.2',
-      title: 'Grades',
-      url:'/essential/grades',
+      title: '課程開設',
+      url:'/admin/offers',
     },{
       key: '1.3',
-      title: 'Class',
-      url:'/essential/klasses',
+      title: '教師資料',
+      url:'/admin/teachers',
     },{
       key: '1.3',
-      title: 'Subjects',
-      url:'/essential/subjects',
+      title: '教室資料',
+      url:'/admin/rooms',
     }],
   },{
     key: '2',

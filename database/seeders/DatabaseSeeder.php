@@ -22,7 +22,15 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'admin@example.com',
         //     'password' => Hash::make('password'),
         // ]);
+        \App\Models\User::factory([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password'=> Hash::make('password')
+        ])->withPersonalTeam()->create();
+
         $this->call([
+            CourseSeeder::class,
+            OfferSeeder::class,
             RoomSeeder::class,
         ]);
 

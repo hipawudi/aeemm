@@ -24,6 +24,10 @@ return new class extends Migration
             $table->integer('price')->default(0);
             $table->integer('early_price')->nullable();
             $table->integer('member_price')->nullable();
+            $table->integer('sessions')->nullable();
+            $table->integer('hours')->nullable();
+            $table->integer('quota')->nullable();
+            $table->text('discount')->nullable();
             $table->boolean('valid')->default(true);
             $table->timestamps();
         });
