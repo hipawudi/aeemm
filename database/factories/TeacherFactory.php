@@ -22,6 +22,7 @@ class TeacherFactory extends Factory
             'gender' => $this->faker->randomElement(['M','F']),
             'dob' => $this->faker->dateTimeBetween('2000-09-01','2015-09-01')->format('Y-m-d'),
             'mobile' => $this->faker->phoneNumber,
+            'state'=>'HIRED'
         ];
     }
 }

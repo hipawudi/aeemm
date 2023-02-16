@@ -23,6 +23,7 @@ return new class extends Migration
             $table->char('gender',1);
             $table->date('dob');
             $table->text('address')->nullable();
+            $table->string('state')->default('HIRED');
             $table->timestamps();
         });
     }

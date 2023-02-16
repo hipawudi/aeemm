@@ -70,10 +70,6 @@
       url:'/admin/courses',
     },{
       key: '1.2',
-      title: '課程開設',
-      url:'/admin/offers',
-    },{
-      key: '1.3',
       title: '教師資料',
       url:'/admin/teachers',
     },{
@@ -83,11 +79,15 @@
     }],
   },{
     key: '2',
-    title: 'Promotion',
+    title: '課程管理',
     children: [{
       key: '2.1',
-      title: 'Promotion',
-      url:'/promote',
+      title: '課程開設',
+      url:'/admin/offers',
+    },{
+      key: '2.2',
+      title: '分配教室',
+      url:'/scheduler',
     }],
   },{
     key: '3',

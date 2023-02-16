@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('type')->default('REG');
             $table->integer('seat')->default(20);
-            $table->string('status')->default('AVALABLE');
+            $table->string('state')->default('AVALABLE');
             $table->timestamps();
         });
     }

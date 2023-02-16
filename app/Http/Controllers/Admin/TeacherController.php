@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use App\Models\Config;
-use App\Models\Room;
+use App\Models\Teacher;
 
-class RoomController extends Controller
+class TeacherController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +18,10 @@ class RoomController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Room',[
-            'rooms'=>Room::all(),
-            'roomStates'=>Config::item('room_states'),
-            'roomTypes'=>Config::item('room_types')
+        return Inertia::render('Admin/Teacher',[
+            'teachers'=>Teacher::all(),
+            'teacherStates'=>Config::item('teacher_states'),
+
         ]);
     }
 
@@ -44,11 +44,11 @@ class RoomController extends Controller
     public function store(Request $request)
     {
         Validator::make($request->all(), [
-            'code' => ['required'],
-            'type' => ['required'],
-            'seat' => ['required'],
+            'name_zh' => ['name_zh'],
+            'mobile' => ['mobile'],
+            'state' => ['state'],
         ])->validate();
-        Room::create($request->all());
+        Teacher::create($request->all());
         return redirect()->back();
     }
 
@@ -84,18 +84,15 @@ class RoomController extends Controller
     public function update(Request $request, $id)
     {
         Validator::make($request->all(), [
-            'code' => ['required'],
-            'type' => ['required'],
-            'seat' => ['required'],
         ])->validate();
         
-        $room=Room::find($id);
-        $room->code=$request->code;
-        $room->name=$request->name;
-        $room->type=$request->type;
-        $room->seat=$request->seat;
-        $room->state=$request->state;
-        $room->save();
+        $teacher=Teacher::find($id);
+        $teacher->name_zh=$request->name_zh;
+        $teacher->name_fn=$request->name_fn;
+        $teacher->nickname=$request->nickname;
+        $teacher->mobile=$request->mobile;
+        $teacher->state=$request->state;
+        $teacher->save();
     }
 
     /**

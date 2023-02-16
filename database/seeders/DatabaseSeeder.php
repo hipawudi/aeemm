@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
         ])->withPersonalTeam()->create();
 
         $this->call([
+            ConfigSeeder::class,
             CourseSeeder::class,
             OfferSeeder::class,
             RoomSeeder::class,

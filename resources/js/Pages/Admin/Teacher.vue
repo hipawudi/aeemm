@@ -7,17 +7,14 @@
         </template>
         <button @click="createRecord()"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
-            <a-table :dataSource="rooms" :columns="columns">
+            <a-table :dataSource="teachers" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <a-button @click="editRecord(record)">Edit</a-button>
                         <a-button @click="deleteRecord(record.id)">Delete</a-button>
                     </template>
-                    <template v-else-if="column.dataIndex=='type'">
-                        {{roomTypeLabels[text]}}
-                    </template>
                     <template v-else-if="column.dataIndex=='state'">
-                        {{roomStateLabels[text]}}
+                        {{teacherStateLabels[text]}}
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -30,7 +27,7 @@
         <a-form
             ref="modalRef"
             :model="modal.data"
-            name="Room"
+            name="Teacher"
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"
             autocomplete="off"
@@ -38,20 +35,20 @@
             :validate-messages="validateMessages"
         >
             <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="編號" name="code">
-                <a-input v-model:value="modal.data.code" />
+            <a-form-item label="姓名(中文)" name="name_zh">
+                <a-input v-model:value="modal.data.name_zh" />
             </a-form-item>
-            <a-form-item label="名稱" name="name">
-                <a-input v-model:value="modal.data.name" />
+            <a-form-item label="姓名(外文)" name="name_zh">
+                <a-input v-model:value="modal.data.name_fn" />
             </a-form-item>
-            <a-form-item label="座位" name="seat">
-                <a-input v-model:value="modal.data.seat" />
+            <a-form-item label="別名" name="nickname">
+                <a-input v-model:value="modal.data.nickname" />
             </a-form-item>
-            <a-form-item label="類型" name="type">
-                <a-select v-model:value="modal.data.type" :options="roomTypes"/>
+            <a-form-item label="手機" name="mobile">
+                <a-input v-model:value="modal.data.mobile" />
             </a-form-item>
-            <a-form-item label="狀態" name="state">
-                <a-select v-model:value="modal.data.state" :options="roomStates"/>
+            <a-form-item label="狀態" name="status">
+                <a-select v-model:value="modal.data.state" :options="teacherStates"/>
             </a-form-item>
         </a-form>
         <template #footer>
@@ -72,7 +69,7 @@ export default {
     components: {
         AdminLayout,
     },
-    props: ['rooms','roomStates','roomTypes'],
+    props: ['teachers','teacherStates'],
     data() {
         return {
             modal:{
@@ -81,18 +78,20 @@ export default {
                 title:"Modal",
                 mode:""
             },
-            roomTypeLabels:{},
-            roomStateLabels:{},
+            teacherStateLabels:{},
             columns:[
                 {
-                    title: '編號',
-                    dataIndex: 'code',
+                    title: '姓名(中文)',
+                    dataIndex: 'name_zh',
                 },{
-                    title: '名稱',
-                    dataIndex: 'name',
+                    title: '姓名(外文)',
+                    dataIndex: 'name_fn',
                 },{
-                    title: '類型',
-                    dataIndex: 'type',
+                    title: '別名',
+                    dataIndex: 'nickname',
+                },{
+                    title: '手機',
+                    dataIndex: 'mobile',
                 },{
                     title: '狀態',
                     dataIndex: 'state',
@@ -103,10 +102,9 @@ export default {
                 },
             ],
             rules:{
-                code:{required:true},
-                type:{required:true},
-                seat:{required:true},
-                status:{required:true},
+                name_zh:{required:true},
+                mobile:{required:true},
+                state:{required:true},
             },
             validateMessages:{
                 required: '${label} is required!',
@@ -126,11 +124,8 @@ export default {
         }
     },
     created(){
-        this.roomTypes.forEach(type => {
-            this.roomTypeLabels[type.value] = type.label;
-        })
-        this.roomStates.forEach(type => {
-            this.roomStateLabels[type.value] = type.label;
+        this.teacherStates.forEach(type => {
+            this.teacherStateLabels[type.value] = type.label;
         })
     },
     methods: {
@@ -141,7 +136,6 @@ export default {
             this.modal.isOpen=true;
         },
         editRecord(record){
-            console.log(record);
             this.modal.data={...record};
             this.modal.mode="EDIT";
             this.modal.title="修改";
@@ -149,7 +143,7 @@ export default {
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post('/admin/rooms/', this.modal.data,{
+                this.$inertia.post('/admin/teachers/', this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -163,8 +157,9 @@ export default {
             });
         },
         updateRecord(){
+            console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch('/admin/rooms/' + this.modal.data.id, this.modal.data,{
+                this.$inertia.patch('/admin/teachers/' + this.modal.data.id, this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -182,7 +177,7 @@ export default {
         deleteRecord(recordId){
             console.log(recordId);
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/admin/rooms/' + recordId,{
+            this.$inertia.delete('/admin/teachers/' + recordId,{
                 onSuccess: (page)=>{
                     console.log(page);
                 },
