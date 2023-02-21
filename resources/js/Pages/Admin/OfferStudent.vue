@@ -5,12 +5,15 @@
                 課程規劃
             </h2>
         </template>
+        <a-typography-title :level="3">課程名稱:{{ offerStudents.code }} - {{ offerStudents.title_zh }}</a-typography-title>
+        <a-typography-title :level="4">報名期:{{ offerStudents.apply_start }} - {{ offerStudents.apply_end }}</a-typography-title>
+        <a-typography-title :level="4">課程期:{{ offerStudents.course_start }} - {{ offerStudents.course_end }}</a-typography-title>
+        <a-typography-title :level="4">名額:{{ offerStudents.seat }}</a-typography-title>
         <button @click="createRecord()"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
-            <a-table :dataSource="offers" :columns="columns">
+            <a-table :dataSource="offerStudents.students" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <a :href="'/admin/offer_students?oid='+record.id">View</a>
                         <a-button @click="editRecord(record)">Edit</a-button>
                         <a-button @click="deleteRecord(record.id)">Delete</a-button>
                     </template>
@@ -97,7 +100,7 @@ export default {
     components: {
         AdminLayout,
     },
-    props: ['courses','offers'],
+    props: ['offerStudents'],
     data() {
         return {
             modal:{
@@ -109,23 +112,14 @@ export default {
             dateFormat:'YYYY-MM-DD',
             columns:[
                 {
-                    title: '課程編號',
-                    dataIndex: 'code',
+                    title: '中文姓名',
+                    dataIndex: 'name_zh',
                 },{
-                    title: '課程名稱',
-                    dataIndex: 'title_zh',
+                    title: '外文姓名',
+                    dataIndex: 'name_fn',
                 },{
-                    title: '報名開始',
-                    dataIndex: 'apply_start',
-                },{
-                    title: '報名結束',
-                    dataIndex: 'apply_end',
-                },{
-                    title: '課程開始',
-                    dataIndex: 'course_start',
-                },{
-                    title: '課程結束',
-                    dataIndex: 'course_end',
+                    title: '分數',
+                    dataIndex: 'score',
                 },{
                     title: '操作',
                     dataIndex: 'operation',

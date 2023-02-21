@@ -29,19 +29,23 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    'role:admin',
 ])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
     Route::prefix('admin')->group(function(){
-        Route::get('/',function(){
-            return Inertia::render('Admin/Dashboard');
-        });
+        // Route::get('/',function(){
+        //     return Inertia::render('Admin/Dashboard');
+        // });
+        Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index']);
         Route::resource('/courses',App\Http\Controllers\Admin\CourseController::class);
         Route::resource('/offers',App\Http\Controllers\Admin\OfferController::class);
+        Route::resource('/offer_students',App\Http\Controllers\Admin\OfferStudentController::class);
         Route::resource('/teachers',App\Http\Controllers\Admin\TeacherController::class);
         Route::resource('/rooms',App\Http\Controllers\Admin\RoomController::class);
+        Route::resource('/apply',App\Http\Controllers\Admin\ApplyController::class);
         Route::get('/scheduler',[App\Http\Controllers\Admin\SchedulerController::class,'index']);
         Route::post('/scheduler/available_rooms',[App\Http\Controllers\Admin\SchedulerController::class,'availableRooms']);
-    });
+    })->name('admin');
 });
