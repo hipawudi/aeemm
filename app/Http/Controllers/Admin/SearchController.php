@@ -4,25 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Inertia\Inertia;
-use App\Models\Config;
-use App\Models\Teacher;
+use App\Models\Student;
 
-class TeacherController extends Controller
+class SearchController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Admin/Teacher',[
-            'teachers'=>Teacher::all(),
-            'employmentStates'=>Config::item('employment_states'),
-
-        ]);
+        $model=$request->model;
+        $key=$request->key;
+        $value=$request->value;
+        $students=Student::where($key,'LIKE', "%{$value}%")->get();
+        echo json_encode($students);
     }
 
     /**
@@ -43,13 +40,7 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        Validator::make($request->all(), [
-            'name_zh' => ['name_zh'],
-            'mobile' => ['mobile'],
-            'state' => ['state'],
-        ])->validate();
-        Teacher::create($request->all());
-        return redirect()->back();
+        //
     }
 
     /**
@@ -83,16 +74,7 @@ class TeacherController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Validator::make($request->all(), [
-        ])->validate();
-        
-        $teacher=Teacher::find($id);
-        $teacher->name_zh=$request->name_zh;
-        $teacher->name_fn=$request->name_fn;
-        $teacher->nickname=$request->nickname;
-        $teacher->mobile=$request->mobile;
-        $teacher->state=$request->state;
-        $teacher->save();
+        //
     }
 
     /**
@@ -104,5 +86,9 @@ class TeacherController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function search(){
+        echo 'abc123';
     }
 }

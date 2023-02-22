@@ -43,9 +43,11 @@ Route::middleware([
         Route::resource('/offers',App\Http\Controllers\Admin\OfferController::class);
         Route::resource('/offer_students',App\Http\Controllers\Admin\OfferStudentController::class);
         Route::resource('/teachers',App\Http\Controllers\Admin\TeacherController::class);
+        Route::resource('/students',App\Http\Controllers\Admin\StudentController::class);
         Route::resource('/rooms',App\Http\Controllers\Admin\RoomController::class);
         Route::resource('/apply',App\Http\Controllers\Admin\ApplyController::class);
         Route::get('/scheduler',[App\Http\Controllers\Admin\SchedulerController::class,'index']);
         Route::post('/scheduler/available_rooms',[App\Http\Controllers\Admin\SchedulerController::class,'availableRooms']);
+        Route::post('/search',[App\Http\Controllers\Admin\SearchController::class,'index']);
     })->name('admin');
 });

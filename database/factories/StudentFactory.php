@@ -17,6 +17,8 @@ class StudentFactory extends Factory
     public function definition()
     {
         return [
+            'id_type'=>'BIRM',
+            'id_num'=>$this->faker->numberBetween(10000000,99999999),
             'name_zh' => $this->faker->name,
             'name_fn' => $this->faker->firstname,
             'gender' => $this->faker->randomElement(['M','F']),

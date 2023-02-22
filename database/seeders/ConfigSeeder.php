@@ -23,5 +23,13 @@ class ConfigSeeder extends Seeder
             'key' => 'room_types',
             'value' => '[{"value":"REGULAR","label":"一般教室"},{"value":"COMPUTER","label":"電腦室"},{"value":"HALL","label":"禮堂"}]',
         ]);
+        DB::table('configs')->insert([
+            'key' => 'employment_states',
+            'value' => '[{"value":"HIRED","label":"僱用"},{"value":"FIRED","label":"解僱"}]',
+        ]);
+        DB::table('configs')->insert([
+            'key' => 'id_types',
+            'value' => '[{"value":"BIRM","label":"澳門居民身份證"},{"value":"HK","label":"香港居民身份證"},{"value":"CHINA","label":"中國居民身份證"},{"value":"PASSWORD","label":"護照"},{"value":"OTHER","label":"其它證件類型"}]',
+        ]);
     }
 }

@@ -48,7 +48,7 @@
                 <a-input v-model:value="modal.data.mobile" />
             </a-form-item>
             <a-form-item label="狀態" name="status">
-                <a-select v-model:value="modal.data.state" :options="teacherStates"/>
+                <a-select v-model:value="modal.data.state" :options="employmentStates"/>
             </a-form-item>
         </a-form>
         <template #footer>
@@ -69,7 +69,7 @@ export default {
     components: {
         AdminLayout,
     },
-    props: ['teachers','teacherStates'],
+    props: ['teachers','employmentStates'],
     data() {
         return {
             modal:{
@@ -124,7 +124,7 @@ export default {
         }
     },
     created(){
-        this.teacherStates.forEach(type => {
+        this.employmentStates.forEach(type => {
             this.teacherStateLabels[type.value] = type.label;
         })
     },

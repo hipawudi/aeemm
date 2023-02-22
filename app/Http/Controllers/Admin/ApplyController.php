@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use App\Models\Offer;
+use App\Models\Student;
+use App\Models\Config;
 
 class ApplyController extends Controller
 {
@@ -16,10 +19,6 @@ class ApplyController extends Controller
      */
     public function index()
     {
-        $offers=Offer::availables();
-        return Inertia::render('Admin/Apply',[
-            'offers'=>$offers
-        ]);
     }
 
     /**
@@ -27,9 +26,16 @@ class ApplyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $offers=Offer::availables();
+        $selectedOfferId=$request->oid;
+        $idTypes=Config::item('id_types');
+        return Inertia::render('Admin/Apply',[
+            'offers'=>$offers,
+            'selectedOfferId'=>$selectedOfferId,
+            'idTypes'=>$idTypes
+        ]);
     }
 
     /**
@@ -40,7 +46,18 @@ class ApplyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        Validator::make($request->all(), [
+            'offer_id' => ['required'],
+            'name_zh' => ['required'],
+            'dob' => ['required'],
+            'mobile' => ['required'],
+        ])->validate();
+
+        Student::create($request->all());
+        return redirect()->route('admin.apply/1',);
+
+        
     }
 
     /**
@@ -62,7 +79,7 @@ class ApplyController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
