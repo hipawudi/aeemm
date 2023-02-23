@@ -9,8 +9,9 @@ use Inertia\Inertia;
 use App\Models\Offer;
 use App\Models\Student;
 use App\Models\Config;
+use App\Models\Application;
 
-class ApplyController extends Controller
+class ApplicationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,6 +20,14 @@ class ApplyController extends Controller
      */
     public function index()
     {
+        $applications=Application::with('offer')->get();
+        $offers=Offer::availables();
+        $idTypes=Config::item('id_types');
+        return Inertia::render('Admin/Application',[
+            'applications'=>$applications,
+            'offers'=>$offers,
+            'idTypes'=>$idTypes
+        ]);
     }
 
     /**
@@ -31,7 +40,7 @@ class ApplyController extends Controller
         $offers=Offer::availables();
         $selectedOfferId=$request->oid;
         $idTypes=Config::item('id_types');
-        return Inertia::render('Admin/Apply',[
+        return Inertia::render('Admin/ApplicationCreate',[
             'offers'=>$offers,
             'selectedOfferId'=>$selectedOfferId,
             'idTypes'=>$idTypes
@@ -54,8 +63,8 @@ class ApplyController extends Controller
             'mobile' => ['required'],
         ])->validate();
 
-        Student::create($request->all());
-        return redirect()->route('admin.apply/1',);
+        Application::create($request->all());
+        return redirect('/admin');
 
         
     }

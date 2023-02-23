@@ -10,7 +10,7 @@
             <template #renderItem="{ item }">
                 <a-list-item>
                     <template #actions>
-                        <inertia-link :href="'/admin/apply/create?oid='+item.id" >Apply</inertia-link>
+                        <inertia-link :href="'/admin/application/create?oid='+item.id" >Apply</inertia-link>
                     </template>
 
                     <a-list-item-meta

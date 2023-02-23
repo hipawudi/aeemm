@@ -61,29 +61,33 @@
                     </a-form-item>
                 </a-collapse-panel>
             </a-collapse>
+            <a-form-item name="id_num" label="證件號編">
+                <a-input v-model:value="application.id_num" @blur="onChangeIdNum" minlength="3" :disabled="Object.keys(selectedStudent).length>0"/>
+            </a-form-item>
             <a-form-item name="id_type" label="證件類別">
                 <a-select
                     v-model:value="application.id_type"
                     :options="idTypes"
+                    :disabled="Object.keys(selectedStudent).length>0"
                 ></a-select>
             </a-form-item>
-            <a-form-item name="id_num" label="證件號編">
-                <a-input v-model:value="application.id_num" @blur="onChangeIdNum" minlength="3"/>
+            <a-form-item name="student_id" label="學生編號">
+                <a-input v-model:value="application.student_id" :disabled="Object.keys(selectedStudent).length>0"/>
             </a-form-item>
             <a-form-item name="name_zh" label="姓名(中文)">
-                <a-input v-model:value="application.name_zh" />
+                <a-input v-model:value="application.name_zh"  :disabled="Object.keys(selectedStudent).length>0"/>
             </a-form-item>
             <a-form-item name="name_fn" label="姓名(外文)">
-                <a-input v-model:value="application.name_fn" />
+                <a-input v-model:value="application.name_fn"  :disabled="Object.keys(selectedStudent).length>0"/>
             </a-form-item>
             <a-form-item name="gender" label="姓別">
-                <a-radio-group v-model:value="application.gender">
+                <a-radio-group v-model:value="application.gender" :disabled="Object.keys(selectedStudent).length>0">
                     <a-radio-button value="M">Male</a-radio-button>
                     <a-radio-button value="F">Female</a-radio-button>
                 </a-radio-group>
             </a-form-item>
             <a-form-item name="dob" label="出生日期">
-                <a-date-picker v-model:value="application.dob" :format="dateFormat" :valueFormat="dateFormat"/>
+                <a-date-picker v-model:value="application.dob" :format="dateFormat" :valueFormat="dateFormat" :disabled="Object.keys(selectedStudent).length>0"/>
             </a-form-item>
             <a-form-item name="mobile" label="聯繫電話">
                 <a-input v-model:value="application.mobile" />
@@ -113,6 +117,7 @@ export default {
             },
             selectedOffer:{},
             searchStudents:[],
+            selectedStudent:{},
             rules:{
                 offer_id:{required:true},
                 id_type:{required:true},
@@ -169,13 +174,18 @@ export default {
             )
         },
         onSelectStudent(studentIdx){
-            this.application.id_num=this.searchStudents[studentIdx].id_num;
-            this.application.name_zh=this.searchStudents[studentIdx].name_zh;
-            this.application.name_fn=this.searchStudents[studentIdx].name_fn;
-            this.application.mobile=this.searchStudents[studentIdx].mobile;
+            this.selectedStudent=this.searchStudents[studentIdx];
+            this.application.student_id=this.selectedStudent.id;
+            this.application.id_type=this.selectedStudent.id_type;
+            this.application.id_num=this.selectedStudent.id_num;
+            this.application.name_zh=this.selectedStudent.name_zh;
+            this.application.name_fn=this.selectedStudent.name_fn;
+            this.application.gender=this.selectedStudent.gender;
+            this.application.dob=this.selectedStudent.dob;
+            this.application.mobile=this.selectedStudent.mobile;
         },
         onFinish(){
-            this.$inertia.post('/admin/apply',this.application)
+            this.$inertia.post('/admin/application',this.application)
         }
 
     },
