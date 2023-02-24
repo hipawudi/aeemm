@@ -23,6 +23,7 @@ class StudentFactory extends Factory
             'name_fn' => $this->faker->firstname,
             'gender' => $this->faker->randomElement(['M','F']),
             'dob' => $this->faker->dateTimeBetween('2000-09-01','2015-09-01')->format('Y-m-d'),
+            'email'=>$this->faker->email
         ];
     }
 }

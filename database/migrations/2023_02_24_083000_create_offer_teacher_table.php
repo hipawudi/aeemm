@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rooms', function (Blueprint $table) {
+        Schema::create('offer_teacher', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
-            $table->string('name');
-            $table->string('type')->default('REG');
-            $table->integer('seat')->default(20);
-            $table->string('state')->default('AVAILABLE');
+            $table->bigInteger('offer_id');
+            $table->bigInteger('teacher_id');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rooms');
+        Schema::dropIfExists('offer_teachers');
     }
 };

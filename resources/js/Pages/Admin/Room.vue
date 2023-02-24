@@ -6,7 +6,7 @@
             </h2>
         </template>
         <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增教室</button>
             <a-table :dataSource="rooms" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
@@ -137,14 +137,14 @@ export default {
         createRecord(){
             this.modal.data={};
             this.modal.mode="CREATE";
-            this.modal.title="新增問卷";
+            this.modal.title="新增教室";
             this.modal.isOpen=true;
         },
         editRecord(record){
             console.log(record);
             this.modal.data={...record};
             this.modal.mode="EDIT";
-            this.modal.title="修改";
+            this.modal.title="修改教室";
             this.modal.isOpen=true;
         },
         storeRecord(){

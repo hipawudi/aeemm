@@ -5,18 +5,22 @@
                 課程規劃
             </h2>
         </template>
-        {{ applications }}
-        <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
-            <a-table :dataSource="applications" :columns="columns">
+            <a-typography-title :level="3">課程名稱:{{ offer.code }} - {{ offer.title_zh }}</a-typography-title>
+            <a-typography-title :level="4">報名期:{{ offer.apply_start }} - {{ offer.apply_end }}</a-typography-title>
+            <a-typography-title :level="4">課程期:{{ offer.course_start }} - {{ offer.course_end }}</a-typography-title>
+            <a-typography-title :level="4">名額:{{ offer.seat }}</a-typography-title>
+
+            <p></p>
+            <inertia-link :href="'/admin/application/create?oid='+offer.id" class="px-3 py-2 mr-2 rounded text-white text-sm font-bold whitespace-no-wrap bg-blue-600 hover:bg-blue-800">新增報名</inertia-link>
+            <p></p>
+            <a-table :dataSource="offer.applications" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <a :href="'/essential/subjects/'+record.id">View</a>
                         <a-button @click="editRecord(record)">Edit</a-button>
                         <a-button @click="deleteRecord(record.id)">Delete</a-button>
                     </template>
                     <template v-else-if="column.dataIndex=='offer_id'">
-                        {{ record.offer.code }}
+                        {{ offer.code }}
                     </template>
                     <template v-else-if="column.dataIndex=='id_num'">
                         {{ record.id_type }}{{ text }}
@@ -29,7 +33,6 @@
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
-            {{ modal.data }}
         <a-form
             ref="modalRef"
             :model="modal.data"
@@ -41,53 +44,34 @@
             :validate-messages="validateMessages"
         >
             <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item name="offer_id" label="報讀課程">
-                <a-select
-                    v-model:value="modal.data.offer_id"
-                    :options="offers.map(offer=>({value:offer.id,label:offer.title_zh}))"
-                ></a-select>
+            
+            <a-form-item name="offer_id" label="報讀課程" :bordered="false" readonly>
+                {{ offers.find(offer=>offer.id==modal.data.offer_id).title_zh }}
             </a-form-item>
-            <a-form-item label="課程範疇" name="student_id">
-                <a-input v-model:value="modal.data.student_id" />
+            <a-form-item label="學生編號" name="student_id">
+                {{ modal.data.student_id }}
             </a-form-item>
-            <a-form-item name="id_num" label="證件號編">
-                <a-input v-model:value="modal.data.id_num" readonly/>
+            <a-form-item label="證件類別" name="id_type">
+                {{ idTypes.find(id=>id.value==modal.data.id_type).label }}
             </a-form-item>
-            <a-form-item label="課程名稱(中文)" name="id_type">
-                <a-input v-model:value="modal.data.id_type" />
+            <a-form-item label="證件編號" name="id_num">
+                {{ modal.data.id_num }}
             </a-form-item>
-            <a-form-item label="課程名稱(英文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_zh" />
+            <a-form-item label="姓名(中文)" name="name_zh">
+                {{ modal.data.name_zh }}
             </a-form-item>
-            <a-form-item label="課程名稱(英文)" name="name_fn">
-                <a-input v-model:value="modal.data.name_fn" />
+            <a-form-item label="姓名(外文)" name="name_fn">
+                {{ modal.data.name_fn }}
             </a-form-item>
-            <a-form-item label="課程名稱(英文)" name="gender">
-                <a-input v-model:value="modal.data.gender" />
+            <a-form-item label="性別" name="gender">
+                {{ modal.data.gender }}
             </a-form-item>
-            <a-form-item label="課程名稱(英文)" name="dob">
-                <a-input v-model:value="modal.data.dob" />
+            <a-form-item label="出生日期" name="dob">
+                {{ modal.data.dob }}
             </a-form-item>
-            <a-form-item label="課程名稱(英文)" name="mobile">
+            <a-form-item label="聯繫電話" name="mobile">
                 <a-input v-model:value="modal.data.mobile" />
             </a-form-item>
-
-            <a-form-item label="簡介" name="description">
-                <a-textarea v-model:value="modal.data.description" />
-            </a-form-item>
-            <a-form-item label="價錢" name="price">
-                <a-input-number v-model:value="modal.data.price" />
-            </a-form-item>
-            <a-form-item label="早鳥價錢" name="early_price">
-                <a-input-number v-model:value="modal.data.early_price" />
-            </a-form-item>
-            <a-form-item label="會員價錢" name="member_price">
-                <a-input-number v-model:value="modal.data.member_price" />
-            </a-form-item>
-            <a-form-item label="有效" name="valid">
-                <a-switch v-model:checked="modal.data.valid" :checkedValue="1" :unCheckedValue="0"/>
-            </a-form-item>
-            
 
         </a-form>
         <template #footer>
@@ -108,7 +92,7 @@ export default {
     components: {
         AdminLayout,
     },
-    props: ['applications','offers','idTypes'],
+    props: ['offer','offers','idTypes'],
     data() {
         return {
             modal:{
@@ -164,13 +148,8 @@ export default {
         }
     },
     methods: {
-        createRecord(){
-            this.modal.data={};
-            this.modal.mode="CREATE";
-            this.modal.title="新增問卷";
-            this.modal.isOpen=true;
-        },
         editRecord(record){
+            console.log(record);
             this.modal.data={...record};
             this.modal.mode="EDIT";
             this.modal.title="修改";
@@ -211,7 +190,7 @@ export default {
         deleteRecord(recordId){
             console.log(recordId);
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/admin/offers/' + recordId,{
+            this.$inertia.delete('/admin/application/' + recordId,{
                 onSuccess: (page)=>{
                     console.log(page);
                 },

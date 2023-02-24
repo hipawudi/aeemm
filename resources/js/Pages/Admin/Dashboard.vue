@@ -2,15 +2,15 @@
     <AdminLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                行政後台管理
+                行政後台管理....
             </h2>
         </template>
-        {{ $page.props }}
         <a-list item-layout="horizontal" :data-source="offers">
             <template #renderItem="{ item }">
                 <a-list-item>
                     <template #actions>
-                        <inertia-link :href="'/admin/application/create?oid='+item.id" >Apply</inertia-link>
+                        <inertia-link :href="'/admin/application?oid='+item.id" >報名名單</inertia-link> | 
+                        <inertia-link :href="'/admin/application/create?oid='+item.id" >新增報名</inertia-link>
                     </template>
 
                     <a-list-item-meta
@@ -32,14 +32,11 @@
 
 <script>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { defineComponent, reactive} from 'vue';
-import { createInertiaApp, Head, Link } from '@inertiajs/inertia-vue3';
 
 
 export default {
     components: {
         AdminLayout,
-        Link
     },
     props: ['offers'],
     data() {

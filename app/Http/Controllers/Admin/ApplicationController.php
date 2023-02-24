@@ -18,13 +18,17 @@ class ApplicationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $applications=Application::with('offer')->get();
+        if(!isset($request->oid)){
+            return redirect('/admin');
+        };
+        //$applications=Application::where('offer_id',$request->oid)->with('offer')->get();
+        $offer=Offer::with('applications')->find($request->oid);
         $offers=Offer::availables();
         $idTypes=Config::item('id_types');
         return Inertia::render('Admin/Application',[
-            'applications'=>$applications,
+            'offer'=>$offer,
             'offers'=>$offers,
             'idTypes'=>$idTypes
         ]);
@@ -37,8 +41,8 @@ class ApplicationController extends Controller
      */
     public function create(Request $request)
     {
+        $selectedOfferId=$request->oid?$request->oid:'2';
         $offers=Offer::availables();
-        $selectedOfferId=$request->oid;
         $idTypes=Config::item('id_types');
         return Inertia::render('Admin/ApplicationCreate',[
             'offers'=>$offers,
@@ -77,7 +81,14 @@ class ApplicationController extends Controller
      */
     public function show($id)
     {
-        //
+        $application=Application::with('offer')->find($id);
+        $offers=Offer::availables();
+        $idTypes=Config::item('id_types');
+        return Inertia::render('Admin/ApplicationEdit',[
+            'application'=>$application,
+            'offers'=>$offers,
+            'idTypes'=>$idTypes
+        ]);
     }
 
     /**
@@ -111,6 +122,9 @@ class ApplicationController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $application = Application::find($id);
+        $application->delete();
+        return redirect('/admin/application?oid='.$id);
+        
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Student;
 
 class StudentController extends Controller
 {
@@ -83,7 +84,16 @@ class StudentController extends Controller
         //
     }
 
-    public function search(Request $request){
-        echo 'in search';
+    public function getById($id){
+        $student=Student::find($id);
+        return response()->json($student);
+    }
+    public function getByEmail($email){
+        $students=Student::where('email',$email)->get();
+        return response()->json($students);
+    }
+    public function getByIdNum($idNum){
+        $students=Student::where('id_num','LIKE', "%{$idNum}%")->get();
+        return response()->json($students);
     }
 }

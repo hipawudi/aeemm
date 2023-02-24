@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('name_fn')->nullable();
             $table->char('gender',1);
             $table->date('dob')->nullable();
+            $table->string('email')->nullable();
             $table->string('mobile')->nullable();
             $table->timestamps();
         });

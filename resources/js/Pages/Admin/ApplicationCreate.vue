@@ -12,6 +12,7 @@
                         <tr v-for="(student, idx) in searchStudents">
                             <td>{{ student.id_type }}</td>
                             <td>{{ student.id_num }}</td>
+                            <td>{{ student.email }}</td>
                             <td>{{ student.name_zh }}</td>
                             <td>{{ student.name_fn }}</td>
                             <td><a @click="onSelectStudent(idx)">選擇</a></td>
@@ -36,6 +37,7 @@
                     @change="onChangeOffer"
                 ></a-select>
             </a-form-item>
+            <!--
             <a-collapse >
                 <a-collapse-panel key="1" :header="selectedOffer.title_zh">
                     <a-row>
@@ -61,9 +63,14 @@
                     </a-form-item>
                 </a-collapse-panel>
             </a-collapse>
-            <a-form-item name="id_num" label="證件號編">
-                <a-input v-model:value="application.id_num" @blur="onChangeIdNum" minlength="3" :disabled="Object.keys(selectedStudent).length>0"/>
+            -->
+            <a-form-item name="student_id" label="學生編號">
+                <a-input v-model:value="application.student_id" @blur="onChangeStudentId" :disabled="Object.keys(selectedStudent).length>0" />
             </a-form-item>
+            <a-form-item name="email" label="電郵地址">
+                <a-input v-model:value="application.email"  @blur="onChangeEmail" :disabled="Object.keys(selectedStudent).length>0"/>
+            </a-form-item>
+
             <a-form-item name="id_type" label="證件類別">
                 <a-select
                     v-model:value="application.id_type"
@@ -71,14 +78,14 @@
                     :disabled="Object.keys(selectedStudent).length>0"
                 ></a-select>
             </a-form-item>
-            <a-form-item name="student_id" label="學生編號">
-                <a-input v-model:value="application.student_id" :disabled="Object.keys(selectedStudent).length>0"/>
+            <a-form-item name="id_num" label="證件號編">
+                <a-input v-model:value="application.id_num" @blur="onChangeIdNum" minlength="3" :disabled="Object.keys(selectedStudent).length>0"/>
             </a-form-item>
             <a-form-item name="name_zh" label="姓名(中文)">
-                <a-input v-model:value="application.name_zh"  :disabled="Object.keys(selectedStudent).length>0"/>
+                <a-input v-model:value="application.name_zh" :disabled="Object.keys(selectedStudent).length>0"/>
             </a-form-item>
             <a-form-item name="name_fn" label="姓名(外文)">
-                <a-input v-model:value="application.name_fn"  :disabled="Object.keys(selectedStudent).length>0"/>
+                <a-input v-model:value="application.name_fn" :disabled="Object.keys(selectedStudent).length>0"/>
             </a-form-item>
             <a-form-item name="gender" label="姓別">
                 <a-radio-group v-model:value="application.gender" :disabled="Object.keys(selectedStudent).length>0">
@@ -120,6 +127,15 @@ export default {
             selectedStudent:{},
             rules:{
                 offer_id:{required:true},
+                student_id:{
+                    min:5,
+                    max:5,
+                    message:'學生編號為5位數字, 前面補0.'
+                },
+                email:{
+                    required:true,
+                    type:'email'
+                },
                 id_type:{required:true},
                 id_num:{
                     required:true,
@@ -152,17 +168,61 @@ export default {
         onChangeOffer(){
             this.selectedOffer=this.offers.find(offer=>offer.id==this.application.offer_id);
         },
+        onChangeStudentId(){
+            if(this.application.student_id!=undefined && this.application.student_id.length!=5){
+                alert("學生編號不正確!");
+                this.application.student_id='';
+                return false;
+            }
+            axios.get('/admin/student/get_by_id/'+this.application.student_id)
+                .then(response=>{
+                    if(Object.keys(response.data).length>0){
+                        console.log(response.data+"---");
+                        this.selectedStudent=response.data;
+                        this.application.student_id=this.formatStudentId(response.data.id);
+                        this.application.email=response.data.email;
+                        this.application.id_type=response.data.id_type;
+                        this.application.id_num=response.data.id_num;
+                        this.application.name_zh=response.data.name_zh;
+                        this.application.name_fn=response.data.name_fn;
+                        this.application.gender=response.data.gender;
+                        this.application.dob=response.data.dob;
+                        this.application.mobile=response.data.mobile;
+                    }else{
+                        alert('沒有找到你所輸入的學生編號!');
+                        this.application.student_id='';
+                        return false;
+                    }
+                })
+
+        },
+        onChangeEmail(){
+            console.log(this.application.email);
+            if(this.application.email==undefined){
+                return false;
+            }
+            axios.get('/admin/student/get_by_email/'+this.application.email)
+                .then(response=>{
+                    this.searchStudents=response.data;
+                    if(this.searchStudents.length==1){
+                        this.onSelectStudent(0);
+                    }else{
+                        console.log(this.searchStudents);
+                    }
+
+                })
+        },
         onChangeIdNum(){
             //console.log(this.application.birm);
+            if(this.application.id_num==undefined){
+                return false;
+            }
             if(this.application.id_num.length<3){
                 alert("身份證號碼太短，可能不是有效號碼，無法搜索。");
                 return true;
             }
-            axios.post('/admin/search',{
-                model:'student',
-                key:'id_num',
-                value:this.application.id_num
-            }).then(response=>{
+            axios.get('/admin/student/get_by_id_num/'+this.application.id_num)
+            .then(response=>{
                 this.searchStudents=response.data;
                 if(this.searchStudents.length==1){
                     this.onSelectStudent(0);
@@ -175,7 +235,8 @@ export default {
         },
         onSelectStudent(studentIdx){
             this.selectedStudent=this.searchStudents[studentIdx];
-            this.application.student_id=this.selectedStudent.id;
+            this.application.student_id=this.formatStudentId(this.selectedStudent.id);
+            this.application.id_type=this.selectedStudent.email;
             this.application.id_type=this.selectedStudent.id_type;
             this.application.id_num=this.selectedStudent.id_num;
             this.application.name_zh=this.selectedStudent.name_zh;
@@ -186,7 +247,11 @@ export default {
         },
         onFinish(){
             this.$inertia.post('/admin/application',this.application)
+        },
+        formatStudentId($studentId){
+            return ('00000'+$studentId).slice(-5);
         }
+
 
     },
 }

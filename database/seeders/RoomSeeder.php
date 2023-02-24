@@ -20,7 +20,7 @@ class RoomSeeder extends Seeder
                 'code'=>'A'.substr('00'.$i,-3),
                 'name'=>'教室',
                 'type'=>'REG',
-                'seat'=>20
+                'seat'=>20,
             ]);
         }
     }

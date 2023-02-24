@@ -16,9 +16,13 @@ class OfferController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $offers=Offer::all();
+        if($request->cid){
+            $offers=Offer::where('course_id',$request->cid)->get();
+        }else{
+            $offers=Offer::all();
+        }
         $courses=Course::all();
         return Inertia::render('Admin/Offer',[
             'courses'=>$courses,
@@ -61,7 +65,7 @@ class OfferController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**

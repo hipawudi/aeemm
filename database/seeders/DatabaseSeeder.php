@@ -76,5 +76,13 @@ class DatabaseSeeder extends Seeder
             'password'=> Hash::make('password')
         ])->withPersonalTeam()->create();
         $admin->assignRole('admin');
+
+        $teacher=\App\Models\User::factory([
+            'name' => 'Teacher',
+            'email' => 'teacher@example.com',
+            'password'=> Hash::make('password')
+        ])->withPersonalTeam()->create();
+        $teacher->assignRole('teacher');
+
     }
 }

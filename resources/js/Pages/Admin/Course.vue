@@ -6,11 +6,11 @@
             </h2>
         </template>
         <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">規劃新課程</button>
             <a-table :dataSource="courses" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <a :href="'/essential/subjects/'+record.id">View</a>
+                        <inertia-link :href="'/admin/offers?cid='+record.id" >已開設課程</inertia-link>
                         <a-button @click="editRecord(record)">Edit</a-button>
                         <a-button @click="deleteRecord(record.id)">Delete</a-button>
                     </template>

@@ -87,7 +87,7 @@
     },{
       key: '2.2',
       title: '分配教室',
-      url:'/scheduler',
+      url:'/admin/scheduler',
     }],
   },{
     key: '3',

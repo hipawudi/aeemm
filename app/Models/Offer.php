@@ -14,9 +14,14 @@ class Offer extends Model
     public function getCodeAttribute(){
         return Course::find($this->course_id)->code;
     }
-
+    public function applications(){
+        return $this->hasMany(Application::class);
+    }
     public function students(){
         return $this->belongsToMany(Student::class)->withPivot('score');
+    }
+    public function teachers(){
+        return $this->belongsToMany(Teacher::class);
     }
     static function availables(){
         return Offer::where('publish',true)->get();
