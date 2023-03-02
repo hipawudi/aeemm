@@ -19,7 +19,7 @@ class RoomSeeder extends Seeder
             DB::table('rooms')->insert([
                 'code'=>'A'.substr('00'.$i,-3),
                 'name'=>'教室',
-                'type'=>'REG',
+                'type'=>'REGULAR',
                 'seat'=>20,
             ]);
         }

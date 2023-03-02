@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('name_zh');
             $table->string('name_fn')->nullable();
             $table->string('nickname')->nullable();
-            $table->string('mobile');
+            $table->string('mobile')->nullable();
+            $table->string('email')->nullable();
             $table->char('gender',1);
             $table->date('dob');
             $table->text('address')->nullable();

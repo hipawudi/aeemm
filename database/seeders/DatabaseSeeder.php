@@ -62,6 +62,7 @@ class DatabaseSeeder extends Seeder
         $roleAdmin->givePermissionTo($permissionAttendance);
 
         $roleTeacher->givePermissionTo($permissionStudent);
+        $roleTeacher->givePermissionTo($permissionAttendance);
 
         $admin=\App\Models\User::factory([
             'name' => 'Master',
@@ -83,6 +84,13 @@ class DatabaseSeeder extends Seeder
             'password'=> Hash::make('password')
         ])->withPersonalTeam()->create();
         $teacher->assignRole('teacher');
+
+        $student=\App\Models\User::factory([
+            'name' => 'Student',
+            'email' => 'student@example.com',
+            'password'=> Hash::make('password')
+        ])->withPersonalTeam()->create();
+        $student->assignRole('student');
 
     }
 }

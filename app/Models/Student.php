@@ -8,7 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     use HasFactory;
-    protected $fillable=['user_id','id_type','id_num','name_zh','name_fn','gender','dob','mobile','email','remark'];
+
+    protected $guard = "student";
+    
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $fillable=[
+        'user_id','id_type','id_num','name_zh','name_fn','gender','dob','mobile','email','remark'
+    ];
 
     // public function klasses(){
     //     return $this->belongsToMany(Klass::class,'klass_students','student_id','klass_id');

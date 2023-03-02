@@ -16,7 +16,7 @@ class ConfigSeeder extends Seeder
     public function run()
     {
         DB::table('configs')->insert([
-            'key' => 'room_status',
+            'key' => 'room_states',
             'value' => '[{"value":"AVAILABLE","label":"可用"},{"value":"MAINTENACE","label":"維修中"},{"value":"CLOSED","label":"不開放"}]',
         ]);
         DB::table('configs')->insert([

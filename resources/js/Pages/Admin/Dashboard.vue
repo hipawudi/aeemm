@@ -25,18 +25,20 @@
                 </a-list-item>
             </template>
         </a-list>
-
+        <button-link href="https://google.com" face="Edit" type="Link">Google</button-link>
     </AdminLayout>
 
 </template>
 
 <script>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
+import ButtonLink from '@/Components/ButtonLink.vue';
 
 
 export default {
     components: {
         AdminLayout,
+        ButtonLink,
     },
     props: ['offers'],
     data() {

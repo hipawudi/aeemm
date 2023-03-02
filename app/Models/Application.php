@@ -25,11 +25,18 @@ class Application extends Model
                 $student->gender=$application->gender;
                 $student->dob=$application->dob;
                 $student->mobile=$application->mobile;
+                $student->email=$application->email;
                 $student->newbie=true;
                 $student->save();
                 $application->student_id=$student->id;
                 $application->update();
             }
+
+            $offerStudent=new OfferStudent();
+            $offerStudent->offer_id=$application->offer_id;
+            $offerStudent->student_id=$application->student_id;
+            $offerStudent->save();
+
         });
     }
 }

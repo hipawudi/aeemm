@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('offer_id');
             $table->bigInteger('student_id')->nullable();
+            $table->integer('price')->default(0);
             $table->string('id_type');
             $table->string('id_num');
             $table->string('name_zh');
