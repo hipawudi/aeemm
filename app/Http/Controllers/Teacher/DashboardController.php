@@ -12,10 +12,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $teacher=Teacher::where('user_id',auth()->user()->id)->with('offers')->first();
-        return Inertia::render('Teacher/Dashboard',[
-            'teacher'=>$teacher
-        ]);
+        // dd("teacher!");
+        // $teacher=Teacher::where('user_id',auth()->user()->id)->with('offers')->first();
+        return Inertia::render('Teacher/Dashboard');
     }
     
 }

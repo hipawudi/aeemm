@@ -2,7 +2,7 @@
     <div>
         <div class="m-4 text-center text-lg ">
             
-            <inertia-link href='/admin'> Admin </inertia-link>
+            <inertia-link href='/manage/teacher'> Teacher </inertia-link>
         </div>
         <a-menu 
             mode="inline" 

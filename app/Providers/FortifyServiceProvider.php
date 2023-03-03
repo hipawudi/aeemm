@@ -21,14 +21,19 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (request()->query('ref') === 'admin' || request()->is(['admin', 'admin/..'])) {
-            config(['fortify.home' => '/admin']);
+        if (request()->is(['manage', 'manage/*'])) {
+            config(['fortify.home' => '/manage']);
             config(['fortify.guard' => 'admin_web']);
         }
 
         $this->app->singleton(
             \Laravel\Fortify\Contracts\LoginResponse::class,
             \App\Http\Responses\LoginResponse::class
+        );
+
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\LogoutResponse::class,
+            \App\Http\Responses\LogoutResponse::class
         );
     }
 

@@ -5,9 +5,9 @@ namespace App\Http\Responses;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
-use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
 
-class LoginResponse implements LoginResponseContract
+class LogoutResponse implements LogoutResponseContract
 {
     /**
      * Create an HTTP response that represents the object.

@@ -79,7 +79,10 @@ export default {
     },
     methods: {
         login () {
-            this.form.post('/login?ref=admin')
+            // console.log(this.form)
+            
+            // --- FortifyServiceProvider
+            this.form.post('/manage/login')
         }
     }
 }
