@@ -26,27 +26,22 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            ConfigSeeder::class,
-            CourseSeeder::class,
-            OfferSeeder::class,
-            RoomSeeder::class,
-            TeacherSeeder::class,
-            StudentSeeder::class,
+            MemberSeeder::class,
         ]);
 
 
-        $roleMaster=Role::create(['name'=>'master']);
-        $roleAdmin=Role::create(['name'=>'admin']);
-        $roleTeacher=Role::create(['name'=>'teacher']);
-        $roleGuardian=Role::create(['name'=>'guardian']);
-        $roleStudent=Role::create(['name'=>'student']);
+        $roleMaster=Role::create(['name'=>'master','guard_name' => 'admin_web']);
+        $roleAdmin=Role::create(['name'=>'admin','guard_name' => 'admin_web']);
+        $roleTeacher=Role::create(['name'=>'teacher','guard_name' => 'admin_web']);
+        $roleGuardian=Role::create(['name'=>'guardian','guard_name' => 'web']);
+        $roleStudent=Role::create(['name'=>'student','guard_name' => 'web']);
 
-        $permissionCourse=Permission::create(['name'=>'manage course']);
-        $permissionOffer=Permission::create(['name'=>'manage offer']);
-        $permissionTeacher=Permission::create(['name'=>'manage teacher']);
-        $permissionStudent=Permission::create(['name'=>'manage student']);
-        $permissionGuardian=Permission::create(['name'=>'manage guardian']);
-        $permissionAttendance=Permission::create(['name'=>'manage attendance']);
+        $permissionCourse=Permission::create(['name'=>'manage course','guard_name' => 'admin_web']);
+        $permissionOffer=Permission::create(['name'=>'manage offer','guard_name' => 'admin_web']);
+        $permissionTeacher=Permission::create(['name'=>'manage teacher','guard_name' => 'admin_web']);
+        $permissionStudent=Permission::create(['name'=>'manage student','guard_name' => 'admin_web']);
+        $permissionGuardian=Permission::create(['name'=>'manage guardian','guard_name' => 'admin_web']);
+        $permissionAttendance=Permission::create(['name'=>'manage attendance','guard_name' => 'admin_web']);
 
         $roleMaster->givePermissionTo($permissionCourse);
         $roleMaster->givePermissionTo($permissionOffer);
@@ -64,25 +59,25 @@ class DatabaseSeeder extends Seeder
         $roleTeacher->givePermissionTo($permissionStudent);
         $roleTeacher->givePermissionTo($permissionAttendance);
 
-        $admin=\App\Models\User::factory([
+        $admin=\App\Models\AdminUser::factory([
             'name' => 'Master',
             'email' => 'master@example.com',
             'password'=> Hash::make('password')
-        ])->withPersonalTeam()->create();
+        ])->create();
         $admin->assignRole('master');
 
-        $admin=\App\Models\User::factory([
+        $admin=\App\Models\AdminUser::factory([
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password'=> Hash::make('password')
-        ])->withPersonalTeam()->create();
+        ])->create();
         $admin->assignRole('admin');
 
-        $teacher=\App\Models\User::factory([
+        $teacher=\App\Models\AdminUser::factory([
             'name' => 'Teacher',
             'email' => 'teacher@example.com',
             'password'=> Hash::make('password')
-        ])->withPersonalTeam()->create();
+        ])->create();
         $teacher->assignRole('teacher');
 
         $student=\App\Models\User::factory([

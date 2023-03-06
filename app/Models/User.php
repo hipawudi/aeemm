@@ -11,6 +11,8 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Notifications\SetPasswordNotification;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 
 
 class User extends Authenticatable
@@ -62,4 +64,18 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function sendPasswordResetNotification($token)
+    {
+        if ($this->password === 'need-to-set') {
+            $this->notify(new SetPasswordNotification($token));
+            return;
+        }
+
+        $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function hasPasswordSet () {
+        return $this->password !== 'need-to-set';
+    }
 }

@@ -13,19 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('applications', function (Blueprint $table) {
+        Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('offer_id');
-            $table->bigInteger('student_id')->nullable();
-            $table->integer('price')->default(0);
-            $table->string('id_type');
-            $table->string('id_num');
-            $table->string('name_zh');
-            $table->string('name_fn')->nullable();
-            $table->char('gender',1);
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('display_name')->nullable();
+            $table->char('gender',1)->nullable();
             $table->date('dob')->nullable();
             $table->string('email')->nullable();
-            $table->string('mobile')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('country')->nullable();
+            $table->string('nationality')->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
         });
     }
@@ -37,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('applications');
+        Schema::dropIfExists('members');
     }
 };

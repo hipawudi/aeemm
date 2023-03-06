@@ -11,7 +11,6 @@
                 <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
 
                 <div class="flex-1"></div>
-        {{ $page.props }}
 
                 <a-dropdown placement="bottomRight">
                     <a class="trigger" @click.prevent>

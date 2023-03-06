@@ -13,14 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('lessons', function (Blueprint $table) {
+        Schema::create('referres', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('offer_id');
-            $table->bigInteger('teacher_id');
-            $table->bigInteger('room_id');
-            $table->dateTime('start_at');
-            $table->dateTime('finish_at');
-            $table->integer('dow');
             $table->timestamps();
         });
     }
@@ -32,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lessons');
+        Schema::dropIfExists('referres');
     }
 };

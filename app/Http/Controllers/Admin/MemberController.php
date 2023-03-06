@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
-use App\Models\Config;
-use App\Models\Teacher;
+use App\Models\Member;
+use Illuminate\Support\Facades\Password;
 
-class TeacherController extends Controller
+class MemberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +17,9 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Teacher',[
-            'teachers'=>Teacher::all(),
-            'employmentStates'=>Config::item('employment_states'),
-
+        $members=Member::all();
+        return Inertia::render('Admin/Member',[
+            'members'=>$members,
         ]);
     }
 
@@ -43,13 +41,7 @@ class TeacherController extends Controller
      */
     public function store(Request $request)
     {
-        Validator::make($request->all(), [
-            'name_zh' => ['name_zh'],
-            'mobile' => ['mobile'],
-            'state' => ['state'],
-        ])->validate();
-        Teacher::create($request->all());
-        return redirect()->back();
+        //
     }
 
     /**
@@ -83,16 +75,7 @@ class TeacherController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Validator::make($request->all(), [
-        ])->validate();
-        
-        $teacher=Teacher::find($id);
-        $teacher->name_zh=$request->name_zh;
-        $teacher->name_fn=$request->name_fn;
-        $teacher->nickname=$request->nickname;
-        $teacher->mobile=$request->mobile;
-        $teacher->state=$request->state;
-        $teacher->save();
+        //
     }
 
     /**
@@ -104,5 +87,18 @@ class TeacherController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function createLogin(Member $member){
+
+        if (!$member->hasUser()) {
+            $user = $member->createUser();
+        } else {
+            $user = $member->user;
+        }
+
+        Password::broker(config('fortify.passwords'))->sendResetLink(
+            [ 'email' => $user->email ]
+        );
+
     }
 }

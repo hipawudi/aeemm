@@ -4,8 +4,10 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use App\Models\Member;
 
-class CategorySeeder extends Seeder
+class MemberSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +16,7 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        //
+        Member::factory()->count(100)->create();
+
     }
 }
