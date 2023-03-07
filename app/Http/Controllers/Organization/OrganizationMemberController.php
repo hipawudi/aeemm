@@ -2,28 +2,20 @@
 
 namespace App\Http\Controllers\Organization;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\Organization;
-use Inertia\Inertia;
 
-class OrganizationController extends Controller
+class OrganizationMemberController extends Controller
 {
-    
-    public function __construct()
-    {
-        $this->authorizeResource(Organization::class);
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Organization $organization)
     {
-
-        echo 'list of organization';
+        return $organization->members;
     }
 
     /**
@@ -53,7 +45,7 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Organization $organization)
+    public function show($id)
     {
         //
     }
@@ -64,16 +56,9 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Organization $organization)
-    {         
-
-        //$this->authorize('update' , $organization);
-
-
-        return Inertia::render('Organization/Profile',[
-            'organization'=>$organization,
-        ]);
-        
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -98,11 +83,4 @@ class OrganizationController extends Controller
     {
         //
     }
-    public function member(Organization $organization){
-        $this->authorize('view');
-        return Inertia::render('Organization/Member',[
-            'members'=>$organization->members,
-        ]);
-    }
-
 }

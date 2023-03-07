@@ -52,7 +52,8 @@ Route::middleware([
         })->name('manage.admin');
         Route::prefix('/organization')->group(function(){
             Route::get('/',[App\Http\Controllers\Organization\DashboardController::class,'index']);
-            Route::resource('/profile', App\Http\Controllers\Organization\OrganizationController::class);
+            Route::resource('organization', App\Http\Controllers\Organization\OrganizationController::class);
+            Route::resource('organization.members', App\Http\Controllers\Organization\OrganizationMemberController::class);
             Route::get('/member/{organization}',[App\Http\Controllers\Organization\OrganizationController::class,'member'])->name('organization.member');
             // Route::prefix('/member')->group(function(){
                 

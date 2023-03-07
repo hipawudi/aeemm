@@ -17,4 +17,8 @@ class Organization extends Model
     public function members(){
         return $this->belongsToMany(Member::class);
     }
+
+    public function hasUser($user){
+        return $this->adminUsers()->exists($user);
+    }
 }
