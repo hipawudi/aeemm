@@ -42,13 +42,27 @@ Route::middleware([
     config('jetstream.auth_session'),
     'role:admin|master',
 ])->group(function () {
-    Route::prefix('/manage/admin')->group(function(){
-        Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('admin.dashboard');
-    })->name('admin');
-    Route::prefix('/manage/member')->group(function(){
-        Route::resource('/',App\Http\Controllers\Admin\MemberController::class);
-        Route::get('/create_login/{member}',[App\Http\Controllers\Admin\MemberController::class,'createLogin']);
-    })->name('member');
+    Route::prefix('/manage')->group(function(){
+        Route::prefix('/admin')->group(function(){
+            Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('admin.dashboard');
+            Route::prefix('/member')->group(function(){
+                Route::resource('/',App\Http\Controllers\Admin\MemberController::class);
+                Route::get('/create_login/{member}',[App\Http\Controllers\Admin\MemberController::class,'createLogin']);
+            })->name('manage.admin.member');        
+        })->name('manage.admin');
+        Route::prefix('/organization')->group(function(){
+            Route::get('/',[App\Http\Controllers\Organization\DashboardController::class,'index']);
+            Route::resource('/profile', App\Http\Controllers\Organization\OrganizationController::class);
+            Route::get('/member/{organization}',[App\Http\Controllers\Organization\OrganizationController::class,'member'])->name('organization.member');
+            // Route::prefix('/member')->group(function(){
+                
+            // })->name('manage.organization.member');
+        })->name('manage.organization');
+        
+    })->name('manage');
+
+
+
 });
 
 

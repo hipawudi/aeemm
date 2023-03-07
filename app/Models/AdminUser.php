@@ -62,4 +62,8 @@ class AdminUser extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function Organizations(){
+        return $this->belongsToMany(Organization::class);
+    }
 }

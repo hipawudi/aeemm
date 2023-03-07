@@ -6,18 +6,15 @@
             </h2>
         </template>
         <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">規劃新課程</button>
-            <a-table :dataSource="courses" :columns="columns">
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
+            <a-table :dataSource="organizations" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="'/admin/offers?cid='+record.id" >已開設課程</inertia-link>
                         <a-button @click="editRecord(record)">Edit</a-button>
                         <a-button @click="deleteRecord(record.id)">Delete</a-button>
                     </template>
-                    <template v-else-if="column.dataIndex=='courses'">
-                        <ul>
-                            <li v-for="klass in record['klasses']">Class: {{klass.acronym}}</li>
-                        </ul>
+                    <template v-else-if="column.dataIndex=='state'">
+                        {{teacherStateLabels[text]}}
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -27,11 +24,10 @@
 
         <!-- Modal Start-->
         <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
-            {{ modal.data }}
         <a-form
             ref="modalRef"
             :model="modal.data"
-            name="Survey"
+            name="Teacher"
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"
             autocomplete="off"
@@ -39,38 +35,21 @@
             :validate-messages="validateMessages"
         >
             <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="課程編號" name="code">
-                <a-input v-model:value="modal.data.code" />
+            <a-form-item label="姓名(中文)" name="name_zh">
+                <a-input v-model:value="modal.data.name_zh" />
             </a-form-item>
-            <a-form-item label="課程範疇" name="area">
-                <a-input v-model:value="modal.data.area" />
+            <a-form-item label="姓名(外文)" name="name_zh">
+                <a-input v-model:value="modal.data.name_fn" />
             </a-form-item>
-            <a-form-item label="課程分類" name="category">
-                <a-input v-model:value="modal.data.category" />
+            <a-form-item label="別名" name="nickname">
+                <a-input v-model:value="modal.data.nickname" />
             </a-form-item>
-            <a-form-item label="課程名稱(中文)" name="title_zh">
-                <a-input v-model:value="modal.data.title_zh" />
+            <a-form-item label="手機" name="mobile">
+                <a-input v-model:value="modal.data.mobile" />
             </a-form-item>
-            <a-form-item label="課程名稱(英文)" name="title_en">
-                <a-input v-model:value="modal.data.title_en" />
+            <a-form-item label="狀態" name="status">
+                <a-select v-model:value="modal.data.state" :options="employmentStates"/>
             </a-form-item>
-            <a-form-item label="簡介" name="description">
-                <a-textarea v-model:value="modal.data.description" />
-            </a-form-item>
-            <a-form-item label="價錢" name="price">
-                <a-input-number v-model:value="modal.data.price" />
-            </a-form-item>
-            <a-form-item label="早鳥價錢" name="early_price">
-                <a-input-number v-model:value="modal.data.early_price" />
-            </a-form-item>
-            <a-form-item label="會員價錢" name="member_price">
-                <a-input-number v-model:value="modal.data.member_price" />
-            </a-form-item>
-            <a-form-item label="有效" name="valid">
-                <a-switch v-model:checked="modal.data.valid" :checkedValue="1" :unCheckedValue="0"/>
-            </a-form-item>
-            
-
         </a-form>
         <template #footer>
             <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
@@ -90,7 +69,7 @@ export default {
     components: {
         AdminLayout,
     },
-    props: ['courses'],
+    props: ['organizations'],
     data() {
         return {
             modal:{
@@ -99,25 +78,30 @@ export default {
                 title:"Modal",
                 mode:""
             },
+            teacherStateLabels:{},
             columns:[
                 {
-                    title: 'Code',
-                    dataIndex: 'code',
+                    title: '姓名(中文)',
+                    dataIndex: 'abbr',
                 },{
-                    title: 'Title cn',
-                    dataIndex: 'title_zh',
+                    title: '姓名(外文)',
+                    dataIndex: 'full_name',
                 },{
-                    title: 'Title en',
-                    dataIndex: 'title_en',
+                    title: '別名',
+                    dataIndex: 'phone',
                 },{
-                    title: 'Operation',
+                    title: '手機',
+                    dataIndex: 'country',
+                },{
+                    title: '操作',
                     dataIndex: 'operation',
                     key: 'operation',
                 },
             ],
             rules:{
-                code:{required:true},
-                title_zh:{required:true},
+                name_zh:{required:true},
+                mobile:{required:true},
+                state:{required:true},
             },
             validateMessages:{
                 required: '${label} is required!',
@@ -136,6 +120,8 @@ export default {
             },
         }
     },
+    created(){
+    },
     methods: {
         createRecord(){
             this.modal.data={};
@@ -151,7 +137,7 @@ export default {
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post('/admin/courses/', this.modal.data,{
+                this.$inertia.post('/organization/teachers/', this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -165,8 +151,9 @@ export default {
             });
         },
         updateRecord(){
+            console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch('/admin/courses/' + this.modal.data.id, this.modal.data,{
+                this.$inertia.patch('/organization/teachers/' + this.modal.data.id, this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -184,7 +171,7 @@ export default {
         deleteRecord(recordId){
             console.log(recordId);
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/admin/offers/' + recordId,{
+            this.$inertia.delete('/organization/teachers/' + recordId,{
                 onSuccess: (page)=>{
                     console.log(page);
                 },
@@ -193,6 +180,7 @@ export default {
                 }
             });
         },
+
     },
 }
 </script>

@@ -2,7 +2,7 @@
     <a-layout style="min-height: 100vh">
 
         <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible theme="light" width="250px" class="shadow-md " >
-            <AdminMenu :menuKeys='menuKeys' />
+            <OrganizationMenu :menuKeys='menuKeys' />
         </a-layout-sider>
         
         <a-layout>
@@ -61,15 +61,14 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
-import PageHeader from '@/Components/Admin/PageHeader.vue';
+import PageHeader from '@/Components/Organization/PageHeader.vue';
 
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
 } from '@ant-design/icons-vue';
 
-import AdminMenu from '@/Components/Admin/AdminMenu.vue';
-// import AdminMenu from '@/Layouts/Menu/Menu.vue';
+import OrganizationMenu from '@/Components/Organization/OrganizationMenu.vue';
 
 defineProps({
     title: String,
