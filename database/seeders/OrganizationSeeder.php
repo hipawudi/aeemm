@@ -25,6 +25,13 @@ class OrganizationSeeder extends Seeder
             'admin_user_id'=>'2',
             'organization_id'=>'3',
         ]);
+        DB::table('admin_user_organization')->insert([
+            'admin_user_id'=>'3',
+            'organization_id'=>'2',
+        ]);
+
+
+
         DB::table('member_organization')->insert([
             'member_id'=>'1',
             'organization_id'=>'1',
@@ -36,6 +43,20 @@ class OrganizationSeeder extends Seeder
         DB::table('member_organization')->insert([
             'member_id'=>'3',
             'organization_id'=>'1',
+        ]);
+
+
+        DB::table('member_organization')->insert([
+            'member_id'=>'4',
+            'organization_id'=>'2',
+        ]);
+        DB::table('member_organization')->insert([
+            'member_id'=>'5',
+            'organization_id'=>'2',
+        ]);
+        DB::table('member_organization')->insert([
+            'member_id'=>'6',
+            'organization_id'=>'2',
         ]);
 
 

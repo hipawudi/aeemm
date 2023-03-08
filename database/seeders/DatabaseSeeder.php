@@ -35,32 +35,31 @@ class DatabaseSeeder extends Seeder
 
         $roleMaster=Role::create(['name'=>'master','guard_name' => 'admin_web']);
         $roleAdmin=Role::create(['name'=>'admin','guard_name' => 'admin_web']);
-        $roleTeacher=Role::create(['name'=>'teacher','guard_name' => 'admin_web']);
-        $roleGuardian=Role::create(['name'=>'guardian','guard_name' => 'web']);
-        $roleStudent=Role::create(['name'=>'student','guard_name' => 'web']);
+        $roleOrganization=Role::create(['name'=>'organization','guard_name' => 'admin_web']);
+        $roleMember=Role::create(['name'=>'member','guard_name' => 'web']);
 
-        $permissionCourse=Permission::create(['name'=>'manage course','guard_name' => 'admin_web']);
-        $permissionOffer=Permission::create(['name'=>'manage offer','guard_name' => 'admin_web']);
-        $permissionTeacher=Permission::create(['name'=>'manage teacher','guard_name' => 'admin_web']);
-        $permissionStudent=Permission::create(['name'=>'manage student','guard_name' => 'admin_web']);
-        $permissionGuardian=Permission::create(['name'=>'manage guardian','guard_name' => 'admin_web']);
-        $permissionAttendance=Permission::create(['name'=>'manage attendance','guard_name' => 'admin_web']);
+        // $permissionCourse=Permission::create(['name'=>'manage course','guard_name' => 'admin_web']);
+        // $permissionOffer=Permission::create(['name'=>'manage offer','guard_name' => 'admin_web']);
+        // $permissionTeacher=Permission::create(['name'=>'manage teacher','guard_name' => 'admin_web']);
+        // $permissionStudent=Permission::create(['name'=>'manage student','guard_name' => 'admin_web']);
+        // $permissionGuardian=Permission::create(['name'=>'manage guardian','guard_name' => 'admin_web']);
+        // $permissionAttendance=Permission::create(['name'=>'manage attendance','guard_name' => 'admin_web']);
 
-        $roleMaster->givePermissionTo($permissionCourse);
-        $roleMaster->givePermissionTo($permissionOffer);
-        $roleMaster->givePermissionTo($permissionTeacher);
-        $roleMaster->givePermissionTo($permissionStudent);
-        $roleMaster->givePermissionTo($permissionGuardian);
-        $roleMaster->givePermissionTo($permissionAttendance);
+        // $roleMaster->givePermissionTo($permissionCourse);
+        // $roleMaster->givePermissionTo($permissionOffer);
+        // $roleMaster->givePermissionTo($permissionTeacher);
+        // $roleMaster->givePermissionTo($permissionStudent);
+        // $roleMaster->givePermissionTo($permissionGuardian);
+        // $roleMaster->givePermissionTo($permissionAttendance);
 
-        $roleAdmin->givePermissionTo($permissionOffer);
-        $roleAdmin->givePermissionTo($permissionTeacher);
-        $roleAdmin->givePermissionTo($permissionStudent);
-        $roleAdmin->givePermissionTo($permissionGuardian);
-        $roleAdmin->givePermissionTo($permissionAttendance);
+        // $roleAdmin->givePermissionTo($permissionOffer);
+        // $roleAdmin->givePermissionTo($permissionTeacher);
+        // $roleAdmin->givePermissionTo($permissionStudent);
+        // $roleAdmin->givePermissionTo($permissionGuardian);
+        // $roleAdmin->givePermissionTo($permissionAttendance);
 
-        $roleTeacher->givePermissionTo($permissionStudent);
-        $roleTeacher->givePermissionTo($permissionAttendance);
+        // $roleOrganization->givePermissionTo($permissionStudent);
+        // $roleOrganization->givePermissionTo($permissionAttendance);
 
         $admin=\App\Models\AdminUser::factory([
             'name' => 'Master',
@@ -76,19 +75,19 @@ class DatabaseSeeder extends Seeder
         ])->create();
         $admin->assignRole('admin');
 
-        $teacher=\App\Models\AdminUser::factory([
-            'name' => 'Teacher',
-            'email' => 'teacher@example.com',
+        $organization=\App\Models\AdminUser::factory([
+            'name' => 'Organization',
+            'email' => 'organization@example.com',
             'password'=> Hash::make('password')
         ])->create();
-        $teacher->assignRole('teacher');
+        $organization->assignRole('organization');
 
-        $student=\App\Models\User::factory([
-            'name' => 'Student',
-            'email' => 'student@example.com',
+        $member=\App\Models\User::factory([
+            'name' => 'Member',
+            'email' => 'member@example.com',
             'password'=> Hash::make('password')
         ])->withPersonalTeam()->create();
-        $student->assignRole('student');
+        $member->assignRole('member');
 
     }
 }

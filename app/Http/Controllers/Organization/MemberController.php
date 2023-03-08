@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers\Organization;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 use App\Models\Organization;
+use App\Models\Member;
 
-class OrganizationMemberController extends Controller
+class MemberController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Organization::class);
+        $this->authorizeResource(Member::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +23,11 @@ class OrganizationMemberController extends Controller
      */
     public function index(Organization $organization)
     {
-        return $organization->members;
+        $this->authorize('view',$organization);
+        return Inertia::render('Organization/Member',[
+            'members'=>$organization->members,
+        ]);
+
     }
 
     /**
@@ -45,9 +57,12 @@ class OrganizationMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Organization $organization, Member $member)
     {
-        //
+        return Inertia::render('Organization/MemberShow',[
+            //'member'=>$member->belongsToOrganization($organization)->first(),
+            'member'=>$member,
+        ]);
     }
 
     /**
@@ -56,9 +71,12 @@ class OrganizationMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Organization $organization, Member $member)
     {
-        //
+        return Inertia::render('Organization/MemberEdit',[
+            //'member'=>$member->belongsToOrganization($organization)->first(),
+            'member'=>$member,
+        ]);
     }
 
     /**
@@ -83,4 +101,16 @@ class OrganizationMemberController extends Controller
     {
         //
     }
+
+    public function createLogin(Organization $organization, Member $member){
+        $this->authorize('update',$member);
+        if (!$member->hasUser()) {
+            $user = $member->createUser();
+        } else {
+            $user = $member->user;
+        }
+        Password::broker(config('fortify.passwords'))->sendResetLink(
+            [ 'email' => $user->email ]
+        );
+    }    
 }

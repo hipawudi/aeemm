@@ -14,31 +14,31 @@
             <a-form-item :name="full_name" label="Full Name" >
                 <a-input v-model:value="organization.full_name" />
             </a-form-item>
-            <a-form-item :name="email" label="email" >
+            <a-form-item :name="title" label="Title" >
+                <a-input v-model:value="organization.title" />
+            </a-form-item>
+            <a-form-item :name="email" label="Email" >
                 <a-input v-model:value="organization.email" />
             </a-form-item>
-            <a-form-item :name="phone" label="phone" >
+            <a-form-item :name="phone" label="Phone" >
                 <a-input v-model:value="organization.phone" />
             </a-form-item>
-            <a-form-item :name="address" label="address" >
+            <a-form-item :name="address" label="Address" >
                 <a-input v-model:value="organization.address" />
             </a-form-item>
-            <a-form-item :name="country" label="country" >
+            <a-form-item :name="country" label="Country" >
                 <a-input v-model:value="organization.country" />
             </a-form-item>
             <a-form-item :name="href" label="Official Website" >
                 <a-input v-model:value="organization.href" />
             </a-form-item>
-            <a-form-item :name="title" label="title" >
-                <a-input v-model:value="organization.title" />
-            </a-form-item>
-            <a-form-item :name="avata" label="avata" >
+            <a-form-item :name="avata" label="Avata" >
                 <a-input v-model:value="organization.avata" />
             </a-form-item>
-            <a-form-item :name="description" label="description" >
+            <a-form-item :name="description" label="Description" >
                 <a-input v-model:value="organization.description" />
             </a-form-item>
-            <a-form-item :name="content" label="content" >
+            <a-form-item :name="content" label="Content" >
                 <a-input v-model:value="organization.content" />
             </a-form-item>
             <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">

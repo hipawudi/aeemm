@@ -2,61 +2,45 @@
     <OrganizationLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                課程規劃
+                Edit Member Profile
             </h2>
         </template>
-        <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
-            <a-table :dataSource="members" :columns="columns">
-                <template #bodyCell="{column, text, record, index}">
-                    <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="'/manage/organization/'+record.pivot.organization_id+'/members/'+record.id">View</inertia-link>
-                        <inertia-link :href="'/manage/organization/'+record.pivot.organization_id+'/members/'+record.id+'/edit'">Edit</inertia-link>
-                        <a-button @click="editRecord(record)">Edit</a-button>
-                        <a-button @click="deleteRecord(record.id)">Delete</a-button>
-                        <a-button @click="createLogin(record.id)">Create login</a-button>
-                    </template>
-                    <template v-else-if="column.dataIndex=='state'">
-                        {{teacherStateLabels[text]}}
-                    </template>
-                    <template v-else>
-                        {{record[column.dataIndex]}}
-                    </template>
-                </template>
-            </a-table>
-
-        <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
-        <a-form
-            ref="modalRef"
-            :model="modal.data"
-            name="Teacher"
-            :label-col="{ span: 8 }"
-            :wrapper-col="{ span: 16 }"
-            autocomplete="off"
-            :rules="rules"
-            :validate-messages="validateMessages"
-        >
-            <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="姓名(中文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_zh" />
+        <a-form :model="member" v-bind="layout" name="nest-messages" :validate-messages="validateMessages">
+            <a-form-item name="first_name" label="First Name" >
+                <a-input v-model:value="member.first_name" />
             </a-form-item>
-            <a-form-item label="姓名(外文)" name="name_zh">
-                <a-input v-model:value="modal.data.name_fn" />
+            <a-form-item name="last_name" label="Last Name" >
+                <a-input v-model:value="member.last_name" />
             </a-form-item>
-            <a-form-item label="別名" name="nickname">
-                <a-input v-model:value="modal.data.nickname" />
+            <a-form-item name="display_name" label="Display Name" >
+                <a-input v-model:value="member.display_name" />
             </a-form-item>
-            <a-form-item label="手機" name="mobile">
-                <a-input v-model:value="modal.data.mobile" />
+            <a-form-item name="email" label="Email" >
+                <a-input v-model:value="member.email" />
             </a-form-item>
+            <a-form-item name="gender" label="Gender" >
+                <a-input v-model:value="member.gender" />
+            </a-form-item>
+            <a-form-item name="dob" label="Date of Birth" >
+                <a-input v-model:value="member.dob" />
+            </a-form-item>
+            <a-form-item name="phone" label="Phone" >
+                <a-input v-model:value="member.phone" />
+            </a-form-item>
+            <a-form-item name="address" label="Address" >
+                <a-input v-model:value="member.address" />
+            </a-form-item>
+            <a-form-item name="country" label="Country" >
+                <a-input v-model:value="member.country" />
+            </a-form-item>
+            <a-form-item name="nationality" label="Nationality" >
+                <a-input v-model:value="member.nationality" />
+            </a-form-item>
+            <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
+                <a-button type="primary" html-type="submit">Submit</a-button>
+            </a-form-item>            
         </a-form>
-        <template #footer>
-            <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
-            <a-button v-if="modal.mode=='CREATE'"  key="Store" type="primary" @click="storeRecord()">Add</a-button>
-        </template>
-    </a-modal>    
-    <!-- Modal End-->
+
     </OrganizationLayout>
 
 </template>
@@ -69,7 +53,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['members'],
+    props: ['member'],
     data() {
         return {
             modal:{
@@ -116,9 +100,12 @@ export default {
                     range: '${label} must be between ${min} and ${max}',
                 },
             },
-            labelCol: {
-                style: {
-                width: '150px',
+            layout: {
+                labelCol: {
+                    span: 8,
+                },
+                wrapperCol: {
+                    span: 16,
                 },
             },
         }
@@ -185,9 +172,7 @@ export default {
         },
         createLogin(recordId){
             console.log('create login'+recordId);
-            this.$inertia.put(){
 
-            }
         }
     },
 }

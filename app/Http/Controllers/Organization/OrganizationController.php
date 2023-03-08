@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\AdminUser;
 use App\Models\Organization;
 use Inertia\Inertia;
 
@@ -22,8 +23,14 @@ class OrganizationController extends Controller
      */
     public function index()
     {
-
-        echo 'list of organization';
+        if(Auth()->user()->hasRole('admin')){
+            $organizations=Organization::all();
+        }else{
+            $organizations=AdminUser::find(Auth()->user()->id)->organizations;
+        }
+        return Inertia::render('Organization/Organization',[
+            'organizations' => $organizations
+        ]);
     }
 
     /**
@@ -70,12 +77,12 @@ class OrganizationController extends Controller
         //$this->authorize('update' , $organization);
 
 
-        return Inertia::render('Organization/Profile',[
+        return Inertia::render('Organization/OrganizationEdit',[
             'organization'=>$organization,
         ]);
         
     }
-
+    
     /**
      * Update the specified resource in storage.
      *
@@ -97,12 +104,6 @@ class OrganizationController extends Controller
     public function destroy($id)
     {
         //
-    }
-    public function member(Organization $organization){
-        $this->authorize('view');
-        return Inertia::render('Organization/Member',[
-            'members'=>$organization->members,
-        ]);
     }
 
 }

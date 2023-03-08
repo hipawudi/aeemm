@@ -10,10 +10,9 @@ Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], func
     $limiter = config('fortify.limiters.login');
 
     Route::get('/manage/login', function () {
-        return Inertia::render('Admin/Login');
+        return Inertia::render('Organization/Login');
     })->middleware(['guest:'.config('fortify.guard')]);
     
-
     Route::post('/manage/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware(array_filter([
         'guest:'.config('fortify.guard'),
@@ -40,30 +39,47 @@ Route::middleware([
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
-    'role:admin|master',
+    'role:organization|admin|master',
 ])->group(function () {
     Route::prefix('/manage')->group(function(){
-        Route::prefix('/admin')->group(function(){
-            Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('admin.dashboard');
+        // Route::prefix('/admin')->group(function(){
+        //     Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('admin.dashboard');
+        //     Route::prefix('/member')->group(function(){
+        //         Route::resource('/',App\Http\Controllers\Admin\MemberController::class);
+        //         Route::get('/create_login/{member}',[App\Http\Controllers\Admin\MemberController::class,'createLogin']);
+        //     })->name('manage.admin.member');        
+        // })->name('manage.admin');
+        Route::get('/',[App\Http\Controllers\Organization\DashboardController::class,'index']);
+        Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class);
+        Route::resource('organization.members', App\Http\Controllers\Organization\MemberController::class);
+        Route::resource('organization.members', App\Http\Controllers\Organization\MemberController::class);
+        Route::get('organization/{organization}/members/{member}/create_login', [App\Http\Controllers\Organization\MemberController::class,'createLogin']);
+        
+        //Route::resource('members', App\Http\Controllers\Organization\MemberController::class);
+        // Route::prefix('/member')->group(function(){
+            
+        // })->name('manage.organization.member');
+    })->name('manage');
+});
+
+Route::middleware([
+    'auth:admin_web',
+    config('jetstream.auth_session'),
+    'role:master',
+])->group(function () {
+        Route::prefix('/master')->group(function(){
+            Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('master.dashboard');
             Route::prefix('/member')->group(function(){
                 Route::resource('/',App\Http\Controllers\Admin\MemberController::class);
                 Route::get('/create_login/{member}',[App\Http\Controllers\Admin\MemberController::class,'createLogin']);
-            })->name('manage.admin.member');        
-        })->name('manage.admin');
-        Route::prefix('/organization')->group(function(){
-            Route::get('/',[App\Http\Controllers\Organization\DashboardController::class,'index']);
-            Route::resource('organization', App\Http\Controllers\Organization\OrganizationController::class);
-            Route::resource('organization.members', App\Http\Controllers\Organization\OrganizationMemberController::class);
-            Route::get('/member/{organization}',[App\Http\Controllers\Organization\OrganizationController::class,'member'])->name('organization.member');
-            // Route::prefix('/member')->group(function(){
-                
-            // })->name('manage.organization.member');
-        })->name('manage.organization');
-        
-    })->name('manage');
-
-
-
+            })->name('manage.mastermember');        
+        })->name('manage.master');
+        // Route::get('/',[App\Http\Controllers\Organization\DashboardController::class,'index']);
+        // Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class);
+        // Route::resource('organization.members', App\Http\Controllers\Organization\MemberController::class);
+        // Route::prefix('/member')->group(function(){
+            
+        // })->name('manage.organization.member');
 });
 
 

@@ -2,19 +2,15 @@
     <OrganizationLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                課程規劃
+                Club Managemnet
             </h2>
         </template>
-        <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
-            <a-table :dataSource="members" :columns="columns">
+            <a-table :dataSource="organizations" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <inertia-link :href="'/manage/organization/'+record.pivot.organization_id+'/members/'+record.id">View</inertia-link>
-                        <inertia-link :href="'/manage/organization/'+record.pivot.organization_id+'/members/'+record.id+'/edit'">Edit</inertia-link>
-                        <a-button @click="editRecord(record)">Edit</a-button>
-                        <a-button @click="deleteRecord(record.id)">Delete</a-button>
-                        <a-button @click="createLogin(record.id)">Create login</a-button>
+                        <a-button @click="editRecord(record)">View</a-button>
+                        <inertia-link :href="'/manage/organizations/'+record.id+'/edit'">Edit</inertia-link>
+                        <inertia-link :href="'/manage/organization/'+record.id+'/members'">Members</inertia-link>
                     </template>
                     <template v-else-if="column.dataIndex=='state'">
                         {{teacherStateLabels[text]}}
@@ -50,6 +46,9 @@
             <a-form-item label="手機" name="mobile">
                 <a-input v-model:value="modal.data.mobile" />
             </a-form-item>
+            <a-form-item label="狀態" name="status">
+                <a-select v-model:value="modal.data.state" :options="employmentStates"/>
+            </a-form-item>
         </a-form>
         <template #footer>
             <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
@@ -69,7 +68,7 @@ export default {
     components: {
         OrganizationLayout,
     },
-    props: ['members'],
+    props: ['organizations'],
     data() {
         return {
             modal:{
@@ -81,22 +80,22 @@ export default {
             teacherStateLabels:{},
             columns:[
                 {
-                    title: '姓名(中文)',
-                    dataIndex: 'first_name',
+                    title: 'Abbr.',
+                    dataIndex: 'abbr',
                 },{
-                    title: '姓名(外文)',
-                    dataIndex: 'last_name',
+                    title: 'Full Name',
+                    dataIndex: 'full_name',
                 },{
-                    title: '別名',
-                    dataIndex: 'gender',
+                    title: 'Country',
+                    dataIndex: 'country',
                 },{
-                    title: '手機',
-                    dataIndex: 'dob',
+                    title: 'Phone',
+                    dataIndex: 'phone',
                 },{
-                    title: '狀態',
-                    dataIndex: 'state',
+                    title: 'Email',
+                    dataIndex: 'email',
                 },{
-                    title: '操作',
+                    title: 'Action',
                     dataIndex: 'operation',
                     key: 'operation',
                 },
@@ -126,12 +125,6 @@ export default {
     created(){
     },
     methods: {
-        createRecord(){
-            this.modal.data={};
-            this.modal.mode="CREATE";
-            this.modal.title="新增問卷";
-            this.modal.isOpen=true;
-        },
         editRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
@@ -185,9 +178,7 @@ export default {
         },
         createLogin(recordId){
             console.log('create login'+recordId);
-            this.$inertia.put(){
 
-            }
         }
     },
 }

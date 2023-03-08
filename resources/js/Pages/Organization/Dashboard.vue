@@ -2,12 +2,12 @@
     <OrganizationLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                行政後台管理....
+                Management Dashboard
             </h2>
         </template>
-        <p>Admin Dashboard</p>
+        <p>Club Management</p>
         <OrganizationList :organizations="organizations"/>
-        
+        <inertia-link href="/manage/organizations">All clubs</inertia-link>
     </OrganizationLayout>
 </template>
 
