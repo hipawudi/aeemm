@@ -19,6 +19,16 @@ class Organization extends Model
     }
 
     public function hasUser($user){
-        return $this->adminUsers()->exists($user);
+        echo json_encode($this);
+        echo '<hr>';
+        echo json_encode($user);
+        echo '<hr>';
+        echo json_encode($this->adminUsers()->pluck('admin_user_id'));
+        echo '<hr>';
+        echo json_encode($this->adminUsers()->exists($user));
+        dd($this->adminUsers()->pluck('admin_user_id'));
+
+
+        return $this->adminUsers()->exists();
     }
 }

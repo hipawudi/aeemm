@@ -56,11 +56,14 @@ class OrganizationPolicy
      * @param  \App\Models\Organization  $organization
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(AdminUser $user, $organization)
+    public function update(AdminUser $user, Organization $organization)
     {
         if($user->hasRole('admin')){
             return true;
         }
+        // dd($user);
+        // dd($organization->full_name);
+        // dd($organization->hasUser($user));
         return $organization->hasUser($user);
     }
 

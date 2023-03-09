@@ -185,9 +185,11 @@ export default {
         },
         createLogin(recordId){
             console.log('create login'+recordId);
-            this.$inertia.put(){
-
-            }
+            if (!confirm('Are you sure to create user account?')) return;
+            axios.get('/manage/organization/2/members/5')
+                .then(res => {
+                    console.log(res);
+                })
         }
     },
 }

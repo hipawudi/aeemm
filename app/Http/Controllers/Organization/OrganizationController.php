@@ -62,7 +62,7 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
-        //
+        
     }
 
     /**
@@ -73,10 +73,7 @@ class OrganizationController extends Controller
      */
     public function edit(Organization $organization)
     {         
-
         //$this->authorize('update' , $organization);
-
-
         return Inertia::render('Organization/OrganizationEdit',[
             'organization'=>$organization,
         ]);
