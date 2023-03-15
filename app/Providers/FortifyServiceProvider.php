@@ -21,8 +21,8 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (request()->is(['manage', 'manage/*'])) {
-            config(['fortify.home' => '/manage']);
+        if (request()->is(['admin', 'admin/*'])) {
+            config(['fortify.home' => '/admin']);
             config(['fortify.guard' => 'admin_web']);
         }
 

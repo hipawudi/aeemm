@@ -1,133 +1,104 @@
 <template>
     <div>
-        <div class="m-4 text-center text-lg ">
-            
-            <inertia-link href='/admin'> Admin </inertia-link>
-        </div>
-        <a-menu 
-            mode="inline" 
-            theme="light" 
-            v-model:openKeys="openedMenu" v-model:selectedKeys="selectedKeys" 
-            style="font-size:16px"
-            :inline-collapsed="collapsed">
-            <template v-for="item in menu" :key="item.key">
-                <template v-if="!item.children">
-                    <a-menu-item :key="item.key" 
-                        style="font-size:16px">
-                        <template #icon>
-                            <PieChartOutlined />
-                        </template>
-                        <inertia-link :href="route(item.route)"> {{ item.title }} </inertia-link>
-                    </a-menu-item>
-                </template>
-                <template v-else>
-                    <sub-menu :key="item.key" :menu-info="item" />
-                </template>
-            </template>
-            <hr class="border-gray-600 mx-3" />
-            <a-menu-item 
-                style="font-size:16px">
-                <template #icon>
-                    <LogoutOutlined />
-                </template>
-                <a @click.prevent='logout'>
-                    Logout
-                </a>
-            </a-menu-item>
-        </a-menu>
+      <a-menu
+        v-model:openKeys="openKeys"
+        v-model:selectedKeys="selectedKeys"
+        mode="inline"
+        theme="light"
+        :inline-collapsed="collapsed"
+      >
+        <a-menu-item key="1">
+          <template #icon>
+            <PieChartOutlined />
+          </template>
+          <span>
+              Dashboard
+          </span>
+        </a-menu-item>
+        <a-menu-item key="2">
+          <template #icon>
+            <DesktopOutlined />
+          </template>
+          <span>
+              Members
+          </span>
+        </a-menu-item>
+        <a-menu-item key="3">
+          <template #icon>
+            <InboxOutlined />
+          </template>
+          <span>
+              Certificates
+          </span>
+        </a-menu-item>
+        <a-menu-item key="3">
+          <template #icon>
+            <InboxOutlined />
+          </template>
+          <span>
+              Forms
+          </span>
+        </a-menu-item>
+
+        <a-sub-menu key="sub1">
+          <template #icon>
+            <MailOutlined />
+          </template>
+          <template #title>Navigation One</template>
+          <a-menu-item key="5">Option 5</a-menu-item>
+          <a-menu-item key="6">Option 6</a-menu-item>
+          <a-menu-item key="7">Option 7</a-menu-item>
+          <a-menu-item key="8">Option 8</a-menu-item>
+        </a-sub-menu>
+        <a-sub-menu key="sub2">
+          <template #icon>
+            <AppstoreOutlined />
+          </template>
+          <template #title>Navigation Two</template>
+          <a-menu-item key="9">Option 9</a-menu-item>
+          <a-menu-item key="10">Option 10</a-menu-item>
+          <a-sub-menu key="sub3" title="Submenu">
+            <a-menu-item key="11">Option 11</a-menu-item>
+            <a-menu-item key="12">Option 12</a-menu-item>
+          </a-sub-menu>
+        </a-sub-menu>
+      </a-menu>
     </div>
-</template>
-<script>
-import { defineComponent, ref, watch } from 'vue';
-import { Link } from '@inertiajs/inertia-vue3'
-import { Inertia } from '@inertiajs/inertia';
-import menu from './menu.js';
-import SubMenu from './SubMenu.vue';
-import * as AntdIcons from '@ant-design/icons-vue';
-
-export default defineComponent({
+  </template>
+  <script>
+  import { defineComponent, reactive, toRefs, watch } from 'vue';
+  import { MenuFoldOutlined, MenuUnfoldOutlined, PieChartOutlined, MailOutlined, DesktopOutlined, InboxOutlined, AppstoreOutlined } from '@ant-design/icons-vue';
+  
+  export default defineComponent({
     components: {
-        'sub-menu': SubMenu,
-        ...AntdIcons
+      MenuFoldOutlined,
+      MenuUnfoldOutlined,
+      PieChartOutlined,
+      MailOutlined,
+      DesktopOutlined,
+      InboxOutlined,
+      AppstoreOutlined,
     },
-    props: ['menuKeys'],
-
+    props: ['organization'],
     setup() {
-
-        const collapsed = ref(false)
-
-        const toggleCollapsed = () => {
-            collapsed.value = !collapsed.value;
-        };
-
-        return {
-            menu,
-            collapsed,
-            // selectedKeys,
-            toggleCollapsed,
-            logout() { Inertia.post(route('logout')) }
-        };
+      const state = reactive({
+        collapsed: false,
+        selectedKeys: ['1'],
+        openKeys: ['sub1'],
+        preOpenKeys: ['sub1'],
+      });
+      watch(() => state.openKeys, (_val, oldVal) => {
+        state.preOpenKeys = oldVal;
+      });
+      const toggleCollapsed = () => {
+        state.collapsed = !state.collapsed;
+        state.openKeys = state.collapsed ? [] : state.preOpenKeys;
+        console.log(state.collapsed.value);
+      };
+      return {
+        ...toRefs(state),
+        toggleCollapsed,
+      };
     },
-
-    data() {
-        return {
-            openKeys: [],
-            selectedKeys: [],
-        }
-    },
-
-    computed: {
-        openedMenu() {
-            let arr = []
-
-            menu.forEach((ele, key) => {
-
-                if (ele.children != null && this.searchMenu(ele.children, ele.key) != "") {
-
-                    this.openKeys.push(this.searchMenu(ele.children, ele.key).toString())
-                }
-            })
-
-            let key = route().current().split('.')
-
-            key.pop()
-
-            // key = this.openKeys[0] + "." + key[0]
-
-            this.selectedKeys.push(key.join('.'))
-
-            //bring key to parent
-            this.menuKeys.menuOpenKey = this.openKeys
-            this.menuKeys.menuSelectKey = this.selectedKeys
-
-            return this.openKeys
-        },
-
-    },
-    methods: {
-        searchMenu(child, parent) {
-
-            let found = false
-
-            child.forEach((ele) => {
-
-                let child_key = ele.key.split(".")
-
-                let route_parent = route().current().split(".")
-
-                // remove the action
-                route_parent.pop()
-
-                // child keys in parent
-                if (child_key.includes(parent)) {
-
-                    // route in child keys
-                    route_parent.map(k => child_key.includes(k) == true ? found = true : "")
-                }
-            })
-            return found == true ? parent : ""
-
-        }
-    }
-});
-</script>
+  });
+  </script>

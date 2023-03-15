@@ -19,4 +19,10 @@ class MemberSeeder extends Seeder
         Member::factory()->count(100)->create();
 
     }
+
+    DB::table('member_user')->insert([
+        'member_id'=>'1',
+        'user_id'=>'1',
+    ]);
+
 }

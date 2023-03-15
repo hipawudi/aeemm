@@ -43,7 +43,7 @@ const logout = () => {
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <ApplicationMark class="block h-9 w-auto" />
+                                    <img src="/storage/aeemm_logo.jpg" style="width:64px"/>
                                 </Link>
                             </div>
 
@@ -51,6 +51,12 @@ const logout = () => {
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
+                                </NavLink>
+                                <NavLink :href="route('professionals.index')" >
+                                    Professional
+                                </NavLink>
+                                <NavLink :href="route('membership')" >
+                                    Membership
                                 </NavLink>
                             </div>
                         </div>
