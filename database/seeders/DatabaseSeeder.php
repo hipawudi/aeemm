@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             MemberSeeder::class,
-            OrganizationSeeder::class
+            CertificateSeeder::class,
+
         ]);
 
 
@@ -74,13 +75,6 @@ class DatabaseSeeder extends Seeder
             'password'=> Hash::make('password')
         ])->create();
         $admin->assignRole('admin');
-
-        $organization=\App\Models\AdminUser::factory([
-            'name' => 'Organization',
-            'email' => 'organization@example.com',
-            'password'=> Hash::make('password')
-        ])->create();
-        $organization->assignRole('organization');
 
         $member=\App\Models\User::factory([
             'name' => 'Member',

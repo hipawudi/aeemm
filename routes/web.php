@@ -36,9 +36,6 @@ Route::middleware([
     Route::resource('professionals',App\Http\Controllers\Member\ProfessionalController::class);
     Route::get('membership',[App\Http\Controllers\Member\MembershipController::class,'index'])->name('membership');
 
-    Route::prefix('student')->group(function(){
-        Route::get('/',[App\Http\Controllers\Student\DashboardController::class,'index'])->name('student.dashboard');
-    })->name('student');
 
 });
 

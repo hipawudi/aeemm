@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Models\Organization;
 
 class Member extends Model
 {
@@ -35,11 +34,5 @@ class Member extends Model
         return $this->user()->exists();
     }
 
-    public function organizations(){
-        return $this->belongsToMany(Organization::class);
-    }
 
-    public function belongsToOrganization($organization){
-        return $this->belongsToMany(Organization::class)->wherePivot('organization_id', $organization->id);
-    }
 }

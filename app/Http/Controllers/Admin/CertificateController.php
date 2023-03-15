@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Organization;
-use Illuminate\Support\Facades\Password;
+use App\Models\Certificate;
+use App\Models\Member;
 
-class OrganizationController extends Controller
+class CertificateController extends Controller
 {
+    public function __construct()
+    {
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,10 +21,12 @@ class OrganizationController extends Controller
      */
     public function index()
     {
-        $organizations=Organization::all();
-        return Inertia::render('Admin/Organization',[
-            'organizations'=>$organizations,
+        $certificates=Certificate::all();
+        dd($certificates);
+        return Inertia::render('Organization/Certificate',[
+            'certificates'=>$certificates,
         ]);
+
     }
 
     /**
@@ -50,9 +56,9 @@ class OrganizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Organization $organization, Certificate $certificate)
     {
-        //
+        return redirect(route('organization.certificate.memebers',[$organization->id,$certificate->id]));
     }
 
     /**
@@ -88,17 +94,15 @@ class OrganizationController extends Controller
     {
         //
     }
-    public function createLogin(Member $member){
 
-        if (!$member->hasUser()) {
-            $user = $member->createUser();
-        } else {
-            $user = $member->user;
-        }
-
-        Password::broker(config('fortify.passwords'))->sendResetLink(
-            [ 'email' => $user->email ]
-        );
-
+    public function members(Organization $organization, Certificate $certificate){
+        $this->authorize('view',$organization);
+        $this->authorize('view',$certificate);
+        return Inertia::render('Organization/CertificateMember',[
+            'organization'=>$organization,
+            'certificate'=>$certificate,
+            'members'=>$certificate->members
+        ]);
+        
     }
 }

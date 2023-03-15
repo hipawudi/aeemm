@@ -63,7 +63,4 @@ class AdminUser extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function Organizations(){
-        return $this->belongsToMany(Organization::class);
-    }
 }

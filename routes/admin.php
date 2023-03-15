@@ -10,7 +10,7 @@ Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], func
     $limiter = config('fortify.limiters.login');
 
     Route::get('/admin/login', function () {
-        return Inertia::render('Organization/Login');
+        return Inertia::render('Admin/Login');
     })->middleware(['guest:'.config('fortify.guard')]);
     
     Route::post('/admin/login', [AuthenticatedSessionController::class, 'store'])
@@ -41,16 +41,9 @@ Route::middleware([
     'role:organization|admin|master',
 ])->group(function () {
     Route::prefix('/admin')->group(function(){
-        Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index']);
-        Route::resource('organizations', App\Http\Controllers\Organization\OrganizationController::class);
-        Route::resource('organization.members', App\Http\Controllers\Organization\MemberController::class);
-        Route::resource('organization.members', App\Http\Controllers\Organization\MemberController::class);
-        Route::get('organization/{organization}/members/{member}/create_login', [App\Http\Controllers\Organization\MemberController::class,'createLogin']);
-        
-        //Route::resource('members', App\Http\Controllers\Organization\MemberController::class);
-        // Route::prefix('/member')->group(function(){
-            
-        // })->name('manage.organization.member');
+        Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('admin.index');
+        Route::resource('members', App\Http\Controllers\Admin\MemberController::class);
+        Route::resource('certificates', App\Http\Controllers\Admin\CertificateController::class);
     })->name('admin');
 });
 
