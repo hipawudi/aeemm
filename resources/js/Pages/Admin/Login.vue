@@ -7,8 +7,8 @@
             <div class="h-full w-full bg-blue-500"></div>
         </div>
         <div class="max-w-lg w-full p-4 md:p-8 md:py-32 mx-auto flex flex-col justify-center md:justify-start">
-            <h1 class="text-2xl font-medium mb-0 leading-loose">第一國際教育集團有限公司</h1>
-            <p class="text-base mb-20 text-slate-600">課程管理系統</p>
+            <h1 class="text-2xl font-medium mb-0 leading-loose">澳門機電工程師學會</h1>
+            <p class="text-base mb-20 text-slate-600">會籍管理系統</p>
             <p class="font-medium text-xl mb-20">系統登入</p>
             <a-form>
                 <a-form-item name="email">

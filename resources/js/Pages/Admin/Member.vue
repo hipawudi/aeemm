@@ -2,20 +2,17 @@
     <AdminLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                課程規劃
+                會員列表
             </h2>
         </template>
         <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create Subject template</button>
-            <a-table :dataSource="members" :columns="columns">
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增會員</button>
+            <a-table :dataSource="members.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" ref="dataTable">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <a-button @click="editRecord(record)">Edit</a-button>
-                        <a-button @click="deleteRecord(record.id)">Delete</a-button>
-                        <a-button @click="createLogin(record.id)">Create login</a-button>
-                    </template>
-                    <template v-else-if="column.dataIndex=='state'">
-                        {{teacherStateLabels[text]}}
+                        <a-button @click="editRecord(record)">修改</a-button>
+                        <a-button @click="deleteRecord(record.id)">刪除</a-button>
+                        <a-button @click="createLogin(record.id)">建立帳號</a-button>
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -79,7 +76,16 @@ export default {
                 title:"Modal",
                 mode:""
             },
-            teacherStateLabels:{},
+            pagination:{
+                // pageSize:20,
+                // showSizeChanger:true,
+                // pageSizeOptions:['10', '20', '30', '40', '50'],
+                // showTotal: total=>`Total ${total} items`,
+                // showSizeChange:(current, pageSize)=>this.pageSize=pageSize,
+                total: this.members.total,
+                current:this.members.current_page,
+                pageSize:this.members.per_page,
+            },
             columns:[
                 {
                     title: '姓名(中文)',
@@ -169,7 +175,7 @@ export default {
                 });
             }).catch(err => {
                 console.log("error", err);
-            });
+            }); 
            
         },
         deleteRecord(recordId){
@@ -186,7 +192,16 @@ export default {
         },
         createLogin(recordId){
             console.log('create login'+recordId);
-
+        },
+        onPaginationChange(page, filters, sorter){
+            this.$inertia.get(route('members.index'),{page:page.current,per_page:5},{
+                onSuccess: (page)=>{
+                    console.log(page);
+                },
+                onError: (error)=>{
+                    console.log(error);
+                }
+            });
         }
     },
 }

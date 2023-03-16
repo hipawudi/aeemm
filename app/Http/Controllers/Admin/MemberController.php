@@ -15,9 +15,9 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $members=Member::all();
+        $members=Member::paginate($request->per_page);
         return Inertia::render('Admin/Member',[
             'members'=>$members,
         ]);
