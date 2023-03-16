@@ -15,9 +15,10 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $members=Member::paginate($request->per_page);
+        $members=Member::paginate(request('per_page'));
+        $members->filter=request('filter');
         return Inertia::render('Admin/Member',[
             'members'=>$members,
         ]);
@@ -90,10 +91,10 @@ class MemberController extends Controller
     }
     public function createLogin(Member $member){
 
-        if (!$member->hasUser()) {
-            $user = $member->createUser();
-        } else {
+        if ($member->hasUser()) {
             $user = $member->user;
+        } else {
+            $user = $member->createUser();
         }
 
         Password::broker(config('fortify.passwords'))->sendResetLink(

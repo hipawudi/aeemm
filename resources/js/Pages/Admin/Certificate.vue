@@ -1,18 +1,17 @@
 <template>
-    <AdminLayout title="Dashboard">
+        <AdminLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                會員列表
+                課程規劃
             </h2>
         </template>
-        <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增會員</button>
-            <a-table :dataSource="members.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" ref="dataTable">
+            <a-table :dataSource="certificates" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <a-button @click="editRecord(record)">修改</a-button>
-                        <a-button @click="deleteRecord(record.id)">刪除</a-button>
-                        <a-button @click="createLogin(record.id)">建立帳號</a-button>
+                        <a-button @click="editRecord(record)">Edit</a-button>
+                    </template>
+                    <template v-else-if="column.dataIndex=='state'">
+                        {{teacherStateLabels[text]}}
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -45,9 +44,6 @@
             <a-form-item label="手機" name="mobile">
                 <a-input v-model:value="modal.data.mobile" />
             </a-form-item>
-            <a-form-item label="狀態" name="status">
-                <a-select v-model:value="modal.data.state" :options="employmentStates"/>
-            </a-form-item>
         </a-form>
         <template #footer>
             <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">Update</a-button>
@@ -56,6 +52,7 @@
     </a-modal>    
     <!-- Modal End-->
     </AdminLayout>
+
 </template>
 
 <script>
@@ -66,7 +63,7 @@ export default {
     components: {
         AdminLayout,
     },
-    props: ['members'],
+    props: ['organization','certificates'],
     data() {
         return {
             modal:{
@@ -75,29 +72,26 @@ export default {
                 title:"Modal",
                 mode:""
             },
-            pagination:{
-                total: this.members.total,
-                current:this.members.current_page,
-                pageSize:this.members.per_page,
-            },
-            filter:{
-            },
+            teacherStateLabels:{},
             columns:[
                 {
-                    title: '姓名(中文)',
-                    dataIndex: 'first_name',
+                    title: 'Cert. Name',
+                    dataIndex: 'name',
                 },{
-                    title: '姓名(外文)',
-                    dataIndex: 'last_name',
+                    title: 'Cert Title',
+                    dataIndex: 'cert_title',
                 },{
-                    title: '別名',
-                    dataIndex: 'gender',
+                    title: 'Cert Body',
+                    dataIndex: 'cert_body',
                 },{
-                    title: '手機',
-                    dataIndex: 'dob',
+                    title: 'Number Format',
+                    dataIndex: 'number_format',
                 },{
-                    title: '狀態',
-                    dataIndex: 'state',
+                    title: 'Cert. Logo',
+                    dataIndex: 'cert_logo',
+                },{
+                    title: 'Cert. template',
+                    dataIndex: 'cert_template',
                 },{
                     title: '操作',
                     dataIndex: 'operation',
@@ -129,12 +123,6 @@ export default {
     created(){
     },
     methods: {
-        createRecord(){
-            this.modal.data={};
-            this.modal.mode="CREATE";
-            this.modal.title="新增問卷";
-            this.modal.isOpen=true;
-        },
         editRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
@@ -171,38 +159,9 @@ export default {
                 });
             }).catch(err => {
                 console.log("error", err);
-            }); 
+            });
            
         },
-        deleteRecord(recordId){
-            console.log(recordId);
-            if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/admin/teachers/' + recordId,{
-                onSuccess: (page)=>{
-                    console.log(page);
-                },
-                onError: (error)=>{
-                    console.log(error);
-                }
-            });
-        },
-        createLogin(recordId){
-            console.log('create login'+recordId);
-        },
-        onPaginationChange(page, filters, sorter){
-            this.$inertia.get(route('members.index'),{
-                page:page.current,
-                per_page:5,
-                filter:'namejose'
-            },{
-                onSuccess: (page)=>{
-                    console.log(page);
-                },
-                onError: (error)=>{
-                    console.log(error);
-                }
-            });
-        }
     },
 }
 </script>

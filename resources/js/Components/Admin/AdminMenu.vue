@@ -32,7 +32,9 @@
             <InboxOutlined />
           </template>
           <span>
+            <inertia-link :href="route('certificates.index')">
               Certificates
+            </inertia-link>
           </span>
         </a-menu-item>
         <a-menu-item key="3">

@@ -18,10 +18,11 @@ class MemberSeeder extends Seeder
     {
         Member::factory()->count(100)->create();
 
-        DB::table('member_user')->insert([
-            'member_id'=>'1',
-            'user_id'=>'1',
-        ]);
+        // DB::table('member_user')->insert([
+        //     'member_id'=>'1',
+        //     'user_id'=>'1',
+        // ]);
+        DB::table('members')->where('id',1)->update(['user_id'=>1]);
     }
 
 

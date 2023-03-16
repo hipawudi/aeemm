@@ -22,8 +22,7 @@ class CertificateController extends Controller
     public function index()
     {
         $certificates=Certificate::all();
-        dd($certificates);
-        return Inertia::render('Organization/Certificate',[
+        return Inertia::render('Admin/Certificate',[
             'certificates'=>$certificates,
         ]);
 
