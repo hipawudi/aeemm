@@ -13,18 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('certificates', function (Blueprint $table) {
+        Schema::create('forms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('cert_title')->nullable();
-            $table->string('cert_body')->nullable();
-            $table->string('cert_logo')->nullable();
-            $table->string('cert_template')->nullable();
-            $table->string('number_format')->default('CERT-00000');
-            $table->string('rank_caption')->nullable();
+            $table->string('title')->nullable();
             $table->text('description')->nullable();
+            $table->boolean('require_login')->default(false);
+            $table->boolean('require_member')->default(false);
             $table->timestamps();
         });
+
+
     }
 
     /**
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('certificates');
+        Schema::dropIfExists('forms');
     }
 };

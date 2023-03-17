@@ -13,7 +13,7 @@
           </template>
           <span>
             <inertia-link :href="route('admin.index')">
-              Dashboard
+              主頁
             </inertia-link>
           </span>
         </a-menu-item>
@@ -23,7 +23,7 @@
           </template>
           <span>
             <inertia-link :href="route('members.index')">
-              Members
+              會員
             </inertia-link>
           </span>
         </a-menu-item>
@@ -31,18 +31,18 @@
           <template #icon>
             <InboxOutlined />
           </template>
-          <span>
-            <inertia-link :href="route('certificates.index')">
-              Certificates
+          <inertia-link :href="route('certificates.index')">
+            專業認證
             </inertia-link>
-          </span>
         </a-menu-item>
         <a-menu-item key="3">
           <template #icon>
             <InboxOutlined />
           </template>
           <span>
-              Forms
+            <inertia-link :href="route('forms.index')">
+              表格
+            </inertia-link>
           </span>
         </a-menu-item>
 

@@ -2,16 +2,16 @@
     <AdminLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                專業認證
+                資料欄位管理
             </h2>
         </template>
         <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增專業認證</button>
-
-            <a-table :dataSource="certificates" :columns="columns">
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增資料欄位</button>
+            <a-table :dataSource="fields" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <a-button @click="editRecord(record)">修改</a-button>
+                        <a-button @click="deleteRecord(record)">刪除</a-button>
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -20,55 +20,38 @@
             </a-table>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
+        <a-modal v-model:visible="modal.isOpen" :title="modal.mode=='CREATE'?'新增':'修改'" width="60%" >
         <a-form
             ref="modalRef"
             :model="modal.data"
             name="Teacher"
-            :label-col="{ span: 8 }"
-            :wrapper-col="{ span: 16 }"
+            :label-col="{ span: 4 }"
+            :wrapper-col="{ span: 20 }"
             autocomplete="off"
             :rules="rules"
             :validate-messages="validateMessages"
-            enctype="multipart/form-data"
         >
-            <a-input type="hidden" v-model:value="modal.data.id"/>
-            <a-form-item label="專業認證" name="name">
-                <a-input v-model:value="modal.data.name" />
+            <a-form-item label="名稱" name="field_name">
+                <a-input v-model:value="modal.data.field_name" />
             </a-form-item>
-            <a-form-item label="認證名稱" name="cert_title">
-                <a-input v-model:value="modal.data.cert_title" />
+            <a-form-item label="標簽" name="field_label">
+                <a-input v-model:value="modal.data.field_label" />
             </a-form-item>
-            <a-form-item label="認證機構" name="cert_body">
-                <a-input v-model:value="modal.data.cert_body" />
+            <a-form-item label="類型" name="type">
+                <a-select v-model:value="modal.data.type" placeholder="欄位類型" :options="fieldTypes"/>
             </a-form-item>
-            <a-form-item label="機構標誌" name="cert_logo">
-                <a-upload
-                    v-model:file="modal.data.cert_logo"
-                    :multiple="false"
-                    :max-count="1"
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                    list-type="picture"
-                >
-                    <a-button>
-                        <upload-outlined></upload-outlined>
-                        upload
-                    </a-button>
-                </a-upload>
+            <a-form-item label="必填" name="require">
+                <a-switch v-model:checked="modal.data.require" :unCheckedValue="0" :checkedValue="1"/>
             </a-form-item>
-            <a-form-item label="認證樣式" name="cert_template">
-                <a-input v-model:value="modal.data.cert_template" />
+            <!-- <a-form-item label="規則" name="rule">
+                <a-input v-model:value="modal.data.rule" />
             </a-form-item>
-            <a-form-item label="編號格式" name="number_format">
-                <a-input v-model:value="modal.data.number_format" />
+            <a-form-item label="驗證" name="validate">
+                <a-input v-model:value="modal.data.validate" />
+            </a-form-item> -->
+            <a-form-item label="備注" name="remark">
+                <a-textarea v-model:value="modal.data.remark" />
             </a-form-item>
-            <a-form-item label="等級標題" name="rank_caption">
-                <a-input v-model:value="modal.data.rank_caption" />
-            </a-form-item>
-            <a-form-item label="簡介" name="description">
-                <a-textarea v-model:value="modal.data.description" />
-            </a-form-item>
-
         </a-form>
         <template #footer>
             <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">更新</a-button>
@@ -82,15 +65,13 @@
 
 <script>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { UploadOutlined } from '@ant-design/icons-vue';
 import { defineComponent, reactive } from 'vue';
 
 export default {
     components: {
         AdminLayout,
-        UploadOutlined
     },
-    props: ['certificates'],
+    props: ['form','fields'],
     data() {
         return {
             modal:{
@@ -99,25 +80,31 @@ export default {
                 title:"Modal",
                 mode:""
             },
+            fieldTypes:[
+                {value:"input",label:"單行文字"},
+                {value:"textarea",label:"多行文字"},
+                {value:"largetext",label:"大篇幅文字"},
+                {value:"radio",label:"單選"},
+                {value:"checkbox",label:"多選"},
+                {value:"true_false",label:"是/否"},
+                {value:"date",label:"日期"},
+                {value:"datetime",label:"日期時間"},
+                {value:"email",label:"電郵"},
+                {value:"number",label:"數值"},
+            ],
             columns:[
                 {
-                    title: '專業認證',
-                    dataIndex: 'name',
+                    title: '名稱',
+                    dataIndex: 'field_name',
                 },{
-                    title: '認證名稱',
-                    dataIndex: 'cert_title',
+                    title: '標簽',
+                    dataIndex: 'field_label',
                 },{
-                    title: '認證機構',
-                    dataIndex: 'cert_body',
+                    title: '類型',
+                    dataIndex: 'type',
                 },{
-                    title: '機構標誌',
-                    dataIndex: 'cert_logo',
-                },{
-                    title: '認證樣式',
-                    dataIndex: 'cert_template',
-                },{
-                    title: '編號格式',
-                    dataIndex: 'number_format',
+                    title: '必填',
+                    dataIndex: 'required',
                 },{
                     title: '操作',
                     dataIndex: 'operation',
@@ -125,9 +112,8 @@ export default {
                 },
             ],
             rules:{
-                name_zh:{required:true},
-                mobile:{required:true},
-                state:{required:true},
+                field:{required:true},
+                label:{required:true},
             },
             validateMessages:{
                 required: '${label} is required!',
@@ -149,20 +135,22 @@ export default {
     created(){
     },
     methods: {
-        createRecord(record){
+        createRecord(){
             this.modal.data={};
+            this.modal.data.form_id=this.form.id;
             this.modal.mode="CREATE";
             this.modal.isOpen=true;
         },
         editRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
-            this.modal.title="修改";
             this.modal.isOpen=true;
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post('/admin/teachers/', this.modal.data,{
+                this.$inertia.post(route('form.fields.store',{
+                    form:this.form.id
+                }), this.modal.data, {
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -176,10 +164,12 @@ export default {
             });
         },
         updateRecord(){
-            console.log('update');
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch(route('certificates.update', this.modal.data.id), this.modal.data,{
+                this.$inertia.patch(route('form.fields.update', {
+                    form:this.form.id,
+                    field:this.modal.data
+                }), this.modal.data, {
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -192,7 +182,20 @@ export default {
             }).catch(err => {
                 console.log("error", err);
             });
-           
+        },
+        deleteRecord(record){
+            if (!confirm('Are you sure want to remove?')) return;
+            this.$inertia.delete(route('form.fields.destroy', {
+                form:this.form.id, field:record.id
+            }),{
+                onSuccess: (page)=>{
+                    console.log('the field has been deleted!');
+                },
+                onError: (error)=>{
+                    alert(error.message);
+                }
+
+            });
         },
     },
 }
