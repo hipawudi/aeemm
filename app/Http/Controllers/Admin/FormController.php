@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Organization;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Organization;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Form;
@@ -24,7 +23,7 @@ class FormController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Form',[
-            'forms'=>Form::all();
+            'forms'=>Form::all()
         ]);
     }
 
@@ -47,13 +46,11 @@ class FormController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'organization_id' => 'required',
             'name'=>'required',
             'title'=>'required',
         ]);
 
             $form=new Form();
-            $form->organization_id=$request->organization_id;
             $form->name=$request->name;
             $form->title=$request->title;
             $form->description=$request->description;
@@ -102,7 +99,20 @@ class FormController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request,[
+            'id' => 'required',
+            'name'=>'required',
+            'title'=>'required',
+        ]);
+        $form=Form::find($request->id);
+        $form->name=$request->name;
+        $form->title=$request->title;
+        $form->description=$request->description;
+        $form->require_login=$request->require_login;
+        $form->require_member=$request->require_member;
+        $form->save();
+        return redirect()->back();
+        
     }
 
     /**
@@ -113,7 +123,11 @@ class FormController extends Controller
      */
     public function destroy(Form $form)
     {
-        $form->delete();
-        return redirect()->back();
+        if($form->hasChild()){
+            return redirect()->back()->withErrors(['message'=>'No permission or restriced deletion of records with child records.']);
+        }else{
+            $form->delete();
+            return redirect()->back();
+        }
     }
 }

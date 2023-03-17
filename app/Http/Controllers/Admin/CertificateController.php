@@ -22,8 +22,7 @@ class CertificateController extends Controller
     public function index()
     {
         $certificates=Certificate::all();
-        dd($certificates);
-        return Inertia::render('Organization/Certificate',[
+        return Inertia::render('Admin/Certificate',[
             'certificates'=>$certificates,
         ]);
 
@@ -47,7 +46,22 @@ class CertificateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'name'=>'required',
+            'cert_title'=>'required',
+            //'cert_logo'=>'image|mimes:jpeg,jpg,gif,png|max:1024'
+        ]);
+        $certificate=new Certificate();
+        $certificate->name=$request->name;
+        $certificate->cert_title=$request->cert_title;
+        $certificate->cert_body=$request->cert_body;
+        $certificate->cert_logo=$request->cert_logo;
+        $certificate->cert_template=$request->cert_template;
+        $certificate->number_format=$request->number_format;
+        $certificate->rank_caption=$request->rank_caption;
+        $certificate->description=$request->description;
+        $certificate->save();
+        return redirect()->back();
     }
 
     /**
@@ -56,9 +70,9 @@ class CertificateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Organization $organization, Certificate $certificate)
+    public function show(Certificate $certificate)
     {
-        return redirect(route('organization.certificate.memebers',[$organization->id,$certificate->id]));
+        return redirect(route('certificate.memebers',$certificate->id));
     }
 
     /**
@@ -81,7 +95,26 @@ class CertificateController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        dd($request->file());
+        return ;
+        $this->validate($request,[
+            'name'=>'required',
+            'cert_title'=>'required',
+            //'cert_logo'=>'image|mimes:jpeg,jpg,gif,png|max:1024'
+        ]);
+        $certificate=Certificate::find($id);
+        $certificate->name=$request->name;
+        $certificate->cert_title=$request->cert_title;
+        $certificate->cert_body=$request->cert_body;
+        $certificate->cert_logo=$request->cert_logo;
+        $certificate->cert_template=$request->cert_template;
+        $certificate->number_format=$request->number_format;
+        $certificate->rank_caption=$request->rank_caption;
+        $certificate->description=$request->description;
+        $certificate->save();
+        return redirect()->back();
+
     }
 
     /**
@@ -95,10 +128,10 @@ class CertificateController extends Controller
         //
     }
 
-    public function members(Organization $organization, Certificate $certificate){
+    public function members(Certificate $certificate){
         $this->authorize('view',$organization);
         $this->authorize('view',$certificate);
-        return Inertia::render('Organization/CertificateMember',[
+        return Inertia::render('Admin/CertificateMember',[
             'organization'=>$organization,
             'certificate'=>$certificate,
             'members'=>$certificate->members

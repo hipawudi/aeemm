@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('field_name');
             $table->string('field_label');
             $table->string('type')->default('input');
-            $table->boolean('required')->default(false);
+            $table->boolean('require')->default(false);
             $table->string('rule')->nullable();
             $table->string('validate')->nullable();
             $table->text('remark')->nullable();

@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Organization;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Organization;
 use App\Models\Form;
 use App\Models\FormField;
 use Illuminate\Http\Request;
@@ -59,7 +58,7 @@ class FormFieldController extends Controller
             $field->field_name=$request->field_name;
             $field->field_label=$request->field_label;
             $field->type=$request->type;
-            $field->required=$request->required;
+            $field->require=$request->require;
             $field->rule=$request->rule;
             $field->validate=$request->validate;
             $field->remark=$request->remark;
@@ -104,14 +103,12 @@ class FormFieldController extends Controller
             'field_name'=>'required',
             'field_label'=>'required',
         ]);
-            $field=FormField::find($form->id);
+            $field=FormField::find($request->id);
             $field->form_id=$request->form_id;
             $field->field_name=$request->field_name;
             $field->field_label=$request->field_label;
             $field->type=$request->type;
-            $field->required=$request->required;
-            $field->rule=$request->rule;
-            $field->validate=$request->validate;
+            $field->require=$request->require;
             $field->remark=$request->remark;
             $field->save();
             return redirect()->back();
