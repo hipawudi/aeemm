@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MemberSeeder::class,
             CertificateSeeder::class,
+            FormSeeder::class
 
         ]);
 

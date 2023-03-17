@@ -44,6 +44,7 @@ Route::middleware([
         Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('admin.index');
         Route::resource('members', App\Http\Controllers\Admin\MemberController::class);
         Route::resource('certificates', App\Http\Controllers\Admin\CertificateController::class);
+        Route::resource('forms', App\Http\Controllers\Admin\CertificateController::class);
     })->name('admin');
 });
 
