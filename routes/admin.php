@@ -46,6 +46,7 @@ Route::middleware([
         Route::resource('certificates', App\Http\Controllers\Admin\CertificateController::class);
         Route::resource('forms', App\Http\Controllers\Admin\FormController::class);
         Route::resource('form.fields', App\Http\Controllers\Admin\FormFieldController::class);
+        Route::get('certificate-delete-media/{media}',[App\Http\Controllers\Admin\CertificateController::class,'deleteMedia'])->name('certificate-delete-media');
     })->name('admin');
 });
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Certificate;
 use App\Models\Member;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class CertificateController extends Controller
 {
@@ -21,7 +22,7 @@ class CertificateController extends Controller
      */
     public function index()
     {
-        $certificates=Certificate::all();
+        $certificates=Certificate::with('media')->get();
         return Inertia::render('Admin/Certificate',[
             'certificates'=>$certificates,
         ]);
@@ -46,10 +47,11 @@ class CertificateController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request,[
             'name'=>'required',
             'cert_title'=>'required',
-            //'cert_logo'=>'image|mimes:jpeg,jpg,gif,png|max:1024'
+            'cert_logo'=>'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
         $certificate=new Certificate();
         $certificate->name=$request->name;
@@ -96,18 +98,19 @@ class CertificateController extends Controller
     public function update(Request $request, $id)
     {
 
-        dd($request->file());
-        return ;
         $this->validate($request,[
             'name'=>'required',
             'cert_title'=>'required',
-            //'cert_logo'=>'image|mimes:jpeg,jpg,gif,png|max:1024'
+            'cert_logo'=>'array',
+            'cert_logo.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
+
         $certificate=Certificate::find($id);
+        $certificate->addMedia($request->file('cert_logo')[0]['originFileObj'])->toMediaCollection('cert_logo');
         $certificate->name=$request->name;
         $certificate->cert_title=$request->cert_title;
         $certificate->cert_body=$request->cert_body;
-        $certificate->cert_logo=$request->cert_logo;
+        // $certificate->cert_logo=$logo_image;
         $certificate->cert_template=$request->cert_template;
         $certificate->number_format=$request->number_format;
         $certificate->rank_caption=$request->rank_caption;
@@ -136,6 +139,12 @@ class CertificateController extends Controller
             'certificate'=>$certificate,
             'members'=>$certificate->members
         ]);
-        
+    }
+
+    public function deleteMedia(Media $media){
+        // $certificate->delete();
+        // $certificate->getMedia()->where('id',$mediaId);
+        $media->delete();
+
     }
 }

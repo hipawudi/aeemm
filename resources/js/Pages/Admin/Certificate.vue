@@ -20,7 +20,7 @@
             </a-table>
 
         <!-- Modal Start-->
-        <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%" >
+        <a-modal v-model:visible="modal.isOpen" :title="modal.mode=='CREATE'?'新增':'修改'" width="60%" >
         <a-form
             ref="modalRef"
             :model="modal.data"
@@ -30,8 +30,8 @@
             autocomplete="off"
             :rules="rules"
             :validate-messages="validateMessages"
-            enctype="multipart/form-data"
         >
+        {{this.modal.data}}
             <a-input type="hidden" v-model:value="modal.data.id"/>
             <a-form-item label="專業認證" name="name">
                 <a-input v-model:value="modal.data.name" />
@@ -43,11 +43,13 @@
                 <a-input v-model:value="modal.data.cert_body" />
             </a-form-item>
             <a-form-item label="機構標誌" name="cert_logo">
+                <img :src="'/media/'+modal.data.media[0].model_id+'/'+modal.data.media[0].file_name"/>
+                <inertia-link :href="route('certificate')">aaa </inertia-link>
                 <a-upload
-                    v-model:file="modal.data.cert_logo"
+                    v-model:file-list="modal.data.cert_logo"
                     :multiple="false"
+                    :beforeUpload="()=>false"
                     :max-count="1"
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     list-type="picture"
                 >
                     <a-button>
@@ -162,7 +164,7 @@ export default {
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post('/admin/teachers/', this.modal.data,{
+                this.$inertia.post(route('certificates.store'), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;
@@ -179,7 +181,8 @@ export default {
             console.log('update');
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch(route('certificates.update', this.modal.data.id), this.modal.data,{
+                this.modal.data._method = 'PATCH';
+                this.$inertia.post(route('certificates.update', this.modal.data.id), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.data={};
                         this.modal.isOpen=false;

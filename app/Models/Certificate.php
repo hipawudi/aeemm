@@ -4,10 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Certificate extends Model
+class Certificate extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
+
     protected $appends=['cid','cert_number'];
 
     public function getCidAttribute(){
@@ -25,4 +31,16 @@ class Certificate extends Model
             'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorize_by','rank','avata');
     }
 
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Manipulations::FIT_CROP, 300, 300)
+            ->nonQueued();
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('cert_logo');
+    }
 }
