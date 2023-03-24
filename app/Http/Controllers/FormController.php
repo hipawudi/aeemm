@@ -1,13 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Member;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Form;
-use App\Models\Response;
-use App\Models\ResponseField;
 
 class FormController extends Controller
 {
@@ -18,8 +15,8 @@ class FormController extends Controller
      */
     public function index()
     {
-        $forms=Form::where('published',1)->get();
-        return Inertia::render('Member/Forms/Form',[
+        $forms=Form::all();
+        return Inertia::render('Forms/Catalog',[
             'forms'=>$forms
         ]);
     }
@@ -42,25 +39,7 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
-        //date('Y-m-d',strtotime($request->date))
-            // $this->validate($request,[
-            //     'form_id'=>'required',
-            // ]);
-                dd($request->form['id']);
-                $response=new Response();
-                $response->form_id=$request->form->id;
-                $response->member_id=Auth()->user()->id;
-                dd($response);
-                // $response->save();
-                
-                // // foreach($request->fields as $key=>$value){
-                // //     $field=new ResponseField();
-                // //     $field->field_name=$key;
-                // //     $field->field_value=$value;
-                // //     $field->save();
-                // // }
-                // return redirect()->back();
-    
+        //
     }
 
     /**
@@ -69,13 +48,11 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Form $form)
     {
-        $form=Form::with('fields')->find($id);
-        return Inertia::render('Member/Forms/FormDefault',[
-            'form'=>$form,
+        return Inertia::render('Forms/Default',[
+            'form'=>$form
         ]);
-        
     }
 
     /**

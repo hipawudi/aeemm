@@ -40,12 +40,12 @@ Route::middleware([
     config('jetstream.auth_session'),
     'role:organization|admin|master',
 ])->group(function () {
-    Route::prefix('/admin')->group(function(){
+    Route::namespace('Admin')->prefix('/admin')->group(function(){
         Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('admin.index');
-        Route::resource('members', App\Http\Controllers\Admin\MemberController::class);
-        Route::resource('certificates', App\Http\Controllers\Admin\CertificateController::class);
-        Route::resource('forms', App\Http\Controllers\Admin\FormController::class);
-        Route::resource('form.fields', App\Http\Controllers\Admin\FormFieldController::class);
+        Route::resource('members', App\Http\Controllers\Admin\MemberController::class)->names('admin.members');
+        Route::resource('certificates', App\Http\Controllers\Admin\CertificateController::class)->names('admin.certificates');
+        Route::resource('forms', App\Http\Controllers\Admin\FormController::class)->names('admin.forms');
+        Route::resource('form.fields', App\Http\Controllers\Admin\FormFieldController::class)->names('admin.form.fields');
         Route::get('certificate-delete-media/{media}',[App\Http\Controllers\Admin\CertificateController::class,'deleteMedia'])->name('certificate-delete-media');
     })->name('admin');
 });

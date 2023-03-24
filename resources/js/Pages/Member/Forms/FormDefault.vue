@@ -10,6 +10,7 @@
             <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                 <a-form
                     :model="formData"
+                    ref="formRef"
                     name="default"
                     layout="vertical"
                 >
@@ -61,7 +62,7 @@
                             {{ field.field_label }}
                         </div>
                     </div>
-                    <button @click="onFormChange">aa</button>
+                    <button @click="storeRecord">aa</button>
                 </a-form>
             </div>
         </div>
@@ -129,7 +130,26 @@ export default {
     methods: {
         onFormChange(){
             console.log(this.formData);
-        }
+        },
+        storeRecord(){
+            console.log(this.formData);
+            this.$refs.formRef.validateFields().then(()=>{
+                this.$inertia.post(route('forms.store'), {
+                    form:this.form,
+                    fields:this.formData
+                },{
+                    onSuccess:(page)=>{
+                        this.formData={};
+                    },
+                    onError:(err)=>{
+                        console.log(err);
+                    }
+                });
+            }).catch(err => {
+                console.log(err);
+            });
+        },
+
     },
 }
 </script>

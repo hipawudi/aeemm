@@ -31,7 +31,6 @@
             :rules="rules"
             :validate-messages="validateMessages"
         >
-        {{this.modal.data}}
             <a-input type="hidden" v-model:value="modal.data.id"/>
             <a-form-item label="專業認證" name="name">
                 <a-input v-model:value="modal.data.name" />
@@ -43,8 +42,14 @@
                 <a-input v-model:value="modal.data.cert_body" />
             </a-form-item>
             <a-form-item label="機構標誌" name="cert_logo">
-                <img :src="'/media/'+modal.data.media[0].model_id+'/'+modal.data.media[0].file_name"/>
-                <inertia-link :href="route('certificate')">aaa </inertia-link>
+                <div v-if="modal.data.media.length" >
+                    <inertia-link :href="route('certificate-delete-media',modal.data.media[0].id)" class="float-right text-red-500">
+                        <svg focusable="false" class="" data-icon="delete" width="1em" height="1em" fill="currentColor" aria-hidden="true" viewBox="64 64 896 896">
+                            <path d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z"></path>
+                        </svg>
+                    </inertia-link>
+                    <img :src="'/media/'+modal.data.media[0].id+'/'+modal.data.media[0].file_name"/>
+                </div>
                 <a-upload
                     v-model:file-list="modal.data.cert_logo"
                     :multiple="false"
@@ -85,12 +90,15 @@
 <script>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 import { UploadOutlined } from '@ant-design/icons-vue';
+import Icon, { RestFilled } from '@ant-design/icons-vue';
+
 import { defineComponent, reactive } from 'vue';
 
 export default {
     components: {
         AdminLayout,
-        UploadOutlined
+        UploadOutlined,
+        RestFilled
     },
     props: ['certificates'],
     data() {
@@ -178,8 +186,6 @@ export default {
             });
         },
         updateRecord(){
-            console.log('update');
-            console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
                 this.modal.data._method = 'PATCH';
                 this.$inertia.post(route('certificates.update', this.modal.data.id), this.modal.data,{

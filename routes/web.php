@@ -35,8 +35,10 @@ Route::middleware([
     Route::get('/dashboard', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('dashboard');
     Route::resource('professionals',App\Http\Controllers\Member\ProfessionalController::class);
     Route::get('membership',[App\Http\Controllers\Member\MembershipController::class,'index'])->name('membership');
-    Route::resource('forms',\App\Http\Controllers\Member\FormController::class);
+    Route::resource('forms',\App\Http\Controllers\Member\FormController::class)->names('forms');
 
 });
+
+
 
 
