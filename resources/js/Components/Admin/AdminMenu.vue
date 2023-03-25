@@ -22,7 +22,7 @@
             <DesktopOutlined />
           </template>
           <span>
-            <inertia-link :href="route('members.index')">
+            <inertia-link :href="route('admin.members.index')">
               會員
             </inertia-link>
           </span>
@@ -31,7 +31,7 @@
           <template #icon>
             <InboxOutlined />
           </template>
-          <inertia-link :href="route('certificates.index')">
+          <inertia-link :href="route('admin.certificates.index')">
             專業認證
             </inertia-link>
         </a-menu-item>
@@ -40,7 +40,7 @@
             <InboxOutlined />
           </template>
           <span>
-            <inertia-link :href="route('forms.index')">
+            <inertia-link :href="route('admin.forms.index')">
               表格
             </inertia-link>
           </span>

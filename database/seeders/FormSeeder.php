@@ -21,8 +21,41 @@ class FormSeeder extends Seeder
         ]);
         DB::table('form_fields')->insert([
             'form_id' => '1',
-            'field_name'=>'field 1',
-            'field_label'=>'label 1'
+            'field_name'=>'username',
+            'field_label'=>'Username',
+            'type'=>'input'
+        ]);
+        DB::table('form_fields')->insert([
+            'form_id' => '1',
+            'field_name'=>'gender',
+            'field_label'=>'Gender',
+            'type'=>'radio',
+            'options'=>'[{"value":"M","label":"Male"},{"value":"F","label":"Female"}]'
+        ]);
+        DB::table('form_fields')->insert([
+            'form_id' => '1',
+            'field_name'=>'dob',
+            'field_label'=>'DOB',
+            'type'=>'date',
+        ]);
+        DB::table('form_fields')->insert([
+            'form_id' => '1',
+            'field_name'=>'education',
+            'field_label'=>'Education',
+            'type'=>'select',
+            'options'=>'[{"value":"B","label":"Bachalor"},{"value":"M","label":"Master"},{"value":"D","label":"PhD."}]'
+        ]);
+        DB::table('form_fields')->insert([
+            'form_id' => '1',
+            'field_name'=>'email',
+            'field_label'=>'Email',
+            'type'=>'email'
+        ]);
+        DB::table('form_fields')->insert([
+            'form_id' => '1',
+            'field_name'=>'remark',
+            'field_label'=>'Remark',
+            'type'=>'textarea'
         ]);
 
     }

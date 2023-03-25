@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Form;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class FormController extends Controller
 {
@@ -23,7 +24,7 @@ class FormController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Form',[
-            'forms'=>Form::all()
+            'forms'=>Form::with('media')->get()
         ]);
     }
 
@@ -103,6 +104,8 @@ class FormController extends Controller
             'id' => 'required',
             'name'=>'required',
             'title'=>'required',
+            // 'image'=>'array',
+            // 'image.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
         $form=Form::find($request->id);
         $form->name=$request->name;
@@ -110,6 +113,9 @@ class FormController extends Controller
         $form->description=$request->description;
         $form->require_login=$request->require_login;
         $form->require_member=$request->require_member;
+        if($request->file('image')){
+            $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
+        }
         $form->save();
         return redirect()->back();
         
@@ -130,4 +136,8 @@ class FormController extends Controller
             return redirect()->back();
         }
     }
+
+    public function deleteMedia(Media $media){
+        $media->delete();
+    }    
 }

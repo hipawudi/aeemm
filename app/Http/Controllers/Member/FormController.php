@@ -46,21 +46,19 @@ class FormController extends Controller
             // $this->validate($request,[
             //     'form_id'=>'required',
             // ]);
-                dd($request->form['id']);
                 $response=new Response();
-                $response->form_id=$request->form->id;
+                $response->form_id=$request->form['id'];
                 $response->member_id=Auth()->user()->id;
-                dd($response);
-                // $response->save();
+                $response->save();
                 
-                // // foreach($request->fields as $key=>$value){
-                // //     $field=new ResponseField();
-                // //     $field->field_name=$key;
-                // //     $field->field_value=$value;
-                // //     $field->save();
-                // // }
-                // return redirect()->back();
-    
+                foreach($request->fields as $key=>$value){
+                    $field=new ResponseField();
+                    $field->response_id=$response->id;
+                    $field->field_name=$key;
+                    $field->field_value=$value;
+                    $field->save();
+                }
+                return redirect()->back();
     }
 
     /**

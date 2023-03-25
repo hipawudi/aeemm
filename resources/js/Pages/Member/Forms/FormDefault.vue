@@ -5,9 +5,8 @@
                 表格管理
             </h2>
         </template>
-        
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-            <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
+            <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
                 <a-form
                     :model="formData"
                     ref="formRef"
@@ -17,7 +16,7 @@
                     <div v-for="field in form.fields">
                         <div v-if="field.type=='input'">
                             <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]">
-                                <a-input v-model:value="formData[field.field_name]"/>
+                                <a-input v-model:value="formData[field.field_name]" />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='select'">
@@ -46,23 +45,29 @@
                         </div>
                         <div v-else-if="field.type=='textarea'">
                             <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]">
-                                <a-textarea
-                                    v-model:value="formData[field.field_name]"
-                                ></a-textarea>
+                                <a-textarea v-model:value="formData[field.field_name]" />
                             </a-form-item>                        
                         </div>
                         <div v-else-if="field.type=='date'">
-                            <a-form-item :label="field.field_label" :name="field.field_name" :format="dateFormat" :valueFormat="dateFormat" :rules="[{required:field.require}]" >
-                                <a-date-picker
-                                    v-model:value="formData[field.field_name]"
-                                ></a-date-picker>
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]" >
+                                <a-date-picker v-model:value="formData[field.field_name]" :format="dateFormat" :valueFormat="dateFormat" />
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='email'">
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require},{type:'email'}]" >
+                                <a-input v-model:value="formData[field.field_name]" />
                             </a-form-item>                        
                         </div>
                         <div v-else>
-                            {{ field.field_label }}
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require},{type:'email'}]" >
+                                <p>Data type undefined</p>
+                            </a-form-item>                        
                         </div>
                     </div>
-                    <button @click="storeRecord">aa</button>
+                    <div class="text-center pb-10">
+                        <a-button @click="storeRecord" type="primary">Submit</a-button>
+                    </div>
+                    
                 </a-form>
             </div>
         </div>
@@ -73,6 +78,7 @@
 
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import dayjs from 'dayjs';
 
 export default {
     components: {
@@ -132,22 +138,23 @@ export default {
             console.log(this.formData);
         },
         storeRecord(){
+            console.log(this.form);
             console.log(this.formData);
-            this.$refs.formRef.validateFields().then(()=>{
-                this.$inertia.post(route('forms.store'), {
-                    form:this.form,
-                    fields:this.formData
-                },{
-                    onSuccess:(page)=>{
-                        this.formData={};
-                    },
-                    onError:(err)=>{
-                        console.log(err);
-                    }
-                });
-            }).catch(err => {
-                console.log(err);
-            });
+            // this.$refs.formRef.validateFields().then(()=>{
+            //     this.$inertia.post(route('forms.store'), {
+            //         form:this.form,
+            //         fields:this.formData
+            //     },{
+            //         onSuccess:(page)=>{
+            //             this.formData={};
+            //         },
+            //         onError:(err)=>{
+            //             console.log(err);
+            //         }
+            //     });
+            // }).catch(err => {
+            //     console.log(err);
+            // });
         },
 
     },
