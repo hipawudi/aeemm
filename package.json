@@ -24,6 +24,7 @@
         "@ant-design/icons-vue": "^6.1.0",
         "@vitejs/plugin-basic-ssl": "^1.0.1",
         "ant-design-vue": "^3.2.13",
-        "moment": "^2.29.4"
+        "moment": "^2.29.4",
+        "vue3-quill": "^0.3.0"
     }
 }

@@ -66,6 +66,13 @@
                                 <a-textarea v-model:value="formData[field.field_name]" />
                             </a-form-item>                        
                         </div>
+                        <div v-else-if="field.type=='richtext'">
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]">
+                                <quill-editor
+                                    v-model:value="richText"
+                                />
+                            </a-form-item>                        
+                        </div>
                         <div v-else-if="field.type=='date'">
                             <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]" >
                                 <a-date-picker v-model:value="formData[field.field_name]" :format="dateFormat" :valueFormat="dateFormat" />
@@ -117,6 +124,11 @@
                         </a-alert>
                         
                     </div>
+
+                                <quill-editor
+                                    v-model:value="richText"
+                                />
+
                     <div v-for="field in form.fields">
                         <div v-if="form.require_member">
                             <a-form-item label="Member Id" :name="field.field_name" :rules="[{required:field.require}]">
@@ -158,6 +170,12 @@
                                 <a-textarea v-model:value="formData[field.field_name]" />
                             </a-form-item>                        
                         </div>
+                        <div v-else-if="field.type=='richtext'">
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]">
+                                aaa
+
+                            </a-form-item>                        
+                        </div>
                         <div v-else-if="field.type=='date'">
                             <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]" >
                                 <a-date-picker v-model:value="formData[field.field_name]" :format="dateFormat" :valueFormat="dateFormat" />
@@ -187,12 +205,14 @@
 <script>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
 import WebLayout from '@/Layouts/WebLayout.vue';
-import dayjs from 'dayjs';
+import { quillEditor,Quill } from 'vue3-quill';
 
 export default {
     components: {
         MemberLayout,
         WebLayout,
+        quillEditor,
+        Quill
     },
     props: ['form'],
     data() {
@@ -200,6 +220,7 @@ export default {
             formData:{
 
             },
+            richText:'<p>Jose</p>',
             dateFormat:'YYYY-MM-DD',
             columns:[
                 {

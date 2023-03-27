@@ -61,14 +61,14 @@ class FormSeeder extends Seeder
 
         DB::table('forms')->insert([
             'name'=>'second form',
-            'title'=>'Second form of title'
+            'title'=>'Second form of title',
+            'published'=>true
         ]);
         DB::table('form_fields')->insert([
             'form_id' => '2',
             'field_name'=>'username',
             'field_label'=>'Username',
             'type'=>'input',
-            'published'=>true
         ]);
 
 
