@@ -2,17 +2,16 @@
     <AdminLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                會員列表
+                Messenger
             </h2>
         </template>
         <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增會員</button>
-            <a-table :dataSource="members.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" ref="dataTable">
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增Message</button>
+            <a-table :dataSource="messages.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" ref="dataTable">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <a-button @click="editRecord(record)">修改</a-button>
                         <a-button @click="deleteRecord(record.id)">刪除</a-button>
-                        <a-button @click="createLogin(record.id)">建立帳號</a-button>
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -60,13 +59,16 @@
 
 <script>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { defineComponent, reactive } from 'vue';
+import { UploadOutlined } from '@ant-design/icons-vue';
+import Icon, { RestFilled } from '@ant-design/icons-vue';
 
 export default {
     components: {
         AdminLayout,
+        UploadOutlined,
+        RestFilled        
     },
-    props: ['members'],
+    props: ['messages'],
     data() {
         return {
             modal:{
@@ -76,38 +78,37 @@ export default {
                 mode:""
             },
             pagination:{
-                total: this.members.total,
-                current:this.members.current_page,
-                pageSize:this.members.per_page,
+                total: this.messages.total,
+                current:this.messages.current_page,
+                pageSize:this.messages.per_page,
             },
             filter:{
             },
             columns:[
                 {
-                    title: '姓名(中文)',
-                    dataIndex: 'first_name',
+                    title: 'Title',
+                    dataIndex: 'title',
                 },{
-                    title: '姓名(外文)',
-                    dataIndex: 'last_name',
+                    title: 'Category',
+                    dataIndex: 'category',
                 },{
-                    title: '別名',
-                    dataIndex: 'gender',
+                    title: 'Scope',
+                    dataIndex: 'scope',
                 },{
-                    title: '手機',
-                    dataIndex: 'dob',
+                    title: 'Sender',
+                    dataIndex: 'sender',
                 },{
-                    title: '狀態',
-                    dataIndex: 'state',
+                    title: 'Reciever',
+                    dataIndex: 'resiever',
                 },{
-                    title: '操作',
+                    title: 'Action',
                     dataIndex: 'operation',
                     key: 'operation',
                 },
             ],
             rules:{
-                name_zh:{required:true},
-                mobile:{required:true},
-                state:{required:true},
+                field:{required:true},
+                label:{required:true},
             },
             validateMessages:{
                 required: '${label} is required!',
@@ -129,23 +130,20 @@ export default {
     created(){
     },
     methods: {
-        createRecord(){
+        createRecord(record){
             this.modal.data={};
             this.modal.mode="CREATE";
-            this.modal.title="新增問卷";
             this.modal.isOpen=true;
         },
         editRecord(record){
             this.modal.data={...record};
             this.modal.mode="EDIT";
-            this.modal.title="修改";
             this.modal.isOpen=true;
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post('/admin/teachers/', this.modal.data,{
+                this.$inertia.post(route('admin.forms.store') , this.modal.data, {
                     onSuccess:(page)=>{
-                        this.modal.data={};
                         this.modal.isOpen=false;
                     },
                     onError:(err)=>{
@@ -159,9 +157,9 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch('/admin/teachers/' + this.modal.data.id, this.modal.data,{
+                this.modal.data._method = 'PATCH';
+                this.$inertia.post(route('admin.forms.update',this.modal.data.id), this.modal.data,{
                     onSuccess:(page)=>{
-                        this.modal.data={};
                         this.modal.isOpen=false;
                         console.log(page);
                     },
@@ -171,38 +169,21 @@ export default {
                 });
             }).catch(err => {
                 console.log("error", err);
-            }); 
-           
+            });
         },
-        deleteRecord(recordId){
-            console.log(recordId);
+
+        deleteRecord(record){
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete('/admin/teachers/' + recordId,{
+            this.$inertia.delete(route('admin.forms.destroy', {form:record.id}),{
                 onSuccess: (page)=>{
                     console.log(page);
                 },
                 onError: (error)=>{
-                    console.log(error);
+                    alert(error.message);
                 }
+
             });
         },
-        createLogin(recordId){
-            console.log('create login'+recordId);
-        },
-        onPaginationChange(page, filters, sorter){
-            this.$inertia.get(route('admin.members.index'),{
-                page:page.current,
-                per_page:5,
-                filter:'namejose'
-            },{
-                onSuccess: (page)=>{
-                    console.log(page);
-                },
-                onError: (error)=>{
-                    console.log(error);
-                }
-            });
-        }
     },
 }
 </script>

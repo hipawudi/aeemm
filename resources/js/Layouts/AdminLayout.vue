@@ -3,10 +3,10 @@
 
         <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible theme="light" width="250px" class="shadow-md " >
             <div class="m-4 text-center text-lg" v-if="collapsed">
-                <inertia-link href='/organization'>Org </inertia-link>
+                <inertia-link :href="route('admin.index')">EEM</inertia-link>
             </div>
             <div class="m-4 text-center text-lg" v-else>
-                AEEMM
+                <inertia-link :href="route('admin.index')">AEEMM</inertia-link>
             </div>
 
             <AdminMenu :menuKeys='menuKeys'/>
@@ -22,7 +22,7 @@
                 <a-dropdown placement="bottomRight">
                     <a class="trigger" @click.prevent>
                         <!-- {{ $page.props.currentUser.roles }} -->
-                        {{ $page.props.currentUser.name }}
+                        {{ $page.props.user.name }}
                     </a>
                     <template #overlay>
                         <a-menu>

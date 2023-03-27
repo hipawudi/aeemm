@@ -13,18 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('forms', function (Blueprint $table) {
+        Schema::create('configs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->boolean('require_login')->default(false);
-            $table->boolean('require_member')->default(false);
-            $table->boolean('published')->default(false);
+            $table->string('key');
+            $table->text('value');
+            $table->text('remark')->nullable();
             $table->timestamps();
         });
-
-
     }
 
     /**
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('forms');
+        Schema::dropIfExists('configs');
     }
 };

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Inertia\Inertia;
 use App\Models\Form;
 use App\Models\Response;
@@ -18,12 +19,9 @@ class FormController extends Controller
      */
     public function index()
     {
-        if(Auth()->user()){
-            $forms=Form::where('published',1)->get();
-        }else{
-            $forms=Form::where('published',1)->where('for_member',0)->get();
-        }
-        return Inertia::render('Forms/Form',[
+        dd(Auth()->user());
+        $forms=Form::where('published',1)->get();
+        return Inertia::render('Member/Forms/Form',[
             'forms'=>$forms
         ]);
     }
@@ -74,10 +72,7 @@ class FormController extends Controller
     public function show($id)
     {
         $form=Form::with('fields')->find($id);
-        if($form->require_member==1 && !Auth()->user()){
-            return redirect('forms');
-        }
-        return Inertia::render('Forms/FormDefault',[
+        return Inertia::render('Member/Forms/FormDefault',[
             'form'=>$form,
         ]);
         

@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Member;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Form;
-use App\Models\Response;
-use App\Models\ResponseField;
+use App\Models\Message;
 
-class FormController extends Controller
+class MessageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +16,9 @@ class FormController extends Controller
      */
     public function index()
     {
-        $forms=Form::where('published',1)->get();
-        return Inertia::render('Member/Forms/Form',[
-            'forms'=>$forms
+        $messages=Message::paginate(request('per_page'));
+        return Inertia::render('Admin/Message',[
+            'messages'=>$messages
         ]);
     }
 
@@ -42,23 +40,7 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
-        //date('Y-m-d',strtotime($request->date))
-            // $this->validate($request,[
-            //     'form_id'=>'required',
-            // ]);
-                $response=new Response();
-                $response->form_id=$request->form['id'];
-                $response->member_id=Auth()->user()->id;
-                $response->save();
-                
-                foreach($request->fields as $key=>$value){
-                    $field=new ResponseField();
-                    $field->response_id=$response->id;
-                    $field->field_name=$key;
-                    $field->field_value=$value;
-                    $field->save();
-                }
-                return redirect()->back();
+        //
     }
 
     /**
@@ -69,11 +51,7 @@ class FormController extends Controller
      */
     public function show($id)
     {
-        $form=Form::with('fields')->find($id);
-        return Inertia::render('Member/Forms/FormDefault',[
-            'form'=>$form,
-        ]);
-        
+        //
     }
 
     /**

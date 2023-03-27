@@ -1,31 +1,34 @@
 <template>
-    <AppLayout title="Dashboard" >
+    <WebLayout title="Dashboard" >
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                表格管理
+                表格例表
             </h2>
         </template>
-            <a-table :dataSource="forms" :columns="columns">
-                <template #bodyCell="{column, text, record, index}">
-                    <template v-if="column.dataIndex=='operation'">
-                        資料欄位
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
+                <a-table :dataSource="forms" :columns="columns">
+                    <template #bodyCell="{column, text, record, index}">
+                        <template v-if="column.dataIndex=='operation'">
+                            資料欄位
+                        </template>
+                        <template v-else>
+                            {{record[column.dataIndex]}}
+                        </template>
                     </template>
-                    <template v-else>
-                        {{record[column.dataIndex]}}
-                    </template>
-                </template>
-            </a-table>
-
-    </AppLayout>
+                </a-table>
+            </div>
+        </div>
+    </WebLayout>
 
 </template>
 
 <script>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import WebLayout from '@/Layouts/WebLayout.vue';
 
 export default {
     components: {
-        AppLayout,
+        WebLayout,
     },
     props: ['forms'],
     data() {

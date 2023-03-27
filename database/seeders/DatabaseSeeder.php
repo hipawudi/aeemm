@@ -30,8 +30,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MemberSeeder::class,
             CertificateSeeder::class,
-            FormSeeder::class
-
+            FormSeeder::class,
+            MessageSeeder::class,
+            ConfigSeeder::class
         ]);
 
 
@@ -39,6 +40,7 @@ class DatabaseSeeder extends Seeder
         $roleAdmin=Role::create(['name'=>'admin','guard_name' => 'admin_web']);
         $roleOrganization=Role::create(['name'=>'organization','guard_name' => 'admin_web']);
         $roleMember=Role::create(['name'=>'member','guard_name' => 'web']);
+        $roleMember=Role::create(['name'=>'admin','guard_name' => 'web']);
 
         // $permissionCourse=Permission::create(['name'=>'manage course','guard_name' => 'admin_web']);
         // $permissionOffer=Permission::create(['name'=>'manage offer','guard_name' => 'admin_web']);
@@ -83,6 +85,13 @@ class DatabaseSeeder extends Seeder
             'password'=> Hash::make('password')
         ])->withPersonalTeam()->create();
         $member->assignRole('member');
+
+        $member=\App\Models\User::factory([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password'=> Hash::make('password')
+        ])->withPersonalTeam()->create();
+        $member->assignRole('admin');
 
     }
 }

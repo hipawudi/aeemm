@@ -13,18 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('forms', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->boolean('require_login')->default(false);
-            $table->boolean('require_member')->default(false);
-            $table->boolean('published')->default(false);
+            $table->string('category');
+            $table->string('title');
+            $table->text('content');
+            $table->string('scope');
+            $table->string('sender')->nullable();
+            $table->string('reciever')->nullable();
             $table->timestamps();
         });
-
-
     }
 
     /**
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('forms');
+        Schema::dropIfExists('messages');
     }
 };

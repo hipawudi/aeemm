@@ -45,6 +45,16 @@
             </inertia-link>
           </span>
         </a-menu-item>
+        <a-menu-item key="4">
+          <template #icon>
+            <InboxOutlined />
+          </template>
+          <span>
+            <inertia-link :href="route('admin.messages.index')">
+              通訊
+            </inertia-link>
+          </span>
+        </a-menu-item>
 
         <a-sub-menu key="sub1">
           <template #icon>

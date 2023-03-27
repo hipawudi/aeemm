@@ -1,5 +1,5 @@
 <template>
-    <AppLayout title="Dashboard" >
+    <MemberLayout title="Dashboard" v-if="$page.props.user.id">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 表格管理
@@ -13,7 +13,25 @@
                     name="default"
                     layout="vertical"
                 >
+                    <div class="pb-5" v-if="form.require_member && $page.props.user">
+                        <a-alert
+                            message="Login Member"
+                            type="info"
+                        >
+                            <template #description>
+                                <div><strong>Member: </strong>{{ $page.props.user.name }}</div>
+                                <div><strong>Email: </strong>{{ $page.props.user.email }}</div>
+                            </template>
+                        </a-alert>
+                        
+                    </div>
                     <div v-for="field in form.fields">
+                        <div v-if="form.require_member">
+                            <a-form-item label="Member Id" :name="field.field_name" :rules="[{required:field.require}]">
+                                <a-input v-model:value="$page.props.user.id" />
+                            </a-form-item>                        
+                        </div>
+
                         <div v-if="field.type=='input'">
                             <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]">
                                 <a-input v-model:value="formData[field.field_name]" />
@@ -71,18 +89,110 @@
                 </a-form>
             </div>
         </div>
+    </MemberLayout>
 
-    </AppLayout>
+    <WebLayout title="Dashboard" v-else>
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                表格管理
+            </h2>
+        </template>
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <div class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg ">
+                <a-form
+                    :model="formData"
+                    ref="formRef"
+                    name="default"
+                    layout="vertical"
+                >
+                    <div class="pb-5" v-if="form.require_member && $page.props.user">
+                        <a-alert
+                            message="Login Member"
+                            type="info"
+                        >
+                            <template #description>
+                                <div><strong>Member: </strong>{{ $page.props.user.name }}</div>
+                                <div><strong>Email: </strong>{{ $page.props.user.email }}</div>
+                            </template>
+                        </a-alert>
+                        
+                    </div>
+                    <div v-for="field in form.fields">
+                        <div v-if="form.require_member">
+                            <a-form-item label="Member Id" :name="field.field_name" :rules="[{required:field.require}]">
+                                <a-input v-model:value="$page.props.user.id" />
+                            </a-form-item>                        
+                        </div>
 
+                        <div v-if="field.type=='input'">
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]">
+                                <a-input v-model:value="formData[field.field_name]" />
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='select'">
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]">
+                                <a-select
+                                    v-model:value="formData[field.field_name]"
+                                    :options="JSON.parse(field.options)"
+                                ></a-select>
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='radio'">
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]">
+                                <a-radio-group
+                                    v-model:value="formData[field.field_name]"
+                                    :options="JSON.parse(field.options)"
+                                ></a-radio-group>
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='checkbox'">
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]">
+                                <a-checkbox-group
+                                    v-model:value="formData[field.field_name]"
+                                    :options="JSON.parse(field.options)"
+                                ></a-checkbox-group>
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='textarea'">
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]">
+                                <a-textarea v-model:value="formData[field.field_name]" />
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='date'">
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]" >
+                                <a-date-picker v-model:value="formData[field.field_name]" :format="dateFormat" :valueFormat="dateFormat" />
+                            </a-form-item>                        
+                        </div>
+                        <div v-else-if="field.type=='email'">
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require},{type:'email'}]" >
+                                <a-input v-model:value="formData[field.field_name]" />
+                            </a-form-item>                        
+                        </div>
+                        <div v-else>
+                            <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require},{type:'email'}]" >
+                                <p>Data type undefined</p>
+                            </a-form-item>                        
+                        </div>
+                    </div>
+                    <div class="text-center pb-10">
+                        <a-button @click="storeRecord" type="primary">Submit</a-button>
+                    </div>
+                    
+                </a-form>
+            </div>
+        </div>
+    </WebLayout>
 </template>
 
 <script>
-import AppLayout from '@/Layouts/AppLayout.vue';
+import MemberLayout from '@/Layouts/MemberLayout.vue';
+import WebLayout from '@/Layouts/WebLayout.vue';
 import dayjs from 'dayjs';
 
 export default {
     components: {
-        AppLayout,
+        MemberLayout,
+        WebLayout,
     },
     props: ['form'],
     data() {

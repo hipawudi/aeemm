@@ -109,11 +109,11 @@ export default {
                     title: 'Title',
                     dataIndex: 'title',
                 },{
-                    title: 'With Login',
-                    dataIndex: 'with_login',
+                    title: 'For Member',
+                    dataIndex: 'for_member',
                 },{
-                    title: 'With Member',
-                    dataIndex: 'with_member',
+                    title: 'Published',
+                    dataIndex: 'published',
                 },{
                     title: 'Action',
                     dataIndex: 'operation',

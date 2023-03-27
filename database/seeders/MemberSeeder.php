@@ -23,6 +23,7 @@ class MemberSeeder extends Seeder
         //     'user_id'=>'1',
         // ]);
         DB::table('members')->where('id',1)->update(['user_id'=>1]);
+        DB::table('members')->where('id',2)->update(['user_id'=>2]);
     }
 
 

@@ -23,22 +23,34 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    // Route::get('/dashboard', function () {
-    //     return Inertia::render('Member/Dashboard');
-    // })->name('dashboard');
     Route::get('/dashboard', [\App\Http\Controllers\Member\DashboardController::class,'index'])->name('dashboard');
     Route::resource('professionals',App\Http\Controllers\Member\ProfessionalController::class);
     Route::get('membership',[App\Http\Controllers\Member\MembershipController::class,'index'])->name('membership');
-    Route::resource('forms',\App\Http\Controllers\Member\FormController::class)->names('forms');
-
 });
 
 
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    // 'role:organization|admin|master',
+])->group(function () {
+    Route::prefix('/admin')->group(function(){
+        Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('admin.index');
+        Route::resource('members', App\Http\Controllers\Admin\MemberController::class)->names('admin.members');
+        Route::resource('certificates', App\Http\Controllers\Admin\CertificateController::class)->names('admin.certificates');
+        Route::resource('forms', App\Http\Controllers\Admin\FormController::class)->names('admin.forms');
+        Route::resource('form.fields', App\Http\Controllers\Admin\FormFieldController::class)->names('admin.form.fields');
+        Route::get('certificate-delete-media/{media}',[App\Http\Controllers\Admin\CertificateController::class,'deleteMedia'])->name('admin.certificate-delete-media');
+        Route::get('form-delete-media/{media}',[App\Http\Controllers\Admin\FormController::class,'deleteMedia'])->name('admin.form-delete-media');
+        Route::resource('messages', App\Http\Controllers\Admin\MessageController::class)->names('admin.messages');
+    })->name('admin');
+});
 
 

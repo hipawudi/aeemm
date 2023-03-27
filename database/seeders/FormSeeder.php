@@ -58,5 +58,19 @@ class FormSeeder extends Seeder
             'type'=>'textarea'
         ]);
 
+
+        DB::table('forms')->insert([
+            'name'=>'second form',
+            'title'=>'Second form of title'
+        ]);
+        DB::table('form_fields')->insert([
+            'form_id' => '2',
+            'field_name'=>'username',
+            'field_label'=>'Username',
+            'type'=>'input',
+            'published'=>true
+        ]);
+
+
     }
 }

@@ -35,6 +35,7 @@ Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], func
 //     });
 // });
 
+/*
 Route::middleware([
     'auth:admin_web',
     config('jetstream.auth_session'),
@@ -50,7 +51,7 @@ Route::middleware([
         Route::get('form-delete-media/{media}',[App\Http\Controllers\Admin\FormController::class,'deleteMedia'])->name('admin.form-delete-media');
     })->name('admin');
 });
-
+*/
 // Route::middleware([
 //     'auth:admin_web',
 //     config('jetstream.auth_session'),

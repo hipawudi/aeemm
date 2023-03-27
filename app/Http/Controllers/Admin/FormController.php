@@ -23,6 +23,7 @@ class FormController extends Controller
      */
     public function index()
     {
+
         return Inertia::render('Admin/Form',[
             'forms'=>Form::with('media')->get()
         ]);

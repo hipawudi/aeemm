@@ -1,23 +1,14 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import Welcome from '@/Components/Welcome.vue';
-const data = [{
-        title: 'Ant Design Title 1',
-    }, {
-        title: 'Ant Design Title 2',
-    }, {
-        title: 'Ant Design Title 3',
-    }, {
-        title: 'Ant Design Title 4',
-}];
+import MemberLayout from '@/Layouts/MemberLayout.vue';
 
 defineProps({
     member:Object,
+    messages:Object,
 });
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <MemberLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Dashboard..
@@ -28,11 +19,11 @@ defineProps({
                 <div class="lg:col-span-3">
                     <div class="container mx-auto pt-5">
                         <div class="bg-white relative shadow rounded-lg pl-5">
-                            <a-list item-layout="horizontal" :data-source="data">
+                            <a-list item-layout="horizontal" :data-source="messages">
                                 <template #renderItem="{ item }">
                                     <a-list-item>
                                         <a-list-item-meta
-                                            description="Ant Design, a design language for background applications, is refined by Ant UED Team">
+                                            :description="item.content">
                                             <template #title>
                                                 <a href="https://www.antdv.com/">{{ item.title }}</a>
                                             </template>
@@ -131,5 +122,5 @@ defineProps({
             </div>
         </div>
 
-    </AppLayout>
+    </MemberLayout>
 </template>
