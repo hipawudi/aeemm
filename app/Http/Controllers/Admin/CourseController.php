@@ -35,7 +35,8 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/CourseCreate',[
+        ]);
     }
 
     /**
@@ -47,18 +48,30 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name'=>'required',
-            'title'=>'required',
+            'title_zh'=>'required',
+            // 'image'=>'array',
+            // 'image.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
-
-            $form=new Form();
-            $form->name=$request->name;
-            $form->title=$request->title;
-            $form->description=$request->description;
-            $form->require_login=$request->require_login;
-            $form->require_member=$request->require_member;
-            $form->save();
-            return redirect()->back();
+        $course=new Course;
+        $course->title_zh=$request->title_zh;
+        $course->title_en=$request->title_en;
+        $course->description_zh=$request->description_zh;
+        $course->description_en=$request->description_en;
+        $course->start_date=$request->start_date;
+        $course->end_date=$request->end_date;
+        $course->class_time=json_encode($request->class_time);
+        $course->fee=$request->fee;
+        $course->content=$request->content;
+        $course->language=$request->language;
+        $course->location=$request->location;
+        $course->target=$request->target;
+        $course->published=is_null($request->published)?0:$request->published;
+        $course->tutor=$request->tutor;
+        if($request->file('poster')){
+            $course->addMedia($request->file('poster')[0]['originFileObj'])->toMediaCollection('poster');
+        }
+        $course->save();
+        return redirect()->route('admin.courses.edit',$course->id);
     }
 
     /**

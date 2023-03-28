@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('description_en')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->time('class_time')->nullable();
+            $table->string('class_time')->nullable();
             $table->integer('fee')->nullable();
             $table->longText('content')->nullable();
             $table->string('language')->nullable();
