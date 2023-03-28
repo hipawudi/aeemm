@@ -69,7 +69,8 @@
                         <div v-else-if="field.type=='richtext'">
                             <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]">
                                 <quill-editor
-                                    v-model:value="richText"
+                                    v-model:value="formData[field.field_name]"
+                                    style="min-height:200px;"
                                 />
                             </a-form-item>                        
                         </div>
@@ -124,11 +125,10 @@
                         </a-alert>
                         
                     </div>
-
-                                <quill-editor
-                                    v-model:value="richText"
-                                />
-
+                        <quill-editor
+                            v-model:value="formData[field.field_name]"
+                            style="min-height:200px"
+                        />
                     <div v-for="field in form.fields">
                         <div v-if="form.require_member">
                             <a-form-item label="Member Id" :name="field.field_name" :rules="[{required:field.require}]">
@@ -172,7 +172,11 @@
                         </div>
                         <div v-else-if="field.type=='richtext'">
                             <a-form-item :label="field.field_label" :name="field.field_name" :rules="[{required:field.require}]">
-                                aaa
+
+                                <quill-editor
+                                    v-model:value="richText"
+                                    style="min-height:200px"
+                                />
 
                             </a-form-item>                        
                         </div>
@@ -205,14 +209,13 @@
 <script>
 import MemberLayout from '@/Layouts/MemberLayout.vue';
 import WebLayout from '@/Layouts/WebLayout.vue';
-import { quillEditor,Quill } from 'vue3-quill';
+import { quillEditor } from 'vue3-quill';
 
 export default {
     components: {
         MemberLayout,
         WebLayout,
-        quillEditor,
-        Quill
+        quillEditor
     },
     props: ['form'],
     data() {
@@ -271,21 +274,21 @@ export default {
         storeRecord(){
             console.log(this.form);
             console.log(this.formData);
-            // this.$refs.formRef.validateFields().then(()=>{
-            //     this.$inertia.post(route('forms.store'), {
-            //         form:this.form,
-            //         fields:this.formData
-            //     },{
-            //         onSuccess:(page)=>{
-            //             this.formData={};
-            //         },
-            //         onError:(err)=>{
-            //             console.log(err);
-            //         }
-            //     });
-            // }).catch(err => {
-            //     console.log(err);
-            // });
+            this.$refs.formRef.validateFields().then(()=>{
+                this.$inertia.post(route('forms.store'), {
+                    form:this.form,
+                    fields:this.formData
+                },{
+                    onSuccess:(page)=>{
+                        this.formData={};
+                    },
+                    onError:(err)=>{
+                        console.log(err);
+                    }
+                });
+            }).catch(err => {
+                console.log(err);
+            });
         },
 
     },

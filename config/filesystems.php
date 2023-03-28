@@ -60,6 +60,16 @@ return [
             'root'   => public_path('media'),
             'url'    => env('APP_URL').'/media',
         ],
+        'course' => [
+            'driver' => 'local',
+            'root'   => public_path('media/course'),
+            'url'    => env('APP_URL').'/media/course',
+        ],
+        'form' => [
+            'driver' => 'local',
+            'root'   => public_path('media/form'),
+            'url'    => env('APP_URL').'/media/form',
+        ],
 
     ],
 

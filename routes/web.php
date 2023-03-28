@@ -24,6 +24,8 @@ Route::get('/', function () {
     ]);
 });
 Route::resource('forms',\App\Http\Controllers\FormController::class)->names('forms');
+Route::get('courses',[\App\Http\Controllers\CourseController::class,'index'])->name('courses');
+Route::get('course/{course}',[\App\Http\Controllers\CourseController::class,'detail']);
 
 Route::middleware([
     'auth:sanctum',
@@ -50,6 +52,7 @@ Route::middleware([
         Route::get('certificate-delete-media/{media}',[App\Http\Controllers\Admin\CertificateController::class,'deleteMedia'])->name('admin.certificate-delete-media');
         Route::get('form-delete-media/{media}',[App\Http\Controllers\Admin\FormController::class,'deleteMedia'])->name('admin.form-delete-media');
         Route::resource('messages', App\Http\Controllers\Admin\MessageController::class)->names('admin.messages');
+        Route::resource('courses', App\Http\Controllers\Admin\CourseController::class)->names('admin.courses');
     })->name('admin');
 });
 

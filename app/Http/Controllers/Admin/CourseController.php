@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Form;
+use App\Models\Course;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class FormController extends Controller
+class CourseController extends Controller
 {
     public function __construct()
     {
@@ -23,9 +23,8 @@ class FormController extends Controller
      */
     public function index()
     {
-
-        return Inertia::render('Admin/Form',[
-            'forms'=>Form::with('media')->get()
+        return Inertia::render('Admin/Course',[
+            'courses'=>Course::with('media')->get()
         ]);
     }
 
@@ -68,12 +67,13 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Form $form)
+    public function show(Course $course)
     {
         // $this->authorize('view',$organization);
         // $this->authorize('view',$form);
-
-        echo 'edit form';
+        return Inertia::render('Admin/CourseShow',[
+            'course'=>$course->with('media')->first()
+        ]);
     }
 
     /**
@@ -82,13 +82,13 @@ class FormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Form $form)
+    public function edit(Course $course)
     {
         //$this->authorize('update',$organization);
         //$this->authorize('update',$form);
-        // return Inertia::render('Admin/FormEdit',[
-        //     'fields'=>$form->fields
-        // ]);
+        return Inertia::render('Admin/CourseEdit',[
+            'course'=>$course->with('media')->first()
+        ]);
         
     }
 
@@ -103,21 +103,29 @@ class FormController extends Controller
     {
         $this->validate($request,[
             'id' => 'required',
-            'name'=>'required',
-            'title'=>'required',
+            'title_zh'=>'required',
             // 'image'=>'array',
             // 'image.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
-        $form=Form::find($request->id);
-        $form->name=$request->name;
-        $form->title=$request->title;
-        $form->description=$request->description;
-        $form->require_login=$request->require_login;
-        $form->require_member=$request->require_member;
-        if($request->file('image')){
-            $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
+        $course=Course::find($request->id);
+        $course->title_zh=$request->title_zh;
+        $course->title_en=$request->title_en;
+        $course->description_zh=$request->description_zh;
+        $course->description_en=$request->description_en;
+        $course->start_date=$request->start_date;
+        $course->end_date=$request->end_date;
+        $course->class_time=json_encode($request->class_time);
+        $course->fee=$request->fee;
+        $course->content=$request->content;
+        $course->language=$request->language;
+        $course->location=$request->location;
+        $course->target=$request->target;
+        $course->published=$request->published;
+        $course->tutor=$request->tutor;
+        if($request->file('poster')){
+            $course->addMedia($request->file('poster')[0]['originFileObj'])->toMediaCollection('poster');
         }
-        $form->save();
+        $course->save();
         return redirect()->back();
         
     }

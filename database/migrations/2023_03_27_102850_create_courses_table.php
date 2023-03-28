@@ -23,10 +23,12 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->time('class_time')->nullable();
             $table->integer('fee')->nullable();
-            $table->text('content')->nullable();
+            $table->longText('content')->nullable();
             $table->string('language')->nullable();
             $table->string('location')->nullable();
             $table->string('target')->nullable();
+            $table->longText('tutor')->nullable();
+            $table->boolean('published')->default(0);
             $table->timestamps();
 
         });

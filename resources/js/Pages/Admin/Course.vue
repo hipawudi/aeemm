@@ -1,17 +1,17 @@
 <template>
-    <AdminLayout title="Dashboard">
+    <AdminLayout title="Dashboard" >
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                資料欄位管理
+                表格管理
             </h2>
         </template>
         <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增資料欄位</button>
-            <a-table :dataSource="fields" :columns="columns">
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增表格</button>
+            <a-table :dataSource="courses" :columns="columns">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
-                        <a-button @click="editRecord(record)">修改</a-button>
-                        <a-button @click="deleteRecord(record)">刪除</a-button>
+                        <inertia-link :href="route('admin.courses.edit',record.id)" class="ant-btn">修改</inertia-link>
+                        <inertia-link :href="route('admin.courses.destroy',record.id)" class="ant-btn">刪除</inertia-link>
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -25,33 +25,52 @@
             ref="modalRef"
             :model="modal.data"
             name="Teacher"
-            :label-col="{ span: 4 }"
-            :wrapper-col="{ span: 20 }"
+            :label-col="{ span: 6 }"
+            :wrapper-col="{ span: 18 }"
             autocomplete="off"
             :rules="rules"
             :validate-messages="validateMessages"
         >
-            <a-form-item label="名稱" name="field_name">
-                <a-input v-model:value="modal.data.field_name" />
+            <a-form-item label="Title Zh" name="title_zh">
+                <a-input v-model:value="modal.data.title_zh" />
             </a-form-item>
-            <a-form-item label="標簽" name="field_label">
-                <a-input v-model:value="modal.data.field_label" />
+            <a-form-item label="Title En" name="title_en">
+                <a-input v-model:value="modal.data.title_en" />
             </a-form-item>
-            <a-form-item label="類型" name="type">
-                <a-select v-model:value="modal.data.type" placeholder="欄位類型" :options="fieldTypes"/>
+            <a-form-item label="Title" name="title">
+                <a-input v-model:value="modal.data.title" />
             </a-form-item>
-            <a-form-item label="必填" name="require">
-                <a-switch v-model:checked="modal.data.require" :unCheckedValue="0" :checkedValue="1"/>
+            <a-form-item label="Description" name="description">
+                <a-input v-model:value="modal.data.description" />
             </a-form-item>
-            <!-- <a-form-item label="規則" name="rule">
-                <a-input v-model:value="modal.data.rule" />
+            <a-form-item label="Require Login" name="require_login">
+                <a-switch v-model:checked="modal.data.require_login" :unCheckedValue="0" :checkedValue="1"/>
             </a-form-item>
-            <a-form-item label="驗證" name="validate">
-                <a-input v-model:value="modal.data.validate" />
-            </a-form-item> -->
-            <a-form-item label="備注" name="remark">
-                <a-textarea v-model:value="modal.data.remark" />
+            <a-form-item label="Require Member" name="require_member">
+                <a-switch v-model:checked="modal.data.require_member" :unCheckedValue="0" :checkedValue="1"/>
             </a-form-item>
+            <a-form-item label="Banner image" name="cert_logo">
+                <div v-if="modal.data.media.length" >
+                    <inertia-link :href="route('admin.form-delete-media',modal.data.media[0].id)" class="float-right text-red-500">
+                        <svg focusable="false" class="" data-icon="delete" width="1em" height="1em" fill="currentColor" aria-hidden="true" viewBox="64 64 896 896">
+                            <path d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z"></path>
+                        </svg>
+                    </inertia-link>
+                    <img :src="'/media/'+modal.data.media[0].id+'/'+modal.data.media[0].file_name"/>
+                </div>
+                <a-upload
+                    v-model:file-list="modal.data.image"
+                    :multiple="false"
+                    :beforeUpload="()=>false"
+                    :max-count="1"
+                    list-type="picture"
+                >
+                    <a-button>
+                        <upload-outlined></upload-outlined>
+                        upload
+                    </a-button>
+                </a-upload>
+            </a-form-item>            
         </a-form>
         <template #footer>
             <a-button v-if="modal.mode=='EDIT'" key="Update" type="primary"  @click="updateRecord()">更新</a-button>
@@ -65,13 +84,16 @@
 
 <script>
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { defineComponent, reactive } from 'vue';
+import { UploadOutlined } from '@ant-design/icons-vue';
+import Icon, { RestFilled } from '@ant-design/icons-vue';
 
 export default {
     components: {
         AdminLayout,
+        UploadOutlined,
+        RestFilled        
     },
-    props: ['form','fields'],
+    props: ['courses'],
     data() {
         return {
             modal:{
@@ -80,34 +102,21 @@ export default {
                 title:"Modal",
                 mode:""
             },
-            fieldTypes:[
-                {value:"input",label:"單行文字"},
-                {value:"textarea",label:"多行文字"},
-                {value:"largetext",label:"大篇幅文字"},
-                {value:"radio",label:"單選"},
-                {value:"checkbox",label:"多選"},
-                {value:"true_false",label:"是/否"},
-                {value:"date",label:"日期"},
-                {value:"datetime",label:"日期時間"},
-                {value:"email",label:"電郵"},
-                {value:"number",label:"數值"},
-                {value:"richtext",label:"富文本格式"},
-            ],
             columns:[
                 {
-                    title: '名稱',
-                    dataIndex: 'field_name',
+                    title: 'Title Zh',
+                    dataIndex: 'title_zh',
                 },{
-                    title: '標簽',
-                    dataIndex: 'field_label',
+                    title: 'Title En',
+                    dataIndex: 'title_en',
                 },{
-                    title: '類型',
-                    dataIndex: 'type',
+                    title: 'Start Date',
+                    dataIndex: 'start_date',
                 },{
-                    title: '必填',
-                    dataIndex: 'required',
+                    title: 'End Date',
+                    dataIndex: 'end_date',
                 },{
-                    title: '操作',
+                    title: 'Action',
                     dataIndex: 'operation',
                     key: 'operation',
                 },
@@ -136,9 +145,9 @@ export default {
     created(){
     },
     methods: {
-        createRecord(){
+        createRecord(record){
             this.modal.data={};
-            this.modal.data.form_id=this.form.id;
+            this.modal.data.media=[];
             this.modal.mode="CREATE";
             this.modal.isOpen=true;
         },
@@ -149,11 +158,8 @@ export default {
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post(route('form.fields.store',{
-                    form:this.form.id
-                }), this.modal.data, {
+                this.$inertia.post(route('admin.forms.store') , this.modal.data, {
                     onSuccess:(page)=>{
-                        this.modal.data={};
                         this.modal.isOpen=false;
                     },
                     onError:(err)=>{
@@ -167,12 +173,9 @@ export default {
         updateRecord(){
             console.log(this.modal.data);
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.patch(route('form.fields.update', {
-                    form:this.form.id,
-                    field:this.modal.data
-                }), this.modal.data, {
+                this.modal.data._method = 'PATCH';
+                this.$inertia.post(route('admin.forms.update',this.modal.data.id), this.modal.data,{
                     onSuccess:(page)=>{
-                        this.modal.data={};
                         this.modal.isOpen=false;
                         console.log(page);
                     },
@@ -184,13 +187,12 @@ export default {
                 console.log("error", err);
             });
         },
+
         deleteRecord(record){
             if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete(route('form.fields.destroy', {
-                form:this.form.id, field:record.id
-            }),{
+            this.$inertia.delete(route('admin.forms.destroy', {form:record.id}),{
                 onSuccess: (page)=>{
-                    console.log('the field has been deleted!');
+                    console.log(page);
                 },
                 onError: (error)=>{
                     alert(error.message);
