@@ -8,6 +8,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import MemberMenu from '@/Components/Member/MemberMenu.vue';
 
 defineProps({
     title: String,
@@ -43,31 +44,10 @@ const logout = () => {
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <img src="/storage/aeemm_logo.jpg" style="width:64px"/>
+                                    <img src="/storage/images/aeemm_logo.jpg" style="width:64px"/>
                                 </Link>
                             </div>
-
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" > <!--:active="route().current('dashboard')" -->
-                                    Dashboard
-                                </NavLink>
-                                <NavLink :href="route('professionals.index')" >
-                                    Professional
-                                </NavLink>
-                                <NavLink :href="route('membership')" >
-                                    Membership
-                                </NavLink>
-                                <NavLink :href="route('forms.index')" >
-                                    Forms
-                                </NavLink>
-                                <NavLink :href="route('courses')" >
-                                    Courses
-                                </NavLink>
-                                <NavLink :href="route('admin.index')" v-if="$page.props.user.roles.includes('admin')" >
-                                    Admin
-                                </NavLink>
-                            </div>
+                            <MemberMenu />
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">

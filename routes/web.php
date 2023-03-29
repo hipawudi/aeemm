@@ -47,6 +47,8 @@ Route::middleware([
         Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('admin.index');
         Route::resource('members', App\Http\Controllers\Admin\MemberController::class)->names('admin.members');
         Route::resource('certificates', App\Http\Controllers\Admin\CertificateController::class)->names('admin.certificates');
+        Route::resource('professionals', App\Http\Controllers\Admin\ProfessionalController::class)->names('admin.professionals');
+        Route::get('professional/{certificate}/members', [App\Http\Controllers\Admin\ProfessionalController::class,'members'])->name('admin.professional.members');
         Route::resource('forms', App\Http\Controllers\Admin\FormController::class)->names('admin.forms');
         Route::resource('form.fields', App\Http\Controllers\Admin\FormFieldController::class)->names('admin.form.fields');
         Route::get('certificate-delete-media/{media}',[App\Http\Controllers\Admin\CertificateController::class,'deleteMedia'])->name('admin.certificate-delete-media');
