@@ -58,6 +58,16 @@
             <InboxOutlined />
           </template>
           <span>
+            <inertia-link :href="route('admin.courses.index')">
+              課程
+            </inertia-link>
+          </span>
+        </a-menu-item>
+        <a-menu-item key="5">
+          <template #icon>
+            <InboxOutlined />
+          </template>
+          <span>
             <inertia-link :href="route('admin.messages.index')">
               通訊
             </inertia-link>

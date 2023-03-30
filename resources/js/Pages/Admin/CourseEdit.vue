@@ -5,7 +5,6 @@
                 表格管理
             </h2>
         </template>
-        {{course.media}}
         <a-form
             ref="modalRef"
             :model="course"
@@ -41,7 +40,7 @@
             </a-form-item>
             <a-form-item label="Content" name="content">
                 <div class="bg-white">
-                    <quill-editor v-model:value="course.content" :toolbar="'full'" style="min-height: 300px;"/>
+                    <quill-editor v-model:value="course.content"  style="min-height: 300px;"/>
                 </div>
             </a-form-item>
             <a-form-item label="Language" name="language">
@@ -101,8 +100,11 @@ import { quillEditor } from 'vue3-quill';
 import Icon, { RestFilled } from '@ant-design/icons-vue';
 import dayjs from 'dayjs';
 
-
 export default {
+    setup() {
+        return {
+        }        
+    },
     components: {
         AdminLayout,
         UploadOutlined,
@@ -114,50 +116,25 @@ export default {
     data() {
         return {
             dateFormat:'YYYY-MM-DD',
-            modal:{
-                isOpen:false,
-                data:{},
-                title:"Modal",
-                mode:""
-            },
-            columns:[
-                {
-                    title: 'Title Zh',
-                    dataIndex: 'title_zh',
-                },{
-                    title: 'Title En',
-                    dataIndex: 'title_en',
-                },{
-                    title: 'Start Date',
-                    dataIndex: 'start_date',
-                },{
-                    title: 'End Date',
-                    dataIndex: 'end_date',
-                },{
-                    title: 'Action',
-                    dataIndex: 'operation',
-                    key: 'operation',
+            quillEditorOption: {
+                placeholder: 'core',
+                modules: {
+                // toolbar: [
+                    // custom toolbars options
+                    // will override the default configuration
+                // ],
+                // other moudle options here
+                // otherMoudle: {}
+                    // htmlEditButton: {
+                    //     debug: false,
+                    //     msg: "Edytuj zawartość przy pomocy HTML",
+                    //     cancelText: "Anuluj",
+                    //     buttonTitle: "Pokaż kod źródłowy HTML",
+                    // },
                 },
-            ],
-            rules:{
-                field:{required:true},
-                label:{required:true},
+                // more options
             },
-            validateMessages:{
-                required: '${label} is required!',
-                types: {
-                    email: '${label} is not a valid email!',
-                    number: '${label} is not a valid number!',
-                },
-                number: {
-                    range: '${label} must be between ${min} and ${max}',
-                },
-            },
-            labelCol: {
-                style: {
-                width: '150px',
-                },
-            },
+
         }
     },
     created(){
@@ -168,38 +145,8 @@ export default {
     mounted(){
     },
     computed:{
-        classTimeFormat(){
-            if(!Array.isArray(this.course.class_time)){
-                this.course.class_time=JSON.parse(this.course.class_time);
-            }
-        }
     }, 
     methods: {
-        createRecord(record){
-            this.course={};
-            this.course.media=[];
-            this.modal.mode="CREATE";
-            this.modal.isOpen=true;
-        },
-        editRecord(record){
-            this.course={...record};
-            this.modal.mode="EDIT";
-            this.modal.isOpen=true;
-        },
-        storeRecord(){
-            this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post(route('admin.courses.store') , this.course, {
-                    onSuccess:(page)=>{
-                        console.log(page);
-                    },
-                    onError:(err)=>{
-                        console.log(err);
-                    }
-                });
-            }).catch(err => {
-                console.log(err);
-            });
-        },
         updateRecord(){
             console.log(this.course);
             this.$refs.modalRef.validateFields().then(()=>{
@@ -218,19 +165,6 @@ export default {
                 });
             }).catch(err => {
                 console.log("error", err);
-            });
-        },
-
-        deleteRecord(record){
-            if (!confirm('Are you sure want to remove?')) return;
-            this.$inertia.delete(route('admin.forms.destroy', {form:record.id}),{
-                onSuccess: (page)=>{
-                    console.log(page);
-                },
-                onError: (error)=>{
-                    alert(error.message);
-                }
-
             });
         },
     },
