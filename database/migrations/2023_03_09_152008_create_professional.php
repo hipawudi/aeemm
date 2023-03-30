@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('certificate_member', function (Blueprint $table) {
+        Schema::create('professionals', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('certificate_id');
             $table->bigInteger('member_id');
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('certificate_member');
+        Schema::dropIfExists('professionals');
     }
 };

@@ -161,6 +161,7 @@ export default {
     methods: {
         createRecord(record){
             this.modal.data={};
+            this.modal.data.media=[];
             this.modal.mode="CREATE";
             this.modal.isOpen=true;
         },

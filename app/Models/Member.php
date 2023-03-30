@@ -33,6 +33,10 @@ class Member extends Model
     {
         return $this->user()->exists();
     }
+    public function certificates(){
+        return $this->belongsToMany(Certificate::class,'professionals','member_id','certificate_id')->withPivot(
+            'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorize_by','rank','avata');
+    }
 
 
 }

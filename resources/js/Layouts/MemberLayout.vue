@@ -44,7 +44,7 @@ const logout = () => {
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <img src="/storage/images/aeemm_logo.jpg" style="width:64px"/>
+                                    <img src="/images/aeemm_logo.jpg" style="width:64px"/>
                                 </Link>
                             </div>
                             <MemberMenu />

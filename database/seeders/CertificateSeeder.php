@@ -16,40 +16,40 @@ class CertificateSeeder extends Seeder
     public function run()
     {
         DB::table('certificates')->insert([
-            'name'=>'裁判資格認證',
-            'cert_title'=>'裁判資格認證',
-            'cert_body'=>'澳門柔道總會',
+            'name'=>'機電工程資格認證',
+            'cert_title'=>'機電工程資格認證',
+            'cert_body'=>'澳門機電工程師學會',
             'description'=>'澳門柔道總會裁判資格認證<br><ul><li>aaa</li></ul>'
         ]);
         DB::table('certificates')->insert([
-            'name'=>'考官資格認證',
-            'cert_title'=>'考官資格認證',
-            'cert_body'=>'澳門柔道總會',
+            'name'=>'機電工程資格認證',
+            'cert_title'=>'機電工程資格認證',
+            'cert_body'=>'澳門機電工程師學會',
             'description'=>'澳門柔道總會裁判資格認證<br><ul><li>aaa</li></ul>'
         ]);
 
-        DB::table('certificate_member')->insert([
+        DB::table('professionals')->insert([
             'certificate_id'=>'1',
             'member_id'=>'1',
-            'display_name'=>'謝廣漢',
+            'display_name'=>'梁啓康',
             'number'=>'1',
             'number_display'=>'CERT-0001',
             'issue_date'=>'2023-01-01',
             'valid_from'=>'2023-01-01',
             'valid_until'=>'2024-12-31',
-            'authorize_by'=>'謝廣漢',
+            'authorize_by'=>'梁啓康',
             'rank'=>'1',
         ]);
-        DB::table('certificate_member')->insert([
+        DB::table('professionals')->insert([
             'certificate_id'=>'2',
             'member_id'=>'1',
-            'display_name'=>'謝廣漢',
+            'display_name'=>'梁啓康',
             'number'=>'2',
             'number_display'=>'CERT-0002',
             'issue_date'=>'2023-02-01',
             'valid_from'=>'2023-02-01',
             'valid_until'=>'2025-12-31',
-            'authorize_by'=>'謝廣漢',
+            'authorize_by'=>'梁啓康',
             'rank'=>'1',
         ]);
 

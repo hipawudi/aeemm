@@ -74,7 +74,7 @@ class CertificateController extends Controller
      */
     public function show(Certificate $certificate)
     {
-        return redirect(route('certificate.memebers',$certificate->id));
+        dd($certificate->members);
     }
 
     /**

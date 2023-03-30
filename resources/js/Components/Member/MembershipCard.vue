@@ -33,7 +33,7 @@ defineProps({
                                 {{ card.name }}
                             </p>
                         </div>
-                        <img class="w-14 h-14" src="storage/images/aeemm_logo.jpg" />
+                        <img class="w-14 h-14" src="images/aeemm_logo.jpg" />
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div class="pt-1">

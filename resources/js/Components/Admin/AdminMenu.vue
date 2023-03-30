@@ -35,7 +35,15 @@
             專業認證
             </inertia-link>
         </a-menu-item>
-        <a-menu-item key="3">
+        <a-menu-item key="4">
+          <template #icon>
+            <InboxOutlined />
+          </template>
+          <inertia-link :href="route('admin.professionals.index')">
+            專業證書
+            </inertia-link>
+        </a-menu-item>
+        <a-menu-item key="5">
           <template #icon>
             <InboxOutlined />
           </template>
@@ -45,7 +53,7 @@
             </inertia-link>
           </span>
         </a-menu-item>
-        <a-menu-item key="4">
+        <a-menu-item key="6">
           <template #icon>
             <InboxOutlined />
           </template>

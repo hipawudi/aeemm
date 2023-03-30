@@ -27,7 +27,7 @@ class Certificate extends Model implements HasMedia
     }
 
     public function members(){
-        return $this->belongsToMany(Member::class)->withPivot(
+        return $this->belongsToMany(Member::class,'professionals','certificate_id','member_id')->withPivot(
             'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorize_by','rank','avata');
     }
 

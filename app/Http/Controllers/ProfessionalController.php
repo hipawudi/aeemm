@@ -1,13 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use App\Models\Member;
-use App\Models\Certificate;
-use App\Models\Professional;
 
 class ProfessionalController extends Controller
 {
@@ -18,12 +13,7 @@ class ProfessionalController extends Controller
      */
     public function index()
     {
-        $professionals=Professional::with('certificate')->with('member')->with('media')->get();
-        return Inertia::render('Admin/Professional',[
-            'professionals'=>$professionals,
-            'certificates'=>Certificate::all(),
-            'members'=>Member::all()
-        ]);
+        //
     }
 
     /**
@@ -55,6 +45,7 @@ class ProfessionalController extends Controller
      */
     public function show($id)
     {
+        //
     }
 
     /**
@@ -65,6 +56,7 @@ class ProfessionalController extends Controller
      */
     public function edit($id)
     {
+        //
     }
 
     /**
@@ -88,13 +80,5 @@ class ProfessionalController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function members(Certificate $certificate){
-        return Inertia::render('Admin/Professional',[
-            'certificate'=>$certificate,
-            'members'=>$certificate->members
-        ]);
-
     }
 }

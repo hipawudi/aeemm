@@ -11,7 +11,7 @@ defineProps({
     <MemberLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard..
+                會員專區
             </h2>
         </template>
         <div class="container mx-auto">
@@ -48,7 +48,7 @@ defineProps({
 
                             <div class="mt-16">
                                 <h1 class="font-bold text-center text-3xl text-gray-900">{{ member.display_name }}</h1>
-                                <p class="text-center text-sm text-gray-400 font-medium">澳門柔道總會</p>
+                                <p class="text-center text-sm text-gray-400 font-medium">澳門機電工程師學會</p>
                                 <p>
                                     <span>
 
