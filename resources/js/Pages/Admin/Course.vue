@@ -104,17 +104,23 @@ export default {
             },
             columns:[
                 {
-                    title: 'Title Zh',
+                    title: '標題(中文)',
                     dataIndex: 'title_zh',
                 },{
-                    title: 'Title En',
+                    title: '標題(英文)',
                     dataIndex: 'title_en',
                 },{
-                    title: 'Start Date',
+                    title: '開始日期',
                     dataIndex: 'start_date',
                 },{
-                    title: 'End Date',
+                    title: '結束日期',
                     dataIndex: 'end_date',
+                },{
+                    title: '上課時間',
+                    dataIndex: 'class_time',
+                },{
+                    title: '時數',
+                    dataIndex: 'hours',
                 },{
                     title: 'Action',
                     dataIndex: 'operation',

@@ -72,4 +72,9 @@
 .ant-menu-root{
     padding-top:10px;
 }
+
+.ant-menu-title-content{
+  padding-top:5px!important
+}
 </style>
+

@@ -37,6 +37,11 @@ Route::middleware([
     Route::get('membership',[App\Http\Controllers\Member\MembershipController::class,'index'])->name('membership');
 });
 
+Route::prefix('api')->group(function(){
+    Route::get('bulletins',[App\Http\Controllers\Api\BulletinController::class,'index'])->name('api.bulletins');
+    Route::get('courses',[App\Http\Controllers\Api\CourseController::class,'index'])->name('api.courses');
+    Route::get('course/{course}',[\App\Http\Controllers\Api\CourseController::class,'show'])->name('api.course.show');
+})->name('api');
 
 Route::middleware([
     'auth:sanctum',
@@ -53,9 +58,11 @@ Route::middleware([
         Route::resource('form.fields', App\Http\Controllers\Admin\FormFieldController::class)->names('admin.form.fields');
         Route::get('certificate-delete-media/{media}',[App\Http\Controllers\Admin\CertificateController::class,'deleteMedia'])->name('admin.certificate-delete-media');
         Route::get('form-delete-media/{media}',[App\Http\Controllers\Admin\FormController::class,'deleteMedia'])->name('admin.form-delete-media');
-        Route::resource('messages', App\Http\Controllers\Admin\MessageController::class)->names('admin.messages');
         Route::resource('courses', App\Http\Controllers\Admin\CourseController::class)->names('admin.courses');
+        Route::resource('messages', App\Http\Controllers\Admin\MessageController::class)->names('admin.messages');
+        Route::resource('bulletins', App\Http\Controllers\Admin\BulletinController::class)->names('admin.bulletins');
     })->name('admin');
 });
+
 
 

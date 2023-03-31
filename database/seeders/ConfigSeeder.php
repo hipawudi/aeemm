@@ -17,9 +17,36 @@ class ConfigSeeder extends Seeder
     {
         DB::table('configs')->insert([
             'key' => 'message_categories',
-            'value'=>'[{"value":"public","label":"Public"},{"value":"member","label":"Members"},{"value":"personal","label":"Personal"}]',
+            'value'=>'[{"value":"public","label":"公開"},{"value":"member","label":"會員"},{"value":"personal","label":"個人"}]',
         ]);
 
+        DB::table('configs')->insert([
+            'key' => 'bulletin_categories',
+            'value'=>'
+                [{
+                    "value": "event",
+                    "label": "大事紀要"
+                }, {
+                    "value": "media",
+                    "label": "媒體報導"
+                }, {
+                    "value": "association",
+                    "label": "學會消息"
+                }, {
+                    "value": "lecture",
+                    "label": "專題講座"
+                }, {
+                    "value": "excahngel",
+                    "label": "技術交流"
+                }, {
+                    "value": "tips",
+                    "label": "機電小TIPS"
+                }, {
+                    "value": "course",
+                    "label": "進修課程"
+                }]
+            ',
+        ]);
     }
 
 

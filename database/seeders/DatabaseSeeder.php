@@ -32,7 +32,8 @@ class DatabaseSeeder extends Seeder
             CertificateSeeder::class,
             FormSeeder::class,
             MessageSeeder::class,
-            ConfigSeeder::class
+            ConfigSeeder::class,
+            CourseSeeder::class,
         ]);
 
 

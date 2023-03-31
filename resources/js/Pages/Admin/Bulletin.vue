@@ -2,25 +2,21 @@
     <AdminLayout title="Dashboard">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Messenger
+                公告
             </h2>
         </template>
+        {{ new Date().getFullYear()-2009+1 }}
+        {{ yearLength }}
         <button @click="createRecord()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增通信</button>
-            <a-table :dataSource="messages.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" ref="dataTable">
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">新增公告</button>
+            <a-table :dataSource="bulletins.data" :columns="columns" :pagination="pagination" @change="onPaginationChange" ref="dataTable">
                 <template #bodyCell="{column, text, record, index}">
                     <template v-if="column.dataIndex=='operation'">
                         <a-button @click="editRecord(record)">修改</a-button>
                         <a-button @click="deleteRecord(record.id)">刪除</a-button>
                     </template>
                     <template v-else-if="column.dataIndex=='category'">
-                        {{ messageCategories.find(x=>x.value==text)['label']}}
-                    </template>
-                    <template v-else-if="column.dataIndex=='receiver'">
-                        <p v-if="record.category=='personal' && record['received_member']">
-                            {{ record['received_member']['display_name']}}
-                        </p>
-                        <p v-else>--</p>
+                        {{ bulletinCategories.find(x=>x.value==text)['label']}}
                     </template>
                     <template v-else>
                         {{record[column.dataIndex]}}
@@ -32,7 +28,7 @@
         <a-form
             ref="modalRef"
             :model="modal.data"
-            name="Teacher"
+            name="Bulletin"
             :label-col="{ span: 4 }"
             :wrapper-col="{ span: 20 }"
             autocomplete="off"
@@ -40,17 +36,16 @@
             :validate-messages="validateMessages"
         >
             <a-form-item label="分類" name="category">
-                <a-select v-model:value="modal.data.category" :options="messageCategories"/>
+                <a-select v-model:value="modal.data.category" :options="bulletinCategories"/>
             </a-form-item>
-            <a-form-item label="收件人" name="receiver" v-if="modal.data.category=='personal'">
+            <a-form-item label="年份" name="year">
                 <a-select 
-                    v-model:value="modal.data.receiver" 
-                    :options="members"
-                    :field-names="{label:'display_name', value:'id'}"
+                    v-model:value="modal.data.year" 
+                    :options="[...Array(yearLength)].map((_, i) => ({ value:  (yearStart-i) }))"
                 />
             </a-form-item>
-            <a-form-item label="發件人" name="sender">
-                <a-input v-model:value="modal.data.sender" />
+            <a-form-item label="日期" name="date">
+                <a-date-picker v-model:value="modal.data.date" :format="dateFormat" :valueFormat="dateFormat" />
             </a-form-item>
             <a-form-item label="標題" name="title">
                 <a-input v-model:value="modal.data.title" />
@@ -84,19 +79,23 @@ export default {
         RestFilled,
         quillEditor,   
     },
-    props: ['messageCategories','messages','members'],
+    props: ['bulletinCategories','bulletins'],
     data() {
         return {
+            dateFormat:'YYYY-MM-DD',
+            yearCurrent:2023,
+            yearStart:new Date().getFullYear()+1,
+            yearLength:(new Date().getFullYear()-2009)+2,
             modal:{
                 isOpen:false,
                 data:{},
-                title:"Modal",
+                title:"公告",
                 mode:""
             },
             pagination:{
-                total: this.messages.total,
-                current:this.messages.current_page,
-                pageSize:this.messages.per_page,
+                total: this.bulletins.total,
+                current:this.bulletins.current_page,
+                pageSize:this.bulletins.per_page,
             },
             filter:{
             },
@@ -104,18 +103,16 @@ export default {
                 {
                     title: '分類',
                     dataIndex: 'category',
-                    width:80,
+                    width:100,
+                },{
+                    title: '年份',
+                    dataIndex: 'year',
+                },{
+                    title: '日期',
+                    dataIndex: 'date',
                 },{
                     title: '標題',
                     dataIndex: 'title',
-                },{
-                    title: '發件人',
-                    dataIndex: 'sender',
-                    width:120,
-                },{
-                    title: '收件人',
-                    dataIndex: 'receiver',
-                    width:120,
                 },{
                     title: '操作',
                     dataIndex: 'operation',
@@ -158,7 +155,7 @@ export default {
         },
         storeRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
-                this.$inertia.post(route('admin.messages.store') , this.modal.data, {
+                this.$inertia.post(route('admin.bulletins.store') , this.modal.data, {
                     onSuccess:(page)=>{
                         this.modal.isOpen=false;
                     },
@@ -173,7 +170,7 @@ export default {
         updateRecord(){
             this.$refs.modalRef.validateFields().then(()=>{
                 this.modal.data._method = 'PATCH';
-                this.$inertia.post(route('admin.messages.update',this.modal.data.id), this.modal.data,{
+                this.$inertia.post(route('admin.bulletins.update',this.modal.data.id), this.modal.data,{
                     onSuccess:(page)=>{
                         this.modal.isOpen=false;
                     },
@@ -199,7 +196,7 @@ export default {
             });
         },
         onPaginationChange(page, filters, sorter){
-            this.$inertia.get(route('admin.messages.index'),{
+            this.$inertia.get(route('admin.bulletins.index'),{
                 page:page.current,
                 per_page:5,
                 filter:'namejose'

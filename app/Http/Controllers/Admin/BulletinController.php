@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Member;
-use App\Models\Message;
+use App\Models\Bulletin;
 use App\Models\Config;
 
-class MessageController extends Controller
+class BulletinController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +18,10 @@ class MessageController extends Controller
      */
     public function index()
     {
-        $messages=Message::with('received_member')->paginate(request('per_page'));
-        return Inertia::render('Admin/Message',[
-            'messages'=>$messages,
-            'messageCategories'=>Config::item('message_categories'),
-            'members'=>Member::all()
+        $bulletins=Bulletin::paginate(request('per_page'));
+        return Inertia::render('Admin/Bulletin',[
+            'bulletins'=>$bulletins,
+            'bulletinCategories'=>Config::item('bulletin_categories'),
         ]);
     }
 
@@ -78,15 +77,15 @@ class MessageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $message=Message::find($id);
-        $message->category=$request->category;
-        $message->title=$request->title;
-        $message->content=$request->content;
-        $message->sender=$request->sender;
-        $message->receiver=$request->receiver;
-        $message->created_by=Auth()->user()->id;
-        $message->updated_by=0;
-        $message->save();
+        $bulletin=Bulletin::find($id);
+        $bulletin->category=$request->category;
+        $bulletin->year=$request->year;
+        $bulletin->date=$request->date;
+        $bulletin->title=$request->title;
+        $bulletin->content=$request->content;
+        $bulletin->created_by=Auth()->user()->id;
+        $bulletin->updated_by=0;
+        $bulletin->save();
         return redirect()->back();
     }
 

@@ -63,13 +63,23 @@
             </inertia-link>
           </span>
         </a-menu-item>
-        <a-menu-item key="5">
+        <a-menu-item key="7">
           <template #icon>
             <InboxOutlined />
           </template>
           <span>
             <inertia-link :href="route('admin.messages.index')">
-              通訊
+              通信
+            </inertia-link>
+          </span>
+        </a-menu-item>
+        <a-menu-item key="8">
+          <template #icon>
+            <InboxOutlined />
+          </template>
+          <span>
+            <inertia-link :href="route('admin.bulletins.index')">
+              公告
             </inertia-link>
           </span>
         </a-menu-item>

@@ -25,10 +25,9 @@ class MessageFactory extends Factory
     {
    
         return [
-            'category' => $this->faker->randomElement(['public','members','perersonal']),
+            'category' => $this->faker->randomElement(['public','member','personal']),
             'title' => $this->faker->text(),
             'content' => $this->faker->paragraph(3),
-            'scope' => $this->faker->randomElement(['public','members','perersonal']),
             'sender'=> $this->faker->randomElement(['system','admin','member']),
             //'receiver'=>$this->faker->numberBetween(1,100)
         ];
