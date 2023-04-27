@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Form;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Support\Facades\Auth;
 
 class FormController extends Controller
 {
@@ -23,9 +24,8 @@ class FormController extends Controller
      */
     public function index()
     {
-
-        return Inertia::render('Admin/Form',[
-            'forms'=>Form::with('media')->get()
+        return Inertia::render('Admin/Form/Index', [
+            'forms' => Form::with('media')->get()
         ]);
     }
 
@@ -47,19 +47,20 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'name'=>'required',
-            'title'=>'required',
+        $this->validate($request, [
+            'name' => 'required',
+            'title' => 'required',
         ]);
 
-            $form=new Form();
-            $form->name=$request->name;
-            $form->title=$request->title;
-            $form->description=$request->description;
-            $form->require_login=$request->require_login;
-            $form->require_member=$request->require_member;
-            $form->save();
-            return redirect()->back();
+        $form = new Form();
+        $form->name = $request->name;
+        $form->title = $request->title;
+        $form->description = $request->description;
+        $form->for_account = $request->for_account;
+        $form->for_member = $request->for_member;
+        $form->published = $request->published;
+        $form->save();
+        return redirect()->back();
     }
 
     /**
@@ -89,7 +90,7 @@ class FormController extends Controller
         // return Inertia::render('Admin/FormEdit',[
         //     'fields'=>$form->fields
         // ]);
-        
+
     }
 
     /**
@@ -101,25 +102,25 @@ class FormController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'id' => 'required',
-            'name'=>'required',
-            'title'=>'required',
+            'name' => 'required',
+            'title' => 'required',
             // 'image'=>'array',
             // 'image.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
-        $form=Form::find($request->id);
-        $form->name=$request->name;
-        $form->title=$request->title;
-        $form->description=$request->description;
-        $form->require_login=$request->require_login;
-        $form->require_member=$request->require_member;
-        if($request->file('image')){
+        $form = Form::find($request->id);
+        $form->name = $request->name;
+        $form->title = $request->title;
+        $form->description = $request->description;
+        $form->for_account = $request->for_account;
+        $form->for_member = $request->for_member;
+        $form->published = $request->published;
+        if ($request->file('image')) {
             $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
         }
         $form->save();
         return redirect()->back();
-        
     }
 
     /**
@@ -130,15 +131,16 @@ class FormController extends Controller
      */
     public function destroy(Form $form)
     {
-        if($form->hasChild()){
-            return redirect()->back()->withErrors(['message'=>'No permission or restriced deletion of records with child records.']);
-        }else{
+        if ($form->hasChild()) {
+            return redirect()->back()->withErrors(['message' => 'No permission or restriced deletion of records with child records.']);
+        } else {
             $form->delete();
             return redirect()->back();
         }
     }
 
-    public function deleteMedia(Media $media){
+    public function deleteMedia(Media $media)
+    {
         $media->delete();
-    }    
+    }
 }

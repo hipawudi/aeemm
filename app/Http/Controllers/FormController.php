@@ -18,13 +18,17 @@ class FormController extends Controller
      */
     public function index()
     {
-        if(Auth()->user()){
-            $forms=Form::where('published',1)->get();
-        }else{
-            $forms=Form::where('published',1)->where('for_member',0)->get();
+        if (Auth()->user()) {
+            if (Auth()->user()->isMember) {
+                $forms = Form::where('published', 1)->get();
+            } else {
+                $forms = Form::where('published', 1)->where('for_member', 0)->get();
+            }
+        } else {
+            $forms = Form::where('published', 1)->where('require_login', 0)->where('for_member', 0)->get();
         }
-        return Inertia::render('Forms/Form',[
-            'forms'=>$forms
+        return Inertia::render('Forms/Form', [
+            'forms' => $forms
         ]);
     }
 
@@ -47,22 +51,22 @@ class FormController extends Controller
     public function store(Request $request)
     {
         //date('Y-m-d',strtotime($request->date))
-            // $this->validate($request,[
-            //     'form_id'=>'required',
-            // ]);
-                $response=new Response();
-                $response->form_id=$request->form['id'];
-                $response->member_id=Auth()->user()->id;
-                $response->save();
-                
-                foreach($request->fields as $key=>$value){
-                    $field=new ResponseField();
-                    $field->response_id=$response->id;
-                    $field->field_name=$key;
-                    $field->field_value=$value;
-                    $field->save();
-                }
-                return redirect()->back();
+        // $this->validate($request,[
+        //     'form_id'=>'required',
+        // ]);
+        $response = new Response();
+        $response->form_id = $request->form['id'];
+        $response->member_id = Auth()->user()->id;
+        $response->save();
+
+        foreach ($request->fields as $key => $value) {
+            $field = new ResponseField();
+            $field->response_id = $response->id;
+            $field->field_name = $key;
+            $field->field_value = $value;
+            $field->save();
+        }
+        return redirect()->back();
     }
 
     /**
@@ -73,14 +77,17 @@ class FormController extends Controller
      */
     public function show($id)
     {
-        $form=Form::with('fields')->find($id);
-        if($form->require_member==1 && !Auth()->user()){
+        $form = Form::with('fields')->find($id);
+        if (
+            $form->published == 0 ||
+            ($form->for_account == 1 && !Auth()->user()) ||
+            ($form->for_member == 1 && !Auth()->user()->member)
+        ) {
             return redirect('forms');
         }
-        return Inertia::render('Forms/FormDefault',[
-            'form'=>$form,
+        return Inertia::render('Forms/FormDefault', [
+            'form' => $form,
         ]);
-        
     }
 
     /**

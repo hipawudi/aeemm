@@ -20,8 +20,8 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(Antd)
-            .component('inertia-head',Head)
-            .component('inertia-link',Link)
+            .component('inertia-head', Head)
+            .component('inertia-link', Link)
             .mount(el);
     },
 });

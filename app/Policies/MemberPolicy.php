@@ -30,12 +30,12 @@ class MemberPolicy
      */
     public function view(AdminUser $user, Member $member)
     {
-        if($user->hasRole('admin')){
+        if ($user->hasRole('admin')) {
             return true;
         }
-        $organizations=$member->organizations;
-        foreach($organizations as $organization){
-            if(in_array($organization->id, $user->organizations->pluck('id')->toArray())){
+        $organizations = $member->organizations;
+        foreach ($organizations as $organization) {
+            if (in_array($organization->id, $user->organizations->pluck('id')->toArray())) {
                 return true;
             }
         }
@@ -62,12 +62,12 @@ class MemberPolicy
      */
     public function update(AdminUser $user, Member $member)
     {
-        if($user->hasRole('admin')){
+        if ($user->hasRole('admin')) {
             return true;
         }
-        $organizations=$member->organizations;
-        foreach($organizations as $organization){
-            if(in_array($organization->id, $user->organizations->pluck('id')->toArray())){
+        $organizations = $member->organizations;
+        foreach ($organizations as $organization) {
+            if (in_array($organization->id, $user->organizations->pluck('id')->toArray())) {
                 return true;
             }
         }

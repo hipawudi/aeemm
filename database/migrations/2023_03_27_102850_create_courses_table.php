@@ -15,13 +15,14 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->string('scope');
-            $table->string('title_zh');
-            $table->string('title_en')->nullable();
+            $table->string('scope')->nullable();
+            $table->string('name_zh');
+            $table->string('name_en')->nullable();
             $table->text('description_zh')->nullable();
             $table->text('description_en')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->string('number')->nullable();
             $table->string('class_time')->nullable();
             $table->integer('hours')->nullable();
             $table->integer('fee')->nullable();
@@ -34,7 +35,6 @@ return new class extends Migration
             $table->longText('tutor')->nullable();
             $table->boolean('published')->default(0);
             $table->timestamps();
-
         });
     }
 

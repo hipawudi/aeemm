@@ -16,7 +16,7 @@ class Member extends Model
         $user = new User();
 
         $user->email = $this->email;
-        $user->name = $this->first_name;
+        $user->name = $this->name_zh;
         $user->password = 'need-to-set';
 
         $user->save();
@@ -33,10 +33,19 @@ class Member extends Model
     {
         return $this->user()->exists();
     }
-    public function certificates(){
-        return $this->belongsToMany(Certificate::class,'professionals','member_id','certificate_id')->withPivot(
-            'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorize_by','rank','avata');
+    public function certificates()
+    {
+        return $this->belongsToMany(Certificate::class, 'professionals', 'member_id', 'certificate_id')->withPivot(
+            'id',
+            'display_name',
+            'number',
+            'number_display',
+            'issue_date',
+            'valid_from',
+            'valid_until',
+            'authorize_by',
+            'rank',
+            'avata'
+        );
     }
-
-
 }

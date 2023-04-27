@@ -41,17 +41,5 @@ class UserSeeder extends Seeder
             'name' => 'team',
             'personal_team' => '1',
         ]);
-
-        DB::table('team_user')->insert([
-            'team_id' => '1',
-            'user_id' => '1',
-        ]);
-
-        DB::table('team_user')->insert([
-            'team_id' => '1',
-            'user_id' => '2',
-        ]);
-
-        
     }
 }

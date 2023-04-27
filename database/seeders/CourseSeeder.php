@@ -16,8 +16,8 @@ class CourseSeeder extends Seeder
     public function run()
     {
         DB::table('courses')->insert([
-            'title_zh' => '水技術提升培訓課程',
-            'title_en' => 'Advancement of Water Technology Course',
+            'name_zh' => '水技術提升培訓課程',
+            'name_en' => 'Advancement of Water Technology Course',
             'scope'=>'機電工程, 機械工程',
             'description_zh'=>'水與我們日常生活息息相關,而水處理技術的發展更是與日俱新,本課程透過了解不同的水處理技術、標準與法規,管理技術,以及監察控制系統,並透過短片、產品展示,助學員明白水處理的理念及過程,使學員能在完成課程後掌握水技術並提升對水資源的管理及技術應用。',
             'start_date'=>'2023-03-25',

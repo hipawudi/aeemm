@@ -9,11 +9,13 @@ module.exports = {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
     ],
-
+    corePlugins: {
+        preflight: false
+    },
     theme: {
         extend: {
             fontFamily: {
-                sans: [ 'Roboto', 'Helvetica', 'Noto Sans TC', ...defaultTheme.fontFamily.sans],
+                sans: ['Roboto', 'Helvetica', 'Noto Sans TC', ...defaultTheme.fontFamily.sans],
             },
         },
     },

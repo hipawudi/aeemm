@@ -23,8 +23,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Course',[
-            'courses'=>Course::with('media')->get()
+        return Inertia::render('Admin/Course/Index', [
+            'courses' => Course::with('media')->get()
         ]);
     }
 
@@ -35,8 +35,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/CourseCreate',[
-        ]);
+        return Inertia::render('Admin/Course/Create', []);
     }
 
     /**
@@ -47,31 +46,36 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'title_zh'=>'required',
+        $this->validate($request, [
+            'name_zh' => 'required',
             // 'image'=>'array',
             // 'image.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
-        $course=new Course;
-        $course->title_zh=$request->title_zh;
-        $course->title_en=$request->title_en;
-        $course->description_zh=$request->description_zh;
-        $course->description_en=$request->description_en;
-        $course->start_date=$request->start_date;
-        $course->end_date=$request->end_date;
-        $course->class_time=json_encode($request->class_time);
-        $course->fee=$request->fee;
-        $course->content=$request->content;
-        $course->language=$request->language;
-        $course->location=$request->location;
-        $course->target=$request->target;
-        $course->published=is_null($request->published)?0:$request->published;
-        $course->tutor=$request->tutor;
-        if($request->file('poster')){
+        $course = new Course;
+        $course->name_zh = $request->name_zh;
+        $course->name_en = $request->name_en;
+        $course->scope = $request->scope;
+        $course->description_zh = $request->description_zh;
+        $course->description_en = $request->description_en;
+        $course->start_date = $request->start_date;
+        $course->end_date = $request->end_date;
+        $course->class_time = json_encode($request->class_time);
+        $course->hours = $request->hours;
+        $course->quota = $request->quota;
+        $course->number = $request->number;
+        $course->fee = $request->fee;
+        $course->fee_member = $request->fee_member;
+        $course->content = $request->content;
+        $course->language = $request->language;
+        $course->location = $request->location;
+        $course->target = $request->target;
+        $course->published = is_null($request->published) ? 0 : $request->published;
+        $course->tutor = $request->tutor;
+        if ($request->file('poster')) {
             $course->addMedia($request->file('poster')[0]['originFileObj'])->toMediaCollection('poster');
         }
         $course->save();
-        return redirect()->route('admin.courses.edit',$course->id);
+        return redirect()->route('admin.courses.index');
     }
 
     /**
@@ -84,8 +88,8 @@ class CourseController extends Controller
     {
         // $this->authorize('view',$organization);
         // $this->authorize('view',$form);
-        return Inertia::render('Admin/CourseShow',[
-            'course'=>$course->with('media')->first()
+        return Inertia::render('Admin/Course/Show', [
+            'course' => $course->with('media')->first()
         ]);
     }
 
@@ -99,10 +103,9 @@ class CourseController extends Controller
     {
         //$this->authorize('update',$organization);
         //$this->authorize('update',$form);
-        return Inertia::render('Admin/CourseEdit',[
-            'course'=>$course->with('media')->first()
+        return Inertia::render('Admin/Course/Edit', [
+            'course' => $course
         ]);
-        
     }
 
     /**
@@ -114,33 +117,37 @@ class CourseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'id' => 'required',
-            'title_zh'=>'required',
+            'name_zh' => 'required',
             // 'image'=>'array',
             // 'image.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
-        $course=Course::find($request->id);
-        $course->title_zh=$request->title_zh;
-        $course->title_en=$request->title_en;
-        $course->description_zh=$request->description_zh;
-        $course->description_en=$request->description_en;
-        $course->start_date=$request->start_date;
-        $course->end_date=$request->end_date;
-        $course->class_time=json_encode($request->class_time);
-        $course->fee=$request->fee;
-        $course->content=$request->content;
-        $course->language=$request->language;
-        $course->location=$request->location;
-        $course->target=$request->target;
-        $course->published=$request->published;
-        $course->tutor=$request->tutor;
-        if($request->file('poster')){
+        $course = Course::find($request->id);
+        $course->name_zh = $request->name_zh;
+        $course->name_en = $request->name_en;
+        $course->scope = $request->scope;
+        $course->description_zh = $request->description_zh;
+        $course->description_en = $request->description_en;
+        $course->start_date = $request->start_date;
+        $course->end_date = $request->end_date;
+        $course->class_time = json_encode($request->class_time);
+        $course->hours = $request->hours;
+        $course->quota = $request->quota;
+        $course->number = $request->number;
+        $course->fee = $request->fee;
+        $course->fee_member = $request->fee_member;
+        $course->content = $request->content;
+        $course->language = $request->language;
+        $course->location = $request->location;
+        $course->target = $request->target;
+        $course->published = $request->published;
+        $course->tutor = $request->tutor;
+        if ($request->file('poster')) {
             $course->addMedia($request->file('poster')[0]['originFileObj'])->toMediaCollection('poster');
         }
         $course->save();
-        return redirect()->back();
-        
+        return redirect()->route('admin.courses.index');
     }
 
     /**
@@ -151,15 +158,16 @@ class CourseController extends Controller
      */
     public function destroy(Form $form)
     {
-        if($form->hasChild()){
-            return redirect()->back()->withErrors(['message'=>'No permission or restriced deletion of records with child records.']);
-        }else{
+        if ($form->hasChild()) {
+            return redirect()->back()->withErrors(['message' => 'No permission or restriced deletion of records with child records.']);
+        } else {
             $form->delete();
             return redirect()->back();
         }
     }
 
-    public function deleteMedia(Media $media){
+    public function deleteMedia(Media $media)
+    {
         $media->delete();
-    }    
+    }
 }

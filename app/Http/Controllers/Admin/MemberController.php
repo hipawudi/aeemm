@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Member;
+use App\Notifications\EmailNotification;
+use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Password;
+use App\Models\User;
 
 class MemberController extends Controller
 {
@@ -15,12 +19,21 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $members=Member::paginate(request('per_page'));
-        $members->filter=request('filter');
-        return Inertia::render('Admin/Member',[
-            'members'=>$members,
+
+        if (empty($request->per_page)) {
+            $per_page = 10;
+        } else {
+            $per_page = $request->per_page;
+        }
+
+        $members = Member::with(['user' => function ($query) {
+            $query->where('password', '!=', null)->where('password', '!=', 'need-to-set');
+        }])->paginate($per_page);
+
+        return Inertia::render('Admin/Member', [
+            'members' => $members,
         ]);
     }
 
@@ -31,7 +44,7 @@ class MemberController extends Controller
      */
     public function create()
     {
-        //
+        //   
     }
 
     /**
@@ -74,9 +87,24 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Member $member)
     {
         //
+        $this->validate($request, [
+            'name_zh' => 'required',
+            'state' => 'required',
+        ]);
+
+        $member->name_zh = $request->name_zh;
+        $member->name_en = $request->name_en;
+        $member->display_name = $request->display_name;
+        $member->email = $request->email;
+        $member->phone = $request->phone;
+        $member->state = $request->state;
+        $member->save();
+
+        return redirect()->back();
+        // dd($request);
     }
 
     /**
@@ -88,18 +116,23 @@ class MemberController extends Controller
     public function destroy($id)
     {
         //
-    }
-    public function createLogin(Member $member){
+        Member::where('id', $id)->delete();
 
+        return redirect()->back();
+    }
+    public function createLogin(Request $request)
+    {
+        $member = Member::where('id', $request->id)->first();
         if ($member->hasUser()) {
             $user = $member->user;
         } else {
             $user = $member->createUser();
+            $member->user_id = $user->id;
+            $member->save();
         }
 
         Password::broker(config('fortify.passwords'))->sendResetLink(
-            [ 'email' => $user->email ]
+            ['email' => $user->email]
         );
-
     }
 }

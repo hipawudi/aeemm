@@ -10,14 +10,15 @@ use App\Models\Certificate;
 
 class MembershipController extends Controller
 {
-    public function index(){
-        $member=Member::with('certificates')->find(Auth()->user()->id);
+    public function index()
+    {
+        $member = Member::with('certificates')->find(Auth()->user()->id);
         // $certs=Certificate::whereBelongsTo($member)->get();
         // dd($certs);
-        dd($member);
-        
-        return Inertia::render('Member/Membership',[
-            'member'=>Auth()->user()->member->certificates,
+
+
+        return Inertia::render('Member/Membership', [
+            'member' => Auth()->user()->member->certificates,
         ]);
     }
 }

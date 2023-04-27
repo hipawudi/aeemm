@@ -23,9 +23,9 @@ class FormFieldController extends Controller
      */
     public function index(Form $form)
     {
-        return Inertia::render('Admin/FormField',[
-            'form'=>$form,
-            'fields'=>$form->fields,
+        return Inertia::render('Admin/Form/Field', [
+            'form' => $form,
+            'fields' => $form->fields,
         ]);
     }
 
@@ -47,24 +47,23 @@ class FormFieldController extends Controller
      */
     public function store(Form $form, Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'form_id' => 'required',
-            'field_name'=>'required',
-            'field_label'=>'required',
+            'field_name' => 'required',
+            'field_label' => 'required',
         ]);
 
-            $field=new FormField();
-            $field->form_id=$request->form_id;
-            $field->field_name=$request->field_name;
-            $field->field_label=$request->field_label;
-            $field->type=$request->type;
-            $field->require=$request->require;
-            $field->rule=$request->rule;
-            $field->validate=$request->validate;
-            $field->remark=$request->remark;
-            $field->save();
-            return redirect()->back();
-
+        $field = new FormField();
+        $field->form_id = $request->form_id;
+        $field->field_name = $request->field_name;
+        $field->field_label = $request->field_label;
+        $field->type = $request->type;
+        $field->require = $request->require;
+        $field->rule = $request->rule;
+        $field->validate = $request->validate;
+        $field->remark = $request->remark;
+        $field->save();
+        return redirect()->back();
     }
 
     /**
@@ -86,7 +85,6 @@ class FormFieldController extends Controller
      */
     public function edit($id)
     {
-        
     }
 
     /**
@@ -96,22 +94,22 @@ class FormFieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Form $form, Request $request )
+    public function update(Form $form, Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'form_id' => 'required',
-            'field_name'=>'required',
-            'field_label'=>'required',
+            'field_name' => 'required',
+            'field_label' => 'required',
         ]);
-            $field=FormField::find($request->id);
-            $field->form_id=$request->form_id;
-            $field->field_name=$request->field_name;
-            $field->field_label=$request->field_label;
-            $field->type=$request->type;
-            $field->require=$request->require;
-            $field->remark=$request->remark;
-            $field->save();
-            return redirect()->back();
+        $field = FormField::find($request->id);
+        $field->form_id = $request->form_id;
+        $field->field_name = $request->field_name;
+        $field->field_label = $request->field_label;
+        $field->type = $request->type;
+        $field->require = $request->require;
+        $field->remark = $request->remark;
+        $field->save();
+        return redirect()->back();
     }
 
     /**
@@ -120,8 +118,8 @@ class FormFieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Organization $organization, Form $form, FormField $field)
+    public function destroy(Form $form, FormField $field)
     {
-        $field->delete();        
+        $field->delete();
     }
 }
