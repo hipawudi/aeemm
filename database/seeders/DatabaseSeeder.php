@@ -37,11 +37,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        $roleMaster=Role::create(['name'=>'master','guard_name' => 'admin_web']);
-        $roleAdmin=Role::create(['name'=>'admin','guard_name' => 'admin_web']);
-        $roleOrganization=Role::create(['name'=>'organization','guard_name' => 'admin_web']);
-        $roleMember=Role::create(['name'=>'member','guard_name' => 'web']);
-        $roleMember=Role::create(['name'=>'admin','guard_name' => 'web']);
+        $roleMaster = Role::create(['name' => 'master', 'guard_name' => 'admin_web']);
+        $roleAdmin = Role::create(['name' => 'admin', 'guard_name' => 'admin_web']);
+        $roleOrganization = Role::create(['name' => 'organization', 'guard_name' => 'admin_web']);
+        $roleMember = Role::create(['name' => 'member', 'guard_name' => 'web']);
+        $roleMember = Role::create(['name' => 'admin', 'guard_name' => 'web']);
 
         // $permissionCourse=Permission::create(['name'=>'manage course','guard_name' => 'admin_web']);
         // $permissionOffer=Permission::create(['name'=>'manage offer','guard_name' => 'admin_web']);
@@ -65,34 +65,18 @@ class DatabaseSeeder extends Seeder
 
         // $roleOrganization->givePermissionTo($permissionStudent);
         // $roleOrganization->givePermissionTo($permissionAttendance);
-
-        $admin=\App\Models\AdminUser::factory([
-            'name' => 'Master',
-            'email' => 'master@example.com',
-            'password'=> Hash::make('password')
-        ])->create();
-        $admin->assignRole('master');
-
-        $admin=\App\Models\AdminUser::factory([
+        $member = \App\Models\User::factory([
             'name' => 'Admin',
             'email' => 'admin@example.com',
-            'password'=> Hash::make('password')
-        ])->create();
-        $admin->assignRole('admin');
-
-        $member=\App\Models\User::factory([
-            'name' => 'Member',
-            'email' => 'member@example.com',
-            'password'=> Hash::make('password')
-        ])->withPersonalTeam()->create();
-        $member->assignRole('member');
-
-        $member=\App\Models\User::factory([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'password'=> Hash::make('password')
+            'password' => Hash::make('password')
         ])->withPersonalTeam()->create();
         $member->assignRole('admin');
 
+        $member = \App\Models\User::factory([
+            'name' => 'Member',
+            'email' => 'member@example.com',
+            'password' => Hash::make('password')
+        ])->withPersonalTeam()->create();
+        $member->assignRole('member');
     }
 }
