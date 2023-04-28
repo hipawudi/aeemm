@@ -82,7 +82,7 @@ export default {
             // console.log(this.form)
             
             // --- FortifyServiceProvider
-            this.form.post('/admin/login')
+            this.form.post('/login')
         }
     }
 }

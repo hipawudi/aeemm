@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
@@ -9,18 +10,18 @@ Route::group(['middleware' => config('fortify.middleware', ['admin_web'])], func
 
     $limiter = config('fortify.limiters.login');
 
-    Route::get('/admin/login', function () {
-        return Inertia::render('Admin/Login');
-    })->middleware(['guest:'.config('fortify.guard')]);
-    
-    Route::post('/admin/login', [AuthenticatedSessionController::class, 'store'])
-    ->middleware(array_filter([
-        'guest:'.config('fortify.guard'),
-        $limiter ? 'throttle:'.$limiter : null,
-    ]));
+    Route::get('/login', function () {
+        return Inertia::render('Login');
+    })->middleware(['guest:' . config('fortify.guard')]);
+
+    Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+        ->middleware(array_filter([
+            'guest:' . config('fortify.guard'),
+            $limiter ? 'throttle:' . $limiter : null,
+        ]));
 
     Route::post('/admin/logout', [AuthenticatedSessionController::class, 'destroy'])
-    ->name('admin.logout');
+        ->name('admin.logout');
 });
 
 
@@ -65,6 +66,3 @@ Route::middleware([
 //             })->name('admin.mastermember');        
 //         })->name('admin.master');
 // });
-
-
-
