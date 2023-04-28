@@ -16,13 +16,18 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $messages=Message::with('received_member')->paginate(request('per_page'));
-        return Inertia::render('Admin/Message',[
-            'messages'=>$messages,
-            'messageCategories'=>Config::item('message_categories'),
-            'members'=>Member::all()
+        if (empty($request->per_page)) {
+            $per_page = 10;
+        } else {
+            $per_page = $request->per_page;
+        }
+        $messages = Message::with('received_member')->paginate($per_page);
+        return Inertia::render('Admin/Message', [
+            'messages' => $messages,
+            'messageCategories' => Config::item('message_categories'),
+            'members' => Member::all()
         ]);
     }
 
@@ -44,7 +49,16 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $message = new Message;
+
+        $message->category = $request->category;
+        $message->sender = $request->sender;
+        $message->title = $request->title;
+        $message->content = $request->content;
+
+        $message->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -78,14 +92,14 @@ class MessageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $message=Message::find($id);
-        $message->category=$request->category;
-        $message->title=$request->title;
-        $message->content=$request->content;
-        $message->sender=$request->sender;
-        $message->receiver=$request->receiver;
-        $message->created_by=Auth()->user()->id;
-        $message->updated_by=0;
+        $message = Message::find($id);
+        $message->category = $request->category;
+        $message->title = $request->title;
+        $message->content = $request->content;
+        $message->sender = $request->sender;
+        $message->receiver = $request->receiver;
+        $message->created_by = Auth()->user()->id;
+        $message->updated_by = 0;
         $message->save();
         return redirect()->back();
     }

@@ -22,11 +22,10 @@ class CertificateController extends Controller
      */
     public function index()
     {
-        $certificates=Certificate::with('media')->get();
-        return Inertia::render('Admin/Certificate',[
-            'certificates'=>$certificates,
+        $certificates = Certificate::with('media')->get();
+        return Inertia::render('Admin/Certificate', [
+            'certificates' => $certificates,
         ]);
-
     }
 
     /**
@@ -48,20 +47,20 @@ class CertificateController extends Controller
     public function store(Request $request)
     {
 
-        $this->validate($request,[
-            'name'=>'required',
-            'cert_title'=>'required',
-            'cert_logo'=>'image|mimes:jpeg,jpg,gif,png|max:1024'
+        $this->validate($request, [
+            'name' => 'required',
+            'cert_title' => 'required',
+            'cert_logo' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
-        $certificate=new Certificate();
-        $certificate->name=$request->name;
-        $certificate->cert_title=$request->cert_title;
-        $certificate->cert_body=$request->cert_body;
-        $certificate->cert_logo=$request->cert_logo;
-        $certificate->cert_template=$request->cert_template;
-        $certificate->number_format=$request->number_format;
-        $certificate->rank_caption=$request->rank_caption;
-        $certificate->description=$request->description;
+        $certificate = new Certificate();
+        $certificate->name = $request->name;
+        $certificate->cert_title = $request->cert_title;
+        $certificate->cert_body = $request->cert_body;
+        $certificate->cert_logo = $request->cert_logo;
+        $certificate->cert_template = $request->cert_template;
+        $certificate->number_format = $request->number_format;
+        $certificate->rank_caption = $request->rank_caption;
+        $certificate->description = $request->description;
         $certificate->save();
         return redirect()->back();
     }
@@ -98,27 +97,26 @@ class CertificateController extends Controller
     public function update(Request $request, $id)
     {
 
-        $this->validate($request,[
-            'name'=>'required',
-            'cert_title'=>'required',
+        $this->validate($request, [
+            'name' => 'required',
+            'cert_title' => 'required',
             // 'cert_logo'=>'array',
             // 'cert_logo.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
 
-        $certificate=Certificate::find($id);
-        $certificate->name=$request->name;
-        $certificate->cert_title=$request->cert_title;
-        $certificate->cert_body=$request->cert_body;
-        $certificate->cert_template=$request->cert_template;
-        $certificate->number_format=$request->number_format;
-        $certificate->rank_caption=$request->rank_caption;
-        $certificate->description=$request->description;
-        if($request->file('cert_logo')){
+        $certificate = Certificate::find($id);
+        $certificate->name = $request->name;
+        $certificate->cert_title = $request->cert_title;
+        $certificate->cert_body = $request->cert_body;
+        $certificate->cert_template = $request->cert_template;
+        $certificate->number_format = $request->number_format;
+        $certificate->rank_caption = $request->rank_caption;
+        $certificate->description = $request->description;
+        if ($request->file('cert_logo')) {
             $certificate->addMedia($request->file('cert_logo')[0]['originFileObj'])->toMediaCollection('cert_logo');
         }
         $certificate->save();
         return redirect()->back();
-
     }
 
     /**
@@ -132,17 +130,19 @@ class CertificateController extends Controller
         //
     }
 
-    public function members(Certificate $certificate){
-        $this->authorize('view',$organization);
-        $this->authorize('view',$certificate);
-        return Inertia::render('Admin/CertificateMember',[
-            'organization'=>$organization,
-            'certificate'=>$certificate,
-            'members'=>$certificate->members
+    public function members(Certificate $certificate)
+    {
+        $this->authorize('view', $organization);
+        $this->authorize('view', $certificate);
+        return Inertia::render('Admin/CertificateMember', [
+            'organization' => $organization,
+            'certificate' => $certificate,
+            'members' => $certificate->members
         ]);
     }
 
-    public function deleteMedia(Media $media){
+    public function deleteMedia(Media $media)
+    {
         $media->delete();
     }
 }

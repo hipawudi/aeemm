@@ -17,14 +17,21 @@
         <a-table :dataSource="courses" :columns="columns">
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-              <inertia-link :href="route('admin.courses.edit', record.id)" class="ant-btn"
-                >修改</inertia-link
-              >
-              <inertia-link
-                :href="route('admin.courses.destroy', record.id)"
-                class="ant-btn"
-                >刪除</inertia-link
-              >
+              <div class="space-x-2">
+                <inertia-link
+                  :href="route('admin.courses.edit', record.id)"
+                  class="ant-btn"
+                  >修改</inertia-link
+                >
+                <a-popconfirm
+                  title="是否確定刪除這個課程"
+                  ok-text="是"
+                  cancel-text="否"
+                  @confirm="deleteRecord(record.id)"
+                >
+                  <a-button>刪除</a-button>
+                </a-popconfirm>
+              </div>
             </template>
           </template>
         </a-table>
@@ -107,26 +114,8 @@ export default {
   },
   created() {},
   methods: {
-    storeRecord() {
-      this.$refs.modalRef
-        .validateFields()
-        .then(() => {
-          this.$inertia.post(route("admin.forms.store"), this.modal.data, {
-            onSuccess: (page) => {
-              this.modal.isOpen = false;
-            },
-            onError: (err) => {
-              console.log(err);
-            },
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    deleteRecord(record) {
-      if (!confirm("Are you sure want to remove?")) return;
-      this.$inertia.delete(route("admin.forms.destroy", { form: record.id }), {
+    deleteRecord(recordId) {
+      this.$inertia.delete("/admin/courses" + recordId, {
         onSuccess: (page) => {
           console.log(page);
         },

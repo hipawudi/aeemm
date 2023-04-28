@@ -17,10 +17,10 @@
         <a-table :dataSource="certificates" :columns="columns">
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-              <a-button @click="editRecord(record)">修改</a-button>
-            </template>
-            <template v-else>
-              {{ record[column.dataIndex] }}
+              <div class="space-x-2">
+                <a-button @click="editRecord(record)">修改</a-button>
+                <a-button @click="deleteRecord(record.id)">刪除</a-button>
+              </div>
             </template>
           </template>
         </a-table>

@@ -34,9 +34,9 @@
                 >
                 <a-button @click="editRecord(record)">修改</a-button>
                 <a-popconfirm
-                  title="Are you sure delete this task?"
-                  ok-text="Yes"
-                  cancel-text="No"
+                  title="是否確定刪除這個表格"
+                  ok-text="是"
+                  cancel-text="否"
                   @confirm="deleteRecord(record)"
                   @cancel="cancel"
                 >
@@ -96,7 +96,7 @@
             />
           </a-form-item>
           <a-form-item label="橫幅" name="cert_logo">
-            <div v-if="modal.data.media.length">
+            <div v-if="modal.data?.media?.length">
               <inertia-link
                 :href="route('admin.form-delete-media', modal.data.media[0].id)"
                 class="float-right text-red-500"
@@ -137,6 +137,7 @@
           </a-form-item>
         </a-form>
         <template #footer>
+          <a-button key="back" @click="modal.isOpen = false">取消</a-button>
           <a-button
             v-if="modal.mode == 'EDIT'"
             key="Update"
@@ -161,6 +162,7 @@
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { UploadOutlined } from "@ant-design/icons-vue";
+import { message } from "ant-design-vue";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
 
 export default {
@@ -213,13 +215,13 @@ export default {
         title: { required: true },
       },
       validateMessages: {
-        required: "${label} is required!",
+        required: "請输入${label}",
         types: {
-          email: "${label} is not a valid email!",
-          number: "${label} is not a valid number!",
+          email: "${label} 不是正確的郵箱格式",
+          number: "${label} 不是正確的數字格式",
         },
         number: {
-          range: "${label} must be between ${min} and ${max}",
+          range: "${label} 必須在${min}和${max}之間",
         },
       },
       labelCol: {
@@ -248,7 +250,9 @@ export default {
         .then(() => {
           this.$inertia.post(route("admin.forms.store"), this.modal.data, {
             onSuccess: (page) => {
+              this.modal.data = {};
               this.modal.isOpen = false;
+              message.success("新增成功");
             },
             onError: (err) => {
               console.log(err);
@@ -271,7 +275,7 @@ export default {
             {
               onSuccess: (page) => {
                 this.modal.isOpen = false;
-                console.log(page);
+                message.success("修改成功");
               },
               onError: (error) => {
                 console.log(error);
@@ -296,10 +300,10 @@ export default {
     deleteRecord(record) {
       this.$inertia.delete(route("admin.forms.destroy", { form: record.id }), {
         onSuccess: (page) => {
-          console.log(page);
+          message.success("刪除成功");
         },
         onError: (error) => {
-          alert(error.message);
+          message.warning("不能刪除帶有欄位的表格");
         },
       });
     },

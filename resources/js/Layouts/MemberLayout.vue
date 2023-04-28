@@ -40,7 +40,7 @@ const logout = () => {
         <!-- Primary Navigation Menu -->
         <div class="px-8">
           <div class="flex justify-between h-16">
-            <div class="flex">
+            <div class="flex flex-auto w-1/2">
               <!-- Logo -->
               <div class="shrink-0 flex items-center">
                 <Link :href="route('dashboard')">

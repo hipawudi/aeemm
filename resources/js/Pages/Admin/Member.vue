@@ -23,16 +23,20 @@
               {{ record.state == 1 ? "存在" : "取消" }}
             </template>
             <template v-if="column.dataIndex == 'operation'">
-              <a-button @click="editRecord(record)">修改</a-button>
-              <a-popconfirm
-                title="Are you sure delete this member"
-                ok-text="Yes"
-                cancel-text="No"
-                @confirm="deleteRecord(record.id)"
-              >
-                <a-button>刪除</a-button>
-              </a-popconfirm>
-              <a-button v-if="!record.user" @click="createLogin(record.id)">建立帳號</a-button>
+              <div class="space-x-2">
+                <a-button @click="editRecord(record)">修改</a-button>
+                <a-popconfirm
+                  title="是否確定刪除這個成員"
+                  ok-text="是"
+                  cancel-text="否"
+                  @confirm="deleteRecord(record.id)"
+                >
+                  <a-button>刪除</a-button>
+                </a-popconfirm>
+                <a-button v-if="!record.user" @click="createLogin(record.id)"
+                  >建立帳號</a-button
+                >
+              </div>
             </template>
           </template>
         </a-table>
@@ -71,6 +75,7 @@
           </a-form-item>
         </a-form>
         <template #footer>
+          <a-button key="back" @click="modal.isOpen = false">取消</a-button>
           <a-button
             v-if="modal.mode == 'EDIT'"
             key="Update"
@@ -129,6 +134,7 @@ export default {
           title: "操作",
           dataIndex: "operation",
           key: "operation",
+          width: 300,
         },
       ],
       employmentStates: [
@@ -247,7 +253,7 @@ export default {
         { id: recordId },
         {
           onSuccess: (page) => {
-            console.log(page);
+            message.success("發送驗證郵件成功");
           },
           onError: (error) => {
             console.log(error);

@@ -1,13 +1,13 @@
 <template>
   <a-menu v-model:selectedKeys="current" mode="horizontal">
-    <a-menu-item v-for="item in menuItems" :key="item.key">
-      <template #icon>
-        <component :is="item.icon" />
-      </template>
-      <inertia-link :href="route(item.route)" :target="item.target">{{
-        item.title
-      }}</inertia-link>
-    </a-menu-item>
+    <template v-for="item in menuItems">
+      <a-menu-item :key="item.key" v-if="item.role">
+        <template #icon>
+          <component :is="item.icon" />
+        </template>
+        <inertia-link :href="route(item.route)">{{ item.title }}</inertia-link>
+      </a-menu-item>
+    </template>
   </a-menu>
 </template>
 <script>
@@ -39,37 +39,42 @@ export default defineComponent({
         icon: "home-outlined",
         title: "主頁",
         route: "dashboard",
+        role: true,
       },
       {
         key: "professionals.index",
         icon: "verified-outlined",
         title: "專業認證",
         route: "professionals.index",
+        role: true,
       },
       {
         key: "membership",
         icon: "idcard-outlined",
         title: "會籍",
         route: "membership",
+        role: true,
       },
       {
         key: "courses",
         icon: "bank-outlined",
         title: "課程",
         route: "courses",
+        role: true,
       },
       {
         key: "forms.index",
         icon: "edit-outlined",
         title: "報名",
         route: "forms.index",
+        role: true,
       },
       {
         key: "admin.index",
         icon: "appstore-outlined",
         title: "行政管理",
         route: "admin.index",
-        target: "_blank",
+        role: true,
       },
     ]);
     return {
@@ -78,6 +83,7 @@ export default defineComponent({
     };
   },
   created() {
+    this.menuItems[5].role = this.$page.props.user.roles[0] == "admin";
     this.current[0] = route().current();
   },
 });

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('nationality')->nullable();
             $table->string('address')->nullable();
-            $table->integer('state')->nullable();
+            $table->integer('state')->default(1);
             $table->timestamps();
         });
     }

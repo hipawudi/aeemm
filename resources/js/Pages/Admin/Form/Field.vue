@@ -19,7 +19,14 @@
             <template v-if="column.dataIndex == 'operation'">
               <div class="space-x-2">
                 <a-button @click="editRecord(record)">修改</a-button>
-                <a-button @click="deleteRecord(record)">刪除</a-button>
+                <a-popconfirm
+                  title="是否確定刪除這個欄位"
+                  ok-text="是"
+                  cancel-text="否"
+                  @confirm="deleteRecord(record)"
+                >
+                  <a-button>刪除</a-button>
+                </a-popconfirm>
               </div>
             </template>
           </template>
@@ -55,7 +62,8 @@
               :options="fieldTypes"
             />
           </a-form-item>
-          <span v-if="fieldTypes.find((f) => f.value == this.modal.data.type).option">
+          <!-- {{ fieldTypes }} -->
+          <div v-if="fieldTypes.find((f) => f.value == this.modal.data.type)?.option">
             <a-form-item label="Options" name="options">
               <ol>
                 <li v-for="(option, idx) in modal.data.options">
@@ -73,7 +81,7 @@
                 </tr>
               </table>
             </a-form-item>
-          </span>
+          </div>
           <a-form-item label="必填" name="require">
             <a-switch
               v-model:checked="modal.data.require"
@@ -92,6 +100,7 @@
           </a-form-item>
         </a-form>
         <template #footer>
+          <a-button key="back" @click="modal.isOpen = false">取消</a-button>
           <a-button
             v-if="modal.mode == 'EDIT'"
             key="Update"
@@ -115,6 +124,7 @@
 
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
+import { message } from "ant-design-vue";
 import { defineComponent, reactive } from "vue";
 
 export default {
@@ -173,13 +183,13 @@ export default {
         label: { required: true },
       },
       validateMessages: {
-        required: "${label} is required!",
+        required: "請输入${label}",
         types: {
-          email: "${label} is not a valid email!",
-          number: "${label} is not a valid number!",
+          email: "${label} 不是正確的郵箱格式",
+          number: "${label} 不是正確的數字格式",
         },
         number: {
-          range: "${label} must be between ${min} and ${max}",
+          range: "${label} 必須在${min}和${max}之間",
         },
       },
       labelCol: {
@@ -192,8 +202,11 @@ export default {
   created() {},
   methods: {
     createRecord() {
-      this.modal.data = {};
-      this.modal.data.form_id = this.form.id;
+      this.modal.data = {
+        form_id: this.form.id,
+        options: [],
+        require: 0,
+      };
       this.modal.mode = "CREATE";
       this.modal.isOpen = true;
     },
@@ -208,7 +221,7 @@ export default {
         .validateFields()
         .then(() => {
           this.$inertia.post(
-            route("form.fields.store", {
+            route("admin.forms.fields.store", {
               form: this.form.id,
             }),
             this.modal.data,
@@ -216,6 +229,7 @@ export default {
               onSuccess: (page) => {
                 this.modal.data = {};
                 this.modal.isOpen = false;
+                message.success("新增成功");
               },
               onError: (err) => {
                 console.log(err);
@@ -228,12 +242,11 @@ export default {
         });
     },
     updateRecord() {
-      console.log(this.modal.data);
       this.$refs.modalRef
         .validateFields()
         .then(() => {
           this.$inertia.patch(
-            route("form.fields.update", {
+            route("admin.forms.fields.update", {
               form: this.form.id,
               field: this.modal.data,
             }),
@@ -242,7 +255,7 @@ export default {
               onSuccess: (page) => {
                 this.modal.data = {};
                 this.modal.isOpen = false;
-                console.log(page);
+                message.success("修改成功");
               },
               onError: (error) => {
                 console.log(error);
@@ -255,15 +268,14 @@ export default {
         });
     },
     deleteRecord(record) {
-      if (!confirm("Are you sure want to remove?")) return;
       this.$inertia.delete(
-        route("form.fields.destroy", {
+        route("admin.forms.fields.destroy", {
           form: this.form.id,
           field: record.id,
         }),
         {
           onSuccess: (page) => {
-            console.log("the field has been deleted!");
+            message.success("刪除成功");
           },
           onError: (error) => {
             alert(error.message);
@@ -272,6 +284,7 @@ export default {
       );
     },
     addOptionItem() {
+      console.log(this.modal.data);
       this.modal.data.options.push({
         value: this.optionInput.value,
         label: this.optionInput.label,

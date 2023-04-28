@@ -109,7 +109,7 @@ const switchToTeam = (team) => {
 };
 
 const logout = () => {
-  Inertia.post(route("admin.logout"));
+  Inertia.post(route("logout"));
 };
 </script>
 

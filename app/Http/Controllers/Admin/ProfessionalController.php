@@ -18,11 +18,11 @@ class ProfessionalController extends Controller
      */
     public function index()
     {
-        $professionals=Professional::with('certificate')->with('member')->with('media')->get();
-        return Inertia::render('Admin/Professional',[
-            'professionals'=>$professionals,
-            'certificates'=>Certificate::all(),
-            'members'=>Member::all()
+        $professionals = Professional::with('certificate')->with('member')->with('media')->get();
+        return Inertia::render('Admin/Professional', [
+            'professionals' => $professionals,
+            'certificates' => Certificate::all(),
+            'members' => Member::all()
         ]);
     }
 
@@ -88,13 +88,18 @@ class ProfessionalController extends Controller
     public function destroy($id)
     {
         //
+        $professinal = Professional::where('id', $id)->first();
+
+        $professinal->delete();
+
+        return redirect()->back();
     }
 
-    public function members(Certificate $certificate){
-        return Inertia::render('Admin/Professional',[
-            'certificate'=>$certificate,
-            'members'=>$certificate->members
+    public function members(Certificate $certificate)
+    {
+        return Inertia::render('Admin/Professional', [
+            'certificate' => $certificate,
+            'members' => $certificate->members
         ]);
-
     }
 }

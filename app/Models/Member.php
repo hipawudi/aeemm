@@ -18,7 +18,7 @@ class Member extends Model
         $user->email = $this->email;
         $user->name = $this->name_zh;
         $user->password = 'need-to-set';
-
+        $user->assignRole('member');
         $user->save();
 
         return $user;

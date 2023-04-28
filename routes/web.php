@@ -44,6 +44,7 @@ Route::prefix('api')->group(function () {
 })->name('api');
 
 Route::middleware([
+    'role:admin',
     'auth:sanctum',
     config('jetstream.auth_session'),
     // 'role:organization|admin|master',
@@ -62,5 +63,5 @@ Route::middleware([
         Route::resource('courses', App\Http\Controllers\Admin\CourseController::class)->names('admin.courses');
         Route::resource('messages', App\Http\Controllers\Admin\MessageController::class)->names('admin.messages');
         Route::resource('bulletins', App\Http\Controllers\Admin\BulletinController::class)->names('admin.bulletins');
-    })->name('admin');
+    })->name('admin');;
 });

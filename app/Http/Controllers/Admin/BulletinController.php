@@ -18,10 +18,10 @@ class BulletinController extends Controller
      */
     public function index()
     {
-        $bulletins=Bulletin::paginate(request('per_page'));
-        return Inertia::render('Admin/Bulletin',[
-            'bulletins'=>$bulletins,
-            'bulletinCategories'=>Config::item('bulletin_categories'),
+        $bulletins = Bulletin::paginate(request('per_page'));
+        return Inertia::render('Admin/Bulletin', [
+            'bulletins' => $bulletins,
+            'bulletinCategories' => Config::item('bulletin_categories'),
         ]);
     }
 
@@ -43,7 +43,18 @@ class BulletinController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $bulletin = new Bulletin;
+
+        $bulletin->category = $request->category;
+        $bulletin->year = $request->year;
+        $bulletin->date = $request->date;
+        $bulletin->title = $request->title;
+        $bulletin->content = $request->content;
+        $bulletin->created_by = Auth()->user()->id;
+        $bulletin->save();
+
+        return redirect()->back();
+        // dd($request);
     }
 
     /**
@@ -77,14 +88,13 @@ class BulletinController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $bulletin=Bulletin::find($id);
-        $bulletin->category=$request->category;
-        $bulletin->year=$request->year;
-        $bulletin->date=$request->date;
-        $bulletin->title=$request->title;
-        $bulletin->content=$request->content;
-        $bulletin->created_by=Auth()->user()->id;
-        $bulletin->updated_by=0;
+        $bulletin = Bulletin::find($id);
+        $bulletin->category = $request->category;
+        $bulletin->year = $request->year;
+        $bulletin->date = $request->date;
+        $bulletin->title = $request->title;
+        $bulletin->content = $request->content;
+        $bulletin->updated_by = Auth()->user()->id;
         $bulletin->save();
         return redirect()->back();
     }
@@ -97,6 +107,11 @@ class BulletinController extends Controller
      */
     public function destroy($id)
     {
+        $bulletin = Bulletin::where('id', $id)->first();
+
+        $bulletin->delete();
+
+        return redirect()->back();
         //
     }
 }
