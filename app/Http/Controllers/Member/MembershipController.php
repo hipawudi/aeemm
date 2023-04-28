@@ -16,9 +16,8 @@ class MembershipController extends Controller
         // $certs=Certificate::whereBelongsTo($member)->get();
         // dd($certs);
 
-
         return Inertia::render('Member/Membership', [
-            'member' => Auth()->user()->member->certificates,
+            'certificates' => Auth()->user()->member->certificates,
         ]);
     }
 }

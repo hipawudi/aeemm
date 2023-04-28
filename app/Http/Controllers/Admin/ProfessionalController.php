@@ -48,6 +48,7 @@ class ProfessionalController extends Controller
         $professinal = new Professional;
 
         $professinal->certificate_id = $request->certificate_id;
+        $professinal->display_name = Member::where('id', $request->member_id)->first()->display_name;
         $professinal->member_id = $request->member_id;
         $professinal->number = $request->certificate_id;
         $professinal->number_display = $request->number_display;
@@ -94,6 +95,7 @@ class ProfessionalController extends Controller
         $professinal = Professional::where('id', $id)->first();
 
         $professinal->certificate_id = $request->certificate_id;
+        $professinal->display_name = Member::where('id', $request->member_id)->first()->display_name;
         $professinal->member_id = $request->member_id;
         $professinal->number = $request->certificate_id;
         $professinal->number_display = $request->number_display;
