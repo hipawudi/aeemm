@@ -95,7 +95,7 @@
               :checkedValue="1"
             />
           </a-form-item>
-          <a-form-item label="橫幅" name="cert_logo">
+          <!-- <a-form-item label="橫幅" name="cert_logo">
             <div v-if="modal.data?.media?.length">
               <inertia-link
                 :href="route('admin.form-delete-media', modal.data.media[0].id)"
@@ -134,7 +134,7 @@
                 upload
               </a-button>
             </a-upload>
-          </a-form-item>
+          </a-form-item> -->
         </a-form>
         <template #footer>
           <a-button key="back" @click="modal.isOpen = false">取消</a-button>

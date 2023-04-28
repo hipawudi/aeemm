@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('member_id');
             $table->integer('number');
             $table->string('number_display');
-            $table->string('display_name');
+            $table->string('display_name')->nullable();
             $table->date('avata')->nullable();
             $table->date('issue_date')->nullable();
             $table->date('valid_from')->nullable();

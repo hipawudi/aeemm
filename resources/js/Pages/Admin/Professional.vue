@@ -53,62 +53,51 @@
           :rules="rules"
           :validate-messages="validateMessages"
         >
-          <a-form-item label="Certificate Title" name="certificate_id">
+          <a-form-item label="專業認證" name="certificate_id">
             <a-select
               v-model:value="modal.data.certificate_id"
               :options="certificates"
               :field-names="{ label: 'cert_title', value: 'id' }"
-              :disabled="modal.mode == 'EDIT'"
             />
           </a-form-item>
-          <a-form-item label="Display Name" name="member_id">
+          <a-form-item label="成員名稱" name="member_id">
             <a-select
               v-model:value="modal.data.member_id"
               :options="members"
               :field-names="{ label: 'display_name', value: 'id' }"
-              :disabled="modal.mode == 'EDIT'"
             />
           </a-form-item>
-          <a-form-item label="Display Number" name="number_display">
-            <a-input
-              v-model:value="modal.data.number_display"
-              :disabled="modal.mode == 'EDIT'"
-            />
+          <a-form-item label="認證名片號碼" name="number_display">
+            <a-input v-model:value="modal.data.number_display" />
           </a-form-item>
-          <a-form-item label="Issue Date" name="issue_date">
+          <a-form-item label="簽發日期" name="issue_date">
             <a-date-picker
               v-model:value="modal.data.issue_date"
               :format="dateFormat"
               :valueFormat="dateFormat"
             />
           </a-form-item>
-          <a-form-item label="Valid From" name="valid_from">
+          <a-form-item label="有效期自" name="valid_from">
             <a-date-picker
               v-model:value="modal.data.valid_from"
               :format="dateFormat"
               :valueFormat="dateFormat"
             />
           </a-form-item>
-          <a-form-item label="Valid Until" name="valid_until">
+          <a-form-item label="有效期至" name="valid_until">
             <a-date-picker
               v-model:value="modal.data.valid_until"
               :format="dateFormat"
               :valueFormat="dateFormat"
             />
           </a-form-item>
-          <a-form-item label="Authorize by" name="authorize_by">
+          <a-form-item label="授權人" name="authorize_by">
             <a-input v-model:value="modal.data.authorize_by" />
           </a-form-item>
-          <a-form-item label="Rank" name="rank">
-            <a-input v-model:value="modal.data.rank" />
-          </a-form-item>
-          <a-form-item label="Extra" name="extra">
-            <a-input v-model:value="modal.data.extra" />
-          </a-form-item>
-          <a-form-item label="Remark" name="remark">
+          <a-form-item label="備註" name="remark">
             <a-textarea v-model:value="modal.data.remark" />
           </a-form-item>
-          <a-form-item label="Avata" name="avata">
+          <!-- <a-form-item label="Avata" name="avata">
             <div v-if="modal.data.media.length">
               <inertia-link
                 :href="route('admin.certificate-delete-media', modal.data.media[0].id)"
@@ -147,7 +136,7 @@
                 upload
               </a-button>
             </a-upload>
-          </a-form-item>
+          </a-form-item> -->
         </a-form>
         <template #footer>
           <a-button

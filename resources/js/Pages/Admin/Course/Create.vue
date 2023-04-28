@@ -118,7 +118,7 @@
                     />
                   </a-form-item>
                 </div>
-                <div class="flex-auto w-1/2">
+                <!-- <div class="flex-auto w-1/2">
                   <a-form-item label="單張" name="poster">
                     <a-upload
                       v-model:file-list="course.poster"
@@ -133,7 +133,7 @@
                       </a-button>
                     </a-upload>
                   </a-form-item>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="text-right">

@@ -45,6 +45,20 @@ class ProfessionalController extends Controller
     public function store(Request $request)
     {
         //
+        $professinal = new Professional;
+
+        $professinal->certificate_id = $request->certificate_id;
+        $professinal->member_id = $request->member_id;
+        $professinal->number = $request->certificate_id;
+        $professinal->number_display = $request->number_display;
+        $professinal->issue_date = $request->issue_date;
+        $professinal->valid_from = $request->valid_from;
+        $professinal->valid_until = $request->valid_until;
+        $professinal->authorize_by = $request->authorize_by;
+
+        $professinal->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -77,6 +91,20 @@ class ProfessionalController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $professinal = Professional::where('id', $id)->first();
+
+        $professinal->certificate_id = $request->certificate_id;
+        $professinal->member_id = $request->member_id;
+        $professinal->number = $request->certificate_id;
+        $professinal->number_display = $request->number_display;
+        $professinal->issue_date = $request->issue_date;
+        $professinal->valid_from = $request->valid_from;
+        $professinal->valid_until = $request->valid_until;
+        $professinal->authorize_by = $request->authorize_by;
+
+        $professinal->save();
+
+        return redirect()->back();
     }
 
     /**

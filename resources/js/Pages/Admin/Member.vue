@@ -203,7 +203,7 @@ export default {
       this.$refs.modalRef
         .validateFields()
         .then(() => {
-          this.$inertia.post("/admin/teachers/", this.modal.data, {
+          this.$inertia.post(route("admin.members.store"), this.modal.data, {
             onSuccess: (page) => {
               this.modal.data = {};
               this.modal.isOpen = false;

@@ -45,6 +45,7 @@ class MemberController extends Controller
     public function create()
     {
         //   
+
     }
 
     /**
@@ -56,6 +57,22 @@ class MemberController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'name_zh' => 'required',
+            'state' => 'required',
+        ]);
+        $member = new Member;
+
+        $member->name_zh = $request->name_zh;
+        $member->name_en = $request->name_en;
+        $member->display_name = $request->display_name;
+        $member->email = $request->email;
+        $member->phone = $request->phone;
+        $member->state = $request->state;
+
+        $member->save();
+
+        return redirect()->back();
     }
 
     /**

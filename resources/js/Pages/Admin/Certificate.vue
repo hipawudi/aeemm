@@ -52,7 +52,7 @@
           <a-form-item label="認證機構" name="cert_body">
             <a-input v-model:value="modal.data.cert_body" />
           </a-form-item>
-          <a-form-item label="機構標誌" name="cert_logo">
+          <!-- <a-form-item label="機構標誌" name="cert_logo">
             <div v-if="modal.data.media.length">
               <inertia-link
                 :href="route('admin.certificate-delete-media', modal.data.media[0].id)"
@@ -91,7 +91,7 @@
                 upload
               </a-button>
             </a-upload>
-          </a-form-item>
+          </a-form-item> -->
           <a-form-item label="認證樣式" name="cert_template">
             <a-input v-model:value="modal.data.cert_template" />
           </a-form-item>
