@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->string('target')->nullable();
             $table->longText('tutor')->nullable();
+            $table->text('poster_path')->nullable();
             $table->boolean('published')->default(0);
             $table->timestamps();
         });

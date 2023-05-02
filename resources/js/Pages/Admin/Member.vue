@@ -33,7 +33,7 @@
                 >
                   <a-button>刪除</a-button>
                 </a-popconfirm>
-                <a-button v-if="!record.user" @click="createLogin(record.id)"
+                <a-button v-if="!record.user" @click="createLogin(record)"
                   >建立帳號</a-button
                 >
               </div>
@@ -247,19 +247,23 @@ export default {
         },
       });
     },
-    createLogin(recordId) {
-      this.$inertia.post(
-        route("admin.members.createLogin"),
-        { id: recordId },
-        {
-          onSuccess: (page) => {
-            message.success("發送驗證郵件成功");
-          },
-          onError: (error) => {
-            console.log(error);
-          },
-        }
-      );
+    createLogin(record) {
+      if (record.email == null) {
+        message.warning("此會員沒有電郵不能建立帳號");
+      } else {
+        this.$inertia.post(
+          route("admin.members.createLogin"),
+          { id: record.id },
+          {
+            onSuccess: (page) => {
+              message.success("發送驗證郵件成功");
+            },
+            onError: (error) => {
+              console.log(error);
+            },
+          }
+        );
+      }
     },
     onPaginationChange(page, filters, sorter) {
       console.log(page.current);

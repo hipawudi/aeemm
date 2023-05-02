@@ -123,7 +123,7 @@
                     <a-upload
                       v-model:file-list="course.poster"
                       :multiple="false"
-                      :beforeUpload="() => false"
+                      :beforeUpload="openCropModal"
                       :max-count="1"
                       list-type="picture"
                     >
@@ -214,7 +214,7 @@ export default {
       this.$refs.modalRef
         .validateFields()
         .then(() => {
-          this.$inertia.post(route("admin.courses.store"), this.course, {
+          this.$inertia.post(route("admin.courses.store"), formData, {
             onSuccess: (page) => {
               console.log(page);
             },

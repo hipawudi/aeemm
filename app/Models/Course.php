@@ -26,5 +26,6 @@ class Course extends Model implements HasMedia
     {
         $this->addMediaCollection('poster')
             ->useDisk('course');
-    }    
+    }
+
 }

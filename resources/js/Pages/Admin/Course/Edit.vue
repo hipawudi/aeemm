@@ -108,7 +108,7 @@
                   </a-form-item>
                 </div>
               </div>
-              <div class="flex">
+              <div class="flex gap-6">
                 <div class="flex-auto w-1/2">
                   <a-form-item label="發佈" name="published">
                     <a-switch

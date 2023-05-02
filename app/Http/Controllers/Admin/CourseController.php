@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Course;
+use Illuminate\Support\Facades\Storage;
+use App\Models\CourseImage;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class CourseController extends Controller
@@ -71,6 +73,7 @@ class CourseController extends Controller
         $course->target = $request->target;
         $course->published = is_null($request->published) ? 0 : $request->published;
         $course->tutor = $request->tutor;
+
         if ($request->file('poster')) {
             $course->addMedia($request->file('poster')[0]['originFileObj'])->toMediaCollection('poster');
         }
@@ -121,8 +124,9 @@ class CourseController extends Controller
             'id' => 'required',
             'name_zh' => 'required',
             // 'image'=>'array',
-            // 'image.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
+            'poster.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
+        // dd($request->poster);
         $course = Course::find($request->id);
         $course->name_zh = $request->name_zh;
         $course->name_en = $request->name_en;
@@ -143,10 +147,15 @@ class CourseController extends Controller
         $course->target = $request->target;
         $course->published = $request->published;
         $course->tutor = $request->tutor;
-        if ($request->file('poster')) {
-            $course->addMedia($request->file('poster')[0]['originFileObj'])->toMediaCollection('poster');
-        }
+
+        $file = $request->file('poster')[0]['originFileObj'];
+
+        $path = Storage::putFile('public/images/course', $file);
+
+        $course->poster_path = $path;
+
         $course->save();
+
         return redirect()->route('admin.courses.index');
     }
 
