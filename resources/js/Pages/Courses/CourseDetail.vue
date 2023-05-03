@@ -8,18 +8,15 @@
         class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
       >
         <div class="flex">
-          <div class="w-3/4"></div>
-          <div class="w-1/4"></div>
+          <div class="w-3/4">
+            <div v-html="course.title_zh" class="text-3xl text-teal-600"></div>
+            <div v-html="course.title_en" class="text-3xl"></div>
+            <div v-html="course.content"></div>
+          </div>
+          <div class="w-1/4">
+            <div v-html="course.tutor" class="pt-20 pb-20 bg-blue-500 text-white"></div>
+          </div>
         </div>
-        <!-- <a-col :span="18" class="pr-3">
-                        <div v-html="course.title_zh" class="text-3xl text-teal-600"></div>
-                        <div v-html="course.title_en" class="text-3xl"></div>
-                        <div v-html="course.content"></div>
-                    </a-col>
-                    <a-col :span="6">
-                        <div v-html="course.tutor" class="pt-20 pb-20 bg-blue-500 text-white"></div>
-                    </a-col>
-                </a-row> -->
       </div>
     </div>
   </MemberLayout>
