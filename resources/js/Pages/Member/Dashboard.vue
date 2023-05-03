@@ -1,10 +1,14 @@
-<script setup>
+<script>
 import MemberLayout from "@/Layouts/MemberLayout.vue";
 
-defineProps({
-  member: Object,
-  messages: Object,
-});
+export default {
+  props: ["member", "messages"],
+  components: { MemberLayout },
+  data() {
+    return {};
+  },
+  computed: {},
+};
 </script>
 
 <template>
@@ -22,10 +26,15 @@ defineProps({
                   <a-list-item>
                     <a-list-item-meta :description="item.content">
                       <template #title>
-                        <a href="https://www.antdv.com/">{{ item.title }}</a>
+                        <div>{{ item.title }}</div>
                       </template>
                       <template #avatar>
-                        <a-avatar src="https://joeschmoe.io/api/v1/random" />
+                        <div class="flex flex-col">
+                          <div class="text-center">
+                            <a-avatar src="https://joeschmoe.io/api/v1/random" />
+                          </div>
+                          <div class="w-20 text-center">{{ item.send_date }}</div>
+                        </div>
                       </template>
                     </a-list-item-meta>
                   </a-list-item>

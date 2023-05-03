@@ -17,12 +17,12 @@ class ConfigSeeder extends Seeder
     {
         DB::table('configs')->insert([
             'key' => 'message_categories',
-            'value'=>'[{"value":"public","label":"公開"},{"value":"member","label":"會員"},{"value":"personal","label":"個人"}]',
+            'value' => '[{"value":"all","label":"所有人"},{"value":"member","label":"會員"},{"value":"personal","label":"個人"}]',
         ]);
 
         DB::table('configs')->insert([
             'key' => 'bulletin_categories',
-            'value'=>'
+            'value' => '
                 [{
                     "value": "event",
                     "label": "大事紀要"
@@ -48,6 +48,4 @@ class ConfigSeeder extends Seeder
             ',
         ]);
     }
-
-
 }

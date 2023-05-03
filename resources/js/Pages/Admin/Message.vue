@@ -44,9 +44,6 @@
               </p>
               <p v-else>--</p>
             </template>
-            <template v-else>
-              {{ record[column.dataIndex] }}
-            </template>
           </template>
         </a-table>
       </div>
@@ -154,7 +151,7 @@ export default {
         },
         {
           title: "收件人",
-          dataIndex: "receiver",
+          dataIndex: "category",
           width: 120,
         },
         {

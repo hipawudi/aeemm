@@ -38,7 +38,6 @@
                   ok-text="是"
                   cancel-text="否"
                   @confirm="deleteRecord(record)"
-                  @cancel="cancel"
                 >
                   <a-button>刪除</a-button>
                 </a-popconfirm>

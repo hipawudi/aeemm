@@ -118,7 +118,7 @@
                     />
                   </a-form-item>
                 </div>
-                <!-- <div class="flex-auto w-1/2">
+                <div class="flex-auto w-1/2">
                   <a-form-item label="單張" name="poster">
                     <a-upload
                       v-model:file-list="course.poster"
@@ -133,7 +133,7 @@
                       </a-button>
                     </a-upload>
                   </a-form-item>
-                </div> -->
+                </div>
               </div>
             </div>
             <div class="text-right">
@@ -230,12 +230,19 @@ export default {
     if (!Array.isArray(this.course.class_time)) {
       this.course.class_time = JSON.parse(this.course.class_time);
     }
+    this.course.poster = [
+      {
+        name: this.course.poster_path.split("/").pop(),
+        url: this.course.poster_url,
+      },
+    ];
+    console.log(this.course);
+    console.log(this.course.poster_path.split("/").pop());
   },
   mounted() {},
   computed: {},
   methods: {
     updateRecord() {
-      console.log(this.course);
       this.$refs.modalRef
         .validateFields()
         .then(() => {

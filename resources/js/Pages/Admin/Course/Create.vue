@@ -118,14 +118,14 @@
                     />
                   </a-form-item>
                 </div>
-                <!-- <div class="flex-auto w-1/2">
+                <div class="flex-auto w-1/2">
                   <a-form-item label="單張" name="poster">
                     <a-upload
                       v-model:file-list="course.poster"
                       :multiple="false"
                       :beforeUpload="openCropModal"
                       :max-count="1"
-                      list-type="picture"
+                      list-type="picture-card"
                     >
                       <a-button>
                         <upload-outlined></upload-outlined>
@@ -133,7 +133,7 @@
                       </a-button>
                     </a-upload>
                   </a-form-item>
-                </div> -->
+                </div>
               </div>
             </div>
             <div class="text-right">
