@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::prefix('/')->group(function () {
+    Route::get('/courses', [\App\Http\Controllers\Api\CourseController::class, 'getCourses']);
+    Route::get('/course/{id}', [\App\Http\Controllers\Api\CourseController::class, 'getCourse']);
+    Route::get('/bulletins', [\App\Http\Controllers\Api\BulletinController::class, 'getBulletins']);
+    Route::get('/bulletin/{id}', [\App\Http\Controllers\Api\BulletinController::class, 'getBulletin']);
 });

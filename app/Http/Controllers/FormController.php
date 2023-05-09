@@ -25,7 +25,7 @@ class FormController extends Controller
                 $forms = Form::where('published', 1)->where('for_member', 0)->get();
             }
         } else {
-            $forms = Form::where('published', 1)->where('require_login', 0)->where('for_member', 0)->get();
+            $forms = Form::where('published', 1)->where('for_account', 0)->where('for_member', 0)->get();
         }
         return Inertia::render('Forms/Form', [
             'forms' => $forms

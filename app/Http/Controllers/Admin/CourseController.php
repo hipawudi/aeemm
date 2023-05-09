@@ -61,7 +61,7 @@ class CourseController extends Controller
         $course->description_en = $request->description_en;
         $course->start_date = $request->start_date;
         $course->end_date = $request->end_date;
-        $course->class_time = json_encode($request->class_time);
+        $course->class_time = $request->class_time;
         $course->hours = $request->hours;
         $course->quota = $request->quota;
         $course->number = $request->number;
@@ -135,7 +135,7 @@ class CourseController extends Controller
         $course->description_en = $request->description_en;
         $course->start_date = $request->start_date;
         $course->end_date = $request->end_date;
-        $course->class_time = json_encode($request->class_time);
+        $course->class_time = $request->class_time;
         $course->hours = $request->hours;
         $course->quota = $request->quota;
         $course->number = $request->number;
@@ -147,13 +147,14 @@ class CourseController extends Controller
         $course->target = $request->target;
         $course->published = $request->published;
         $course->tutor = $request->tutor;
+        
+        if ($request->hasFile('poster')) {
+            $file = $request->file('poster')[0]['originFileObj'];
 
-        $file = $request->file('poster')[0]['originFileObj'];
+            $path = Storage::putFile('public/images/course', $file);
 
-        $path = Storage::putFile('public/images/course', $file);
-
-        $course->poster_path = $path;
-
+            $course->poster_path = $path;
+        }
         $course->save();
 
         return redirect()->route('admin.courses.index');

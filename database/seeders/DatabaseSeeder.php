@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Bulletin;
 use App\Models\Organization;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,7 @@ class DatabaseSeeder extends Seeder
             MessageSeeder::class,
             ConfigSeeder::class,
             CourseSeeder::class,
+            BulletinSeeder::class,
         ]);
 
 

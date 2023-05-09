@@ -24,6 +24,9 @@
           ref="dataTable"
         >
           <template #bodyCell="{ column, text, record, index }">
+            <template v-if="column.key == 'published'">{{
+              record.published == 1 ? "發佈" : "非發佈"
+            }}</template>
             <template v-if="column.dataIndex == 'operation'">
               <div class="space-x-2">
                 <a-button @click="editRecord(record)">修改</a-button>
@@ -39,9 +42,6 @@
             >
             <template v-else-if="column.dataIndex == 'category'">
               {{ bulletinCategories.find((x) => x.value == text)["label"] }}
-            </template>
-            <template v-else>
-              {{ record[column.dataIndex] }}
             </template>
           </template>
         </a-table>
@@ -61,12 +61,6 @@
           <a-form-item label="分類" name="category">
             <a-select v-model:value="modal.data.category" :options="bulletinCategories" />
           </a-form-item>
-          <a-form-item label="年份" name="year">
-            <a-select
-              v-model:value="modal.data.year"
-              :options="[...Array(yearLength)].map((_, i) => ({ value: yearStart - i }))"
-            />
-          </a-form-item>
           <a-form-item label="日期" name="date">
             <a-date-picker
               v-model:value="modal.data.date"
@@ -77,8 +71,32 @@
           <a-form-item label="標題" name="title">
             <a-input v-model:value="modal.data.title" />
           </a-form-item>
+          <a-form-item label="描述" name="description">
+            <a-input v-model:value="modal.data.description" />
+          </a-form-item>
           <a-form-item label="內容" name="content">
             <quill-editor v-model:value="modal.data.content" style="min-height: 200px" />
+          </a-form-item>
+          <a-form-item label="發佈" name="published">
+            <a-switch
+              v-model:checked="modal.data.published"
+              :unCheckedValue="0"
+              :checkedValue="1"
+            />
+          </a-form-item>
+          <a-form-item label="封面" name="cover">
+            <a-upload
+              v-model:file-list="modal.data.cover"
+              :multiple="false"
+              :beforeUpload="openCropModal"
+              :max-count="1"
+              list-type="picture-card"
+            >
+              <div>
+                <upload-outlined></upload-outlined>
+                <div style="margin-top: 8px">Upload</div>
+              </div>
+            </a-upload>
           </a-form-item>
         </a-form>
         <template #footer>
@@ -126,7 +144,9 @@ export default {
       yearLength: new Date().getFullYear() - 2009 + 2,
       modal: {
         isOpen: false,
-        data: {},
+        data: {
+          published: 1,
+        },
         title: "公告",
         mode: "",
       },
@@ -141,11 +161,6 @@ export default {
           title: "標題",
           dataIndex: "title",
         },
-
-        {
-          title: "年份",
-          dataIndex: "year",
-        },
         {
           title: "日期",
           dataIndex: "date",
@@ -154,7 +169,11 @@ export default {
           title: "分類",
           dataIndex: "category",
         },
-
+        {
+          title: "發佈",
+          dataIndex: "published",
+          key: "published",
+        },
         {
           title: "操作",
           dataIndex: "operation",
@@ -182,10 +201,13 @@ export default {
       },
     };
   },
-  created() {},
+  created() {
+  },
   methods: {
     createRecord(record) {
-      this.modal.data = {};
+      this.modal.data = {
+        published: 1,
+      };
       this.modal.mode = "CREATE";
       this.modal.isOpen = true;
     },
@@ -201,6 +223,7 @@ export default {
           this.$inertia.post(route("admin.bulletins.store"), this.modal.data, {
             onSuccess: (page) => {
               this.modal.isOpen = false;
+              message.success("新增成功");
             },
             onError: (err) => {
               console.log(err);
@@ -222,6 +245,7 @@ export default {
             {
               onSuccess: (page) => {
                 this.modal.isOpen = false;
+                message.success("修改成功");
               },
               onError: (error) => {
                 console.log(error);

@@ -24,25 +24,25 @@ class ConfigSeeder extends Seeder
             'key' => 'bulletin_categories',
             'value' => '
                 [{
-                    "value": "event",
+                    "value": "大事紀要",
                     "label": "大事紀要"
                 }, {
-                    "value": "media",
+                    "value": "媒體報導",
                     "label": "媒體報導"
                 }, {
-                    "value": "association",
+                    "value": "學會消息",
                     "label": "學會消息"
                 }, {
-                    "value": "lecture",
+                    "value": "專題講座",
                     "label": "專題講座"
                 }, {
-                    "value": "excahngel",
+                    "value": "技術交流",
                     "label": "技術交流"
                 }, {
-                    "value": "tips",
+                    "value": "機電小TIPS",
                     "label": "機電小TIPS"
                 }, {
-                    "value": "course",
+                    "value": "進修課程",
                     "label": "進修課程"
                 }]
             ',

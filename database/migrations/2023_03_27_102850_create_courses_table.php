@@ -23,7 +23,7 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->string('number')->nullable();
-            $table->string('class_time')->nullable();
+            $table->longText('class_time')->nullable();
             $table->integer('hours')->nullable();
             $table->integer('fee')->nullable();
             $table->integer('fee_member')->nullable();
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->longText('content')->nullable();
             $table->string('language')->nullable();
             $table->string('location')->nullable();
-            $table->string('target')->nullable();
+            $table->longText('target')->nullable();
             $table->longText('tutor')->nullable();
             $table->text('poster_path')->nullable();
             $table->boolean('published')->default(0);

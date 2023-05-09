@@ -32,6 +32,7 @@ class Course extends Model implements HasMedia
         $this->addMediaCollection('poster')
             ->useDisk('course');
     }
+    
     public function getPosterUrlAttribute(): ?string
     {
         return $this->poster_path ? Storage::url($this->poster_path) : null;

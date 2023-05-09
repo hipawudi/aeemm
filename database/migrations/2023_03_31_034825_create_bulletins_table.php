@@ -16,10 +16,12 @@ return new class extends Migration
         Schema::create('bulletins', function (Blueprint $table) {
             $table->id();
             $table->string('category');
-            $table->string('year');
             $table->date('date');
             $table->string('title');
-            $table->text('content');
+            $table->string('description')->nullable();
+            $table->text('content')->nullable();
+            $table->boolean('published')->default(1);
+            $table->text('cover_image_path')->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();
             $table->timestamps();

@@ -68,7 +68,7 @@
                     />
                   </a-form-item>
                   <a-form-item label="上課時間" name="class_time">
-                    <a-time-range-picker
+                    <a-textarea
                       v-model:value="course.class_time"
                       format="HH:mm"
                       valueFormat="HH:mm"
@@ -228,16 +228,18 @@ export default {
   },
   created() {
     if (!Array.isArray(this.course.class_time)) {
-      this.course.class_time = JSON.parse(this.course.class_time);
+      this.course.class_time = this.course.class_time;
     }
-    this.course.poster = [
-      {
-        name: this.course.poster_path.split("/").pop(),
-        url: this.course.poster_url,
-      },
-    ];
-    console.log(this.course);
-    console.log(this.course.poster_path.split("/").pop());
+    if (this.course.poster_path) {
+      this.course.poster = [
+        {
+          name: this.course.poster_path.split("/").pop(),
+          url: this.course.poster_url,
+        },
+      ];
+      console.log(this.course);
+      console.log(this.course.poster_path.split("/").pop());
+    }
   },
   mounted() {},
   computed: {},
@@ -250,7 +252,7 @@ export default {
           this.$inertia.post(route("admin.courses.update", this.course.id), this.course, {
             onSuccess: (page) => {
               if (!Array.isArray(this.course.class_time)) {
-                this.course.class_time = JSON.parse(this.course.class_time);
+                this.course.class_time = this.course.class_time;
               }
 
               console.log(page);

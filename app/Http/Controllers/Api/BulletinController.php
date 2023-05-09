@@ -8,8 +8,25 @@ use App\Models\Bulletin;
 
 class BulletinController extends Controller
 {
-    public function index(){
-        $bulletins=Bulletin::paginate(request('per_page'));
+    public function index()
+    {
+        $bulletins = Bulletin::paginate(request('per_page'));
         return response()->json($bulletins);
+    }
+
+    public function getBulletins(Request $request)
+    {
+        $perPage = 10;
+        $page = $request->input('page', 1);
+
+        $bulletins = Bulletin::paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json($bulletins);
+    }
+    public function getBulletin(Request $request)
+    {
+        $bulletin = Bulletin::where('id', $request->id)->first();
+
+        return response()->json($bulletin);
     }
 }

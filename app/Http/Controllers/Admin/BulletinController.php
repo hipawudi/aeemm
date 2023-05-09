@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Member;
 use App\Models\Bulletin;
 use App\Models\Config;
+use Illuminate\Support\Facades\Storage;
 
 class BulletinController extends Controller
 {
@@ -46,7 +47,8 @@ class BulletinController extends Controller
         $bulletin = new Bulletin;
 
         $bulletin->category = $request->category;
-        $bulletin->year = $request->year;
+        $bulletin->description = $request->descripiton;
+        $bulletin->published = $request->published;
         $bulletin->date = $request->date;
         $bulletin->title = $request->title;
         $bulletin->content = $request->content;
@@ -90,11 +92,21 @@ class BulletinController extends Controller
     {
         $bulletin = Bulletin::find($id);
         $bulletin->category = $request->category;
-        $bulletin->year = $request->year;
+        $bulletin->description = $request->description;
+        $bulletin->published = $request->published;
         $bulletin->date = $request->date;
         $bulletin->title = $request->title;
         $bulletin->content = $request->content;
         $bulletin->updated_by = Auth()->user()->id;
+
+        if ($request->file('cover') != null) {
+            $file = $request->file('cover')[0]['originFileObj'];
+
+            $path = Storage::putFile('public/images/bulletin', $file);
+
+            $bulletin->cover_image_path = $path;
+        }
+
         $bulletin->save();
         return redirect()->back();
     }

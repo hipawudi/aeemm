@@ -53,14 +53,14 @@
               </a-form-item>
               <div class="flex gap-6">
                 <div class="flex flex-auto w-1/2 gap-6">
-                  <a-form-item label="開始日期" name="start_date">
+                  <a-form-item label="報名開始日期" name="start_date">
                     <a-date-picker
                       v-model:value="course.start_date"
                       :format="dateFormat"
                       :valueFormat="dateFormat"
                     />
                   </a-form-item>
-                  <a-form-item label="結束日期" name="end_date">
+                  <a-form-item label="報名結束日期" name="end_date">
                     <a-date-picker
                       v-model:value="course.end_date"
                       :format="dateFormat"
@@ -68,7 +68,7 @@
                     />
                   </a-form-item>
                   <a-form-item label="上課時間" name="class_time">
-                    <a-time-range-picker
+                    <a-textarea
                       v-model:value="course.class_time"
                       format="HH:mm"
                       valueFormat="HH:mm"

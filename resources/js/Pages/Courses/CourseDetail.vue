@@ -1,7 +1,7 @@
 <template>
   <MemberLayout title="Dashboard">
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">表格管理</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">課程內容</h2>
     </template>
     <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
       <div
@@ -87,14 +87,14 @@ export default {
   },
   created() {
     if (!Array.isArray(this.course.class_time)) {
-      this.course.class_time = JSON.parse(this.course.class_time);
+      this.course.class_time = this.course.class_time;
     }
   },
   mounted() {},
   computed: {
     classTimeFormat() {
       if (!Array.isArray(this.course.class_time)) {
-        this.course.class_time = JSON.parse(this.course.class_time);
+        this.course.class_time = this.course.class_time;
       }
     },
   },
@@ -136,7 +136,7 @@ export default {
           this.$inertia.post(route("admin.courses.update", this.course.id), this.course, {
             onSuccess: (page) => {
               if (!Array.isArray(this.course.class_time)) {
-                this.course.class_time = JSON.parse(this.course.class_time);
+                this.course.class_time = this.course.class_time;
               }
 
               console.log(page);
