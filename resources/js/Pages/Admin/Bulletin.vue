@@ -201,8 +201,7 @@ export default {
       },
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
     createRecord(record) {
       this.modal.data = {
@@ -213,6 +212,14 @@ export default {
     },
     editRecord(record) {
       this.modal.data = { ...record };
+      if (record.cover_image_path) {
+        this.modal.data.cover = [
+          {
+            name: record.cover_image_path.split("/").pop(),
+            url: record.cover_url,
+          },
+        ];
+      }
       this.modal.mode = "EDIT";
       this.modal.isOpen = true;
     },

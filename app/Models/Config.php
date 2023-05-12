@@ -9,13 +9,13 @@ class Config extends Model
 {
     use HasFactory;
 
-    static function item($key){
-        $item=Config::where('key',$key)->first();
-        if($item){
+    static function item($key)
+    {
+        $item = Config::where('key', $key)->first();
+        if ($item) {
             return json_decode($item->value);
-        }else{
+        } else {
             return false;
         }
     }
-
 }

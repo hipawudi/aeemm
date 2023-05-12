@@ -17,7 +17,11 @@ class ConfigSeeder extends Seeder
     {
         DB::table('configs')->insert([
             'key' => 'message_categories',
-            'value' => '[{"value":"all","label":"所有人"},{"value":"member","label":"會員"},{"value":"personal","label":"個人"}]',
+            'value' => '
+            [{"value":"public","label":"所有人"},
+            {"value":"member","label":"會員"},
+            {"value":"personal","label":"個人"}
+            ]',
         ]);
 
         DB::table('configs')->insert([
@@ -30,6 +34,9 @@ class ConfigSeeder extends Seeder
                     "value": "媒體報導",
                     "label": "媒體報導"
                 }, {
+                    "value": "活動訊息",
+                    "label": "活動訊息"
+                },{
                     "value": "學會消息",
                     "label": "學會消息"
                 }, {

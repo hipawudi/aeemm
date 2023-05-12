@@ -36,13 +36,13 @@
               </div>
             </template>
             <template v-else-if="column.dataIndex == 'category'">
-              {{ messageCategories.find((x) => x.value == text)["label"] }}
+              {{ messageCategories.find((x) => x.value == record.category)["label"] }}
             </template>
             <template v-else-if="column.dataIndex == 'receiver'">
-              <p v-if="record.category == 'personal' && record['received_member']">
-                {{ record["received_member"]["display_name"] }}
+              <p v-if="record.category == 'personal' || record.category == 'public'">
+                {{ messageCategories.find((x) => x.value == record.category)["label"] }}
               </p>
-              <p v-else>--</p>
+              <p v-else>{{ record.receiver ?? "--" }}</p>
             </template>
           </template>
         </a-table>
@@ -151,7 +151,7 @@ export default {
         },
         {
           title: "收件人",
-          dataIndex: "category",
+          dataIndex: "receiver",
           width: 120,
         },
         {

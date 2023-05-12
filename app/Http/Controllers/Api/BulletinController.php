@@ -29,4 +29,10 @@ class BulletinController extends Controller
 
         return response()->json($bulletin);
     }
+    public function getNewBulletins()
+    {
+        $bulletins = Bulletin::orderByDesc('date')->take(4)->get();
+
+        return response()->json($bulletins);
+    }
 }

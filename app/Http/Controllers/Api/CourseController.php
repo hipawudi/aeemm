@@ -28,10 +28,16 @@ class CourseController extends Controller
 
         return response()->json($courses);
     }
-    
+
     public function getCourse(Request $request)
     {
         $course = Course::where('id', $request->id)->first();
         return response()->json($course);
+    }
+    public function getNewCourses()
+    {
+        $courses = Course::orderByDesc('start_date')->take(4)->get();
+
+        return response()->json($courses);
     }
 }

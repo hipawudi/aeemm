@@ -68,7 +68,7 @@
                     />
                   </a-form-item>
                   <a-form-item label="上課時間" name="class_time">
-                    <a-textarea
+                    <a-input
                       v-model:value="course.class_time"
                       format="HH:mm"
                       valueFormat="HH:mm"
@@ -175,6 +175,7 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { UploadOutlined } from "@ant-design/icons-vue";
 import { quillEditor } from "vue3-quill";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
+import { message } from "ant-design-vue";
 import dayjs from "dayjs";
 
 export default {
@@ -216,6 +217,7 @@ export default {
         .then(() => {
           this.$inertia.post(route("admin.courses.store"), formData, {
             onSuccess: (page) => {
+              message.success("新增成功");
               console.log(page);
             },
             onError: (err) => {

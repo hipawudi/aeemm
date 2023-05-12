@@ -68,7 +68,7 @@
                     />
                   </a-form-item>
                   <a-form-item label="上課時間" name="class_time">
-                    <a-textarea
+                    <a-input
                       v-model:value="course.class_time"
                       format="HH:mm"
                       valueFormat="HH:mm"
@@ -176,6 +176,7 @@ import { UploadOutlined } from "@ant-design/icons-vue";
 import { quillEditor } from "vue3-quill";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
 import dayjs from "dayjs";
+import { message } from "ant-design-vue";
 
 export default {
   setup() {
@@ -254,7 +255,7 @@ export default {
               if (!Array.isArray(this.course.class_time)) {
                 this.course.class_time = this.course.class_time;
               }
-
+              message.success("修改成功");
               console.log(page);
             },
             onError: (error) => {

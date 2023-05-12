@@ -20,6 +20,7 @@ class BulletinController extends Controller
     public function index()
     {
         $bulletins = Bulletin::paginate(request('per_page'));
+        // dd(Config::item('bulletin_categories'));
         return Inertia::render('Admin/Bulletin', [
             'bulletins' => $bulletins,
             'bulletinCategories' => Config::item('bulletin_categories'),
