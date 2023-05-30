@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->text('content')->nullable();
             $table->boolean('published')->default(1);
+            $table->string('post_id')->nullable();
             $table->text('cover_image_path')->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();

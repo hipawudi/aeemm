@@ -20,7 +20,7 @@
         >
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'state'">
-              {{ record.state == 1 ? "存在" : "取消" }}
+              {{ employmentStates.find((x) => x.value == record.state).label }}
             </template>
             <template v-if="column.dataIndex == 'operation'">
               <div class="space-x-2">
@@ -139,12 +139,16 @@ export default {
       ],
       employmentStates: [
         {
-          label: "存在",
+          label: "活躍",
           value: 1,
         },
         {
-          label: "取消",
+          label: "非活躍",
           value: 2,
+        },
+        {
+          label: "退會",
+          value: 3,
         },
       ],
       modal: {

@@ -7,8 +7,13 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Member;
 use App\Models\Bulletin;
+use App\Models\BulletinImage;
 use App\Models\Config;
+use Facebook\Facebook;
+use Exception;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use stdClass;
 
 class BulletinController extends Controller
 {
@@ -17,10 +22,17 @@ class BulletinController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $bulletins = Bulletin::paginate(request('per_page'));
+        if (empty($request->per_page)) {
+            $per_page = 10;
+        } else {
+            $per_page = $request->per_page;
+        }
+        $bulletins = Bulletin::with('images')->paginate($per_page);
         // dd(Config::item('bulletin_categories'));
+        // dd($bulletins);
+
         return Inertia::render('Admin/Bulletin', [
             'bulletins' => $bulletins,
             'bulletinCategories' => Config::item('bulletin_categories'),
@@ -45,6 +57,12 @@ class BulletinController extends Controller
      */
     public function store(Request $request)
     {
+        $fb = new Facebook([
+            'app_id' => env('FACEBOOK_APP_ID'),
+            'app_secret' => env('FACEBOOK_APP_SECRET'),
+            'default_graph_version' => env('DEFAULT_GRAPH_VERSION'),
+        ]);
+
         $bulletin = new Bulletin;
 
         $bulletin->category = $request->category;
@@ -55,7 +73,56 @@ class BulletinController extends Controller
         $bulletin->content = $request->content;
         $bulletin->created_by = Auth()->user()->id;
         $bulletin->save();
+        // dd($request->file('images'));
 
+        if ($request->file('images') != null) {
+            foreach ($request->file('images') as $idx => $image) {
+                // $bulletin->addMedia($image['originFileObj'])->toMediaCollection('bulletin');
+                $path = Storage::putFile('public/images/bulletin', $image['originFileObj']);
+
+                $bulletin_image = new BulletinImage;
+                $bulletin_image->bulletin_id = $bulletin->id;
+                $bulletin_image->image_path = $path;
+
+                $params = array(
+                    'url' => url('/') . Storage::url($path),
+                    'published' => 'false'
+                );
+
+                try {
+                    // Get the \Facebook\GraphNodes\GraphUser object for the current user.
+                    // If you provided a 'default_access_token', the '{access-token}' is optional.
+                    $response = $fb->post('/me/photos', $params, env('FACEBOOK_ACCESS_TOKEN'));
+                    $bulletin_image->facebook_id = $response->getDecodedBody()['id'];
+                } catch (Exception $e) {
+                    // When Graph returns an error
+                    exit;
+                }
+                $bulletin_image->save();
+
+                if ($idx == 0) {
+                    $bulletin->cover_image_path = $path;
+                    $bulletin->save();
+                }
+            }
+        }
+        $bulletin_images = BulletinImage::where('bulletin_id', $bulletin->id)->get();
+        $content = strip_tags($bulletin->content, '<br>');
+        $content = preg_replace('/<br\\s*?\/??>/i', chr(10), $content);
+        $params = array('message' => $content);
+        foreach ($bulletin_images as $key => $bi) {
+            $params["attached_media[$key]"] = "{'media_fbid':'$bi->facebook_id'}";
+        }
+        try {
+            // Get the \Facebook\GraphNodes\GraphUser object for the current user.
+            // If you provided a 'default_access_token', the '{access-token}' is optional.
+            $response = $fb->post('/me/feed', $params, env('FACEBOOK_ACCESS_TOKEN'));
+            $bulletin->post_id = $response->getDecodedBody()['id'];
+            $bulletin->save();
+        } catch (Exception $e) {
+            // When Graph returns an error
+            exit;
+        }
         return redirect()->back();
         // dd($request);
     }
@@ -91,6 +158,12 @@ class BulletinController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $fb = new Facebook([
+            'app_id' => env('FACEBOOK_APP_ID'),
+            'app_secret' => env('FACEBOOK_APP_SECRET'),
+            'default_graph_version' => env('DEFAULT_GRAPH_VERSION'),
+        ]);
+
         $bulletin = Bulletin::find($id);
         $bulletin->category = $request->category;
         $bulletin->description = $request->description;
@@ -100,16 +173,63 @@ class BulletinController extends Controller
         $bulletin->content = $request->content;
         $bulletin->updated_by = Auth()->user()->id;
 
-        if ($request->file('cover') != null) {
-            $file = $request->file('cover')[0]['originFileObj'];
+        $bulletin_images = BulletinImage::where('bulletin_id', $id)->get()->toArray();
+        $result = array_diff(array_column($bulletin_images, 'id'), array_column($request->images, 'id'));
 
-            $path = Storage::putFile('public/images/bulletin', $file);
-
-            $bulletin->cover_image_path = $path;
+        foreach ($result as $r) {
+            BulletinImage::where('id', $r)->delete();
         }
 
-        $bulletin->save();
-        return redirect()->back();
+        if ($request->file('images') != null) {
+            foreach ($request->file('images') as $idx => $image) {
+                // $bulletin->addMedia($image['originFileObj'])->toMediaCollection('bulletin');
+                $path = Storage::putFile('public/images/bulletin', $image['originFileObj']);
+
+                $bulletin_image = new BulletinImage;
+                $bulletin_image->bulletin_id = $bulletin->id;
+                $bulletin_image->image_path = $path;
+
+                $params = array(
+                    'url' => url('/') . Storage::url($path),
+                    'published' => 'false'
+                );
+
+                try {
+                    // Get the \Facebook\GraphNodes\GraphUser object for the current user.
+                    // If you provided a 'default_access_token', the '{access-token}' is optional.
+                    $response = $fb->post('/me/photos', $params, env('FACEBOOK_ACCESS_TOKEN'));
+                    $bulletin_image->facebook_id = $response->getDecodedBody()['id'];
+                } catch (Exception $e) {
+                    // When Graph returns an error
+                    exit;
+                }
+
+                $bulletin_image->save();
+            }
+        }
+        $bulletin_image = BulletinImage::where('bulletin_id', $bulletin->id)->first();
+        if ($bulletin_image != null) {
+            $bulletin->cover_image_path = $bulletin_image->image_path;
+            $bulletin->save();
+        }
+
+        $bulletin_images = BulletinImage::where('bulletin_id', $bulletin->id)->get();
+        $content = strip_tags($bulletin->content, '<br></p>');
+        $content = preg_replace('/<br\\s*?\/??>/', "\r\n", $content);
+        $content = preg_replace('/<\/p\b[^>]*>/', "\r\n", $content);
+        $params = array('message' => $content);
+        foreach ($bulletin_images as $key => $bi) {
+            $params["attached_media[$key]"] = "{'media_fbid':'$bi->facebook_id'}";
+        }
+        try {
+            // Get the \Facebook\GraphNodes\GraphUser object for the current user.
+            // If you provided a 'default_access_token', the '{access-token}' is optional.
+            $response = $fb->post("/$bulletin->post_id", $params, env('FACEBOOK_ACCESS_TOKEN'));
+        } catch (Exception $e) {
+            // When Graph returns an error
+            dd($e);
+            exit;
+        }
     }
 
     /**
@@ -124,7 +244,10 @@ class BulletinController extends Controller
 
         $bulletin->delete();
 
-        return redirect()->back();
+        return Redirect::route('admin.bulletins.index');
         //
+    }
+    public function save_test(Request $request)
+    {
     }
 }

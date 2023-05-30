@@ -62,7 +62,8 @@ class CertificateController extends Controller
         $certificate->rank_caption = $request->rank_caption;
         $certificate->description = $request->description;
         $certificate->save();
-        return redirect()->back();
+
+        return redirect()->back(); 
     }
 
     /**

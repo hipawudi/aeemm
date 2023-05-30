@@ -123,7 +123,6 @@
                     <a-upload
                       v-model:file-list="course.poster"
                       :multiple="false"
-                      :beforeUpload="openCropModal"
                       :max-count="1"
                       list-type="picture-card"
                     >

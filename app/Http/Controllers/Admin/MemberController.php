@@ -21,7 +21,6 @@ class MemberController extends Controller
      */
     public function index(Request $request)
     {
-
         if (empty($request->per_page)) {
             $per_page = 10;
         } else {
@@ -32,7 +31,7 @@ class MemberController extends Controller
             $query->where('password', '!=', null)->where('password', '!=', 'need-to-set');
         }])->paginate($per_page);
 
-        return Inertia::render('Admin/Member', [
+        return Inertia::render('Admin/Member/List', [
             'members' => $members,
         ]);
     }

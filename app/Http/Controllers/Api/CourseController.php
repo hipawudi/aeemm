@@ -19,6 +19,7 @@ class CourseController extends Controller
     {
         return response()->json($course);
     }
+    
     public function getCourses(Request $request)
     {
         $perPage = 10;
@@ -34,6 +35,7 @@ class CourseController extends Controller
         $course = Course::where('id', $request->id)->first();
         return response()->json($course);
     }
+
     public function getNewCourses()
     {
         $courses = Course::orderByDesc('start_date')->take(4)->get();

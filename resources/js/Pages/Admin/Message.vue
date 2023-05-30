@@ -199,6 +199,7 @@ export default {
         .validateFields()
         .then(() => {
           this.$inertia.post(route("admin.messages.store"), this.modal.data, {
+            preserveState: false,
             onSuccess: (page) => {
               this.modal.isOpen = false;
               message.success("新增成功");
@@ -221,6 +222,7 @@ export default {
             route("admin.messages.update", this.modal.data.id),
             this.modal.data,
             {
+              preserveState: false,
               onSuccess: (page) => {
                 this.modal.isOpen = false;
                 message.success("修改成功");
@@ -238,6 +240,7 @@ export default {
 
     deleteRecord(recordId) {
       this.$inertia.delete("/admin/messages/" + recordId, {
+        preserveState: false,
         onSuccess: (page) => {
           message.success("刪除成功");
           console.log(page);
@@ -253,7 +256,6 @@ export default {
         {
           page: page.current,
           per_page: 10,
-          filter: "namejose",
         },
         {
           onSuccess: (page) => {

@@ -260,6 +260,7 @@ export default {
         .validateFields()
         .then(() => {
           this.$inertia.post(route("admin.professionals.store"), this.modal.data, {
+            preserveState: false,
             onSuccess: (page) => {
               this.modal.isOpen = false;
             },
@@ -281,6 +282,7 @@ export default {
             route("admin.professionals.update", this.modal.data.id),
             this.modal.data,
             {
+              preserveState: false,
               onSuccess: (page) => {
                 this.modal.isOpen = false;
               },
@@ -296,6 +298,7 @@ export default {
     },
     deleteRecord(recordId) {
       this.$inertia.delete("/admin/professionals/" + recordId, {
+        preserveState: false,
         onSuccess: (page) => {
           console.log(page);
         },

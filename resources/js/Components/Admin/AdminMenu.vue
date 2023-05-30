@@ -1,14 +1,43 @@
 <template>
   <div>
-    <a-menu v-model:selectedKeys="selectedKeys" mode="inline" theme="light">
-      <a-menu-item v-for="am in adminMenu" :key="am.key"
-        ><template #icon>
-          <component :is="am.icon" />
+    <a-menu
+      v-model:selectedKeys="selectedKeys"
+      :open-keys="openKeys"
+      mode="inline"
+      theme="light"
+    >
+      <template v-for="am in adminMenu" :key="am.key">
+        <template v-if="!am.children">
+          <a-menu-item :key="am.key">
+            <template #icon>
+              <component :is="am.icon" />
+            </template>
+            <inertia-link :href="route(am.route)" :target="am.target">{{
+              am.title
+            }}</inertia-link>
+          </a-menu-item>
         </template>
-        <inertia-link :href="route(am.route)" :target="am.target">{{
-          am.title
-        }}</inertia-link>
-      </a-menu-item>
+        <template v-else>
+          <a-sub-menu :key="am.key">
+            <template #icon>
+              <component :is="am.icon" />
+            </template>
+            <template #title>{{ am.title }}</template>
+            <template v-for="item in am.children" :key="item.key">
+              <template v-if="!item.children">
+                <a-menu-item :key="item.key">
+                  <template #icon>
+                    <PieChartOutlined />
+                  </template>
+                  <inertia-link :href="route(item.route)" :target="item.target">
+                    {{ item.title }}</inertia-link
+                  >
+                </a-menu-item>
+              </template>
+            </template>
+          </a-sub-menu>
+        </template>
+      </template>
     </a-menu>
   </div>
 </template>
@@ -60,39 +89,43 @@ export default {
         icon: "user-outlined",
         title: "會員",
         route: "admin.members.index",
+        children: [
+          { key: "members.index", title: "會員列表", route: "admin.members.index" },
+          { key: "members.payments.index", title: "會員繳費", route: "admin.members.payments.index" },
+        ],
       },
       {
-        key: "certificates",
+        key: "certificates.index",
         icon: "inbox-outlined",
         title: "專業認證",
         route: "admin.certificates.index",
       },
       {
-        key: "professionals",
+        key: "professionals.index",
         icon: "inbox-outlined",
         title: "專業證書",
         route: "admin.professionals.index",
       },
       {
-        key: "forms",
+        key: "forms.index",
         icon: "form-outlined",
         title: "表格",
         route: "admin.forms.index",
       },
       {
-        key: "courses",
+        key: "courses.index",
         icon: "book-outlined",
         title: "課程",
         route: "admin.courses.index",
       },
       {
-        key: "messages",
+        key: "messages.index",
         icon: "message-outlined",
         title: "通信",
         route: "admin.messages.index",
       },
       {
-        key: "bulletins",
+        key: "bulletins.index",
         icon: "notification-outlined",
         title: "公告",
         route: "admin.bulletins.index",
@@ -109,9 +142,9 @@ export default {
     };
   },
   mounted() {
-    console.log(route().current().split(".").slice(1, 2).join("."));
-    this.openKeys.push(route().current().split(".")[1]);
-    this.selectedKeys.push(route().current().split(".").slice(1, 2).join("."));
+    console.log(route().current().split(".").slice(1).join("."));
+    this.openKeys.push(route().current().split(".").slice(1, 2).join("."));
+    this.selectedKeys.push(route().current().split(".").slice(1).join("."));
   },
 };
 </script>

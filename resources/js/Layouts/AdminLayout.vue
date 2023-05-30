@@ -65,7 +65,7 @@
         </PageHeader>
 
         <div class="mx-6">
-          <main>
+          <main class="px-4">
             <slot />
           </main>
         </div>

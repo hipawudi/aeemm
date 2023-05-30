@@ -15,12 +15,16 @@ class Bulletin extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-    protected $appends = [
-        'cover_url',
-    ];
-
-    public function getCoverUrlAttribute(): ?string
+    public function images()
     {
-        return $this->cover_image_path ? Storage::url($this->cover_image_path) : null;
+        return $this->hasMany(BulletinImage::class);
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->fit(Manipulations::FIT_CROP, 300, 300)
+            ->nonQueued();
     }
 }

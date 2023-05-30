@@ -14,21 +14,34 @@ class Certificate extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-    protected $appends=['cid','cert_number'];
+    protected $appends = ['cid', 'cert_number'];
 
-    public function getCidAttribute(){
+    public function getCidAttribute()
+    {
         return $this->id;
         //return substr('000'.strtoupper(base_convert($this->pivot->id,10,36)),-3);
     }
 
-    public function getCertNumberAttribute(){
-        return preg_replace('/0+/i',$this->number,$this->cert_number_format);
+    public function getCertNumberAttribute()
+    {
+        return preg_replace('/0+/i', $this->number, $this->cert_number_format);
         //return '00000'.$this->pivot->number;
     }
 
-    public function members(){
-        return $this->belongsToMany(Member::class,'professionals','certificate_id','member_id')->withPivot(
-            'id','display_name','number','number_display','issue_date','valid_from','valid_until','authorize_by','rank','avata');
+    public function members()
+    {
+        return $this->belongsToMany(Member::class, 'professionals', 'certificate_id', 'member_id')->withPivot(
+            'id',
+            'display_name',
+            'number',
+            'number_display',
+            'issue_date',
+            'valid_from',
+            'valid_until',
+            'authorize_by',
+            'rank',
+            'avata'
+        );
     }
 
     public function registerMediaConversions(Media $media = null): void

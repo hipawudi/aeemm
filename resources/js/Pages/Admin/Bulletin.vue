@@ -47,14 +47,16 @@
         </a-table>
       </div>
       <!-- Modal Start-->
-      <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">
+      <a-modal
+        v-model:visible="modal.isOpen"
+        :title="modal.mode == 'CREATE' ? '新增' : '修改'"
+        width="60%"
+      >
         <a-form
           ref="modalRef"
           :model="modal.data"
-          name="Bulletin"
           :label-col="{ span: 4 }"
           :wrapper-col="{ span: 20 }"
-          autocomplete="off"
           :rules="rules"
           :validate-messages="validateMessages"
         >
@@ -75,7 +77,7 @@
             <a-input v-model:value="modal.data.description" />
           </a-form-item>
           <a-form-item label="內容" name="content">
-            <quill-editor v-model:value="modal.data.content" style="min-height: 200px" />
+            <a-textarea v-model:value="modal.data.content" />
           </a-form-item>
           <a-form-item label="發佈" name="published">
             <a-switch
@@ -84,13 +86,11 @@
               :checkedValue="1"
             />
           </a-form-item>
-          <a-form-item label="封面" name="cover">
+          <a-form-item label="相片" name="images">
             <a-upload
-              v-model:file-list="modal.data.cover"
-              :multiple="false"
-              :beforeUpload="openCropModal"
-              :max-count="1"
+              v-model:file-list="modal.data.images"
               list-type="picture-card"
+              :beforeUpload="() => false"
             >
               <div>
                 <upload-outlined></upload-outlined>
@@ -102,17 +102,19 @@
         <template #footer>
           <a-button
             v-if="modal.mode == 'EDIT'"
+            :loading="loading"
             key="Update"
             type="primary"
             @click="updateRecord()"
-            >Update</a-button
+            >修改</a-button
           >
           <a-button
             v-if="modal.mode == 'CREATE'"
+            :loading="loading"
             key="Store"
             type="primary"
             @click="storeRecord()"
-            >Add</a-button
+            >新增</a-button
           >
         </template>
       </a-modal>
@@ -142,6 +144,7 @@ export default {
       yearCurrent: 2023,
       yearStart: new Date().getFullYear() + 1,
       yearLength: new Date().getFullYear() - 2009 + 2,
+      loading: false,
       modal: {
         isOpen: false,
         data: {
@@ -202,6 +205,15 @@ export default {
     };
   },
   created() {},
+  compunted: {
+    pagination() {
+      return {
+        total: this.bulletins.total,
+        current: this.bulletins.current_page,
+        pageSize: this.bulletins.per_page,
+      };
+    },
+  },
   methods: {
     createRecord(record) {
       this.modal.data = {
@@ -212,22 +224,17 @@ export default {
     },
     editRecord(record) {
       this.modal.data = { ...record };
-      if (record.cover_image_path) {
-        this.modal.data.cover = [
-          {
-            name: record.cover_image_path.split("/").pop(),
-            url: record.cover_url,
-          },
-        ];
-      }
       this.modal.mode = "EDIT";
+      console.log(record);
       this.modal.isOpen = true;
     },
     storeRecord() {
+      this.loading = true;
       this.$refs.modalRef
         .validateFields()
         .then(() => {
           this.$inertia.post(route("admin.bulletins.store"), this.modal.data, {
+            preserveState: false,
             onSuccess: (page) => {
               this.modal.isOpen = false;
               message.success("新增成功");
@@ -235,9 +242,13 @@ export default {
             onError: (err) => {
               console.log(err);
             },
+            onFinish: (visit) => {
+              this.loading = false;
+            },
           });
         })
         .catch((err) => {
+          this.loading = false;
           console.log(err);
         });
     },
@@ -250,6 +261,7 @@ export default {
             route("admin.bulletins.update", this.modal.data.id),
             this.modal.data,
             {
+              preserveState: false,
               onSuccess: (page) => {
                 this.modal.isOpen = false;
                 message.success("修改成功");
@@ -267,6 +279,7 @@ export default {
 
     deleteRecord(recordId) {
       this.$inertia.delete("/admin/bulletins/" + recordId, {
+        preserveState: false,
         onSuccess: (page) => {
           console.log(page);
         },
@@ -276,22 +289,10 @@ export default {
       });
     },
     onPaginationChange(page, filters, sorter) {
-      this.$inertia.get(
-        route("admin.bulletins.index"),
-        {
-          page: page.current,
-          per_page: 5,
-          filter: "namejose",
-        },
-        {
-          onSuccess: (page) => {
-            console.log(page);
-          },
-          onError: (error) => {
-            console.log(error);
-          },
-        }
-      );
+      this.$inertia.get(route("admin.bulletins.index"), {
+        page: page.current,
+        per_page: 10,
+      });
     },
   },
 };

@@ -51,6 +51,7 @@ Route::middleware([
 ])->group(function () {
     Route::prefix('/admin')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.index');
+        Route::resource('members/payments', App\Http\Controllers\Admin\MemberPaymentController::class)->names('admin.members.payments');
         Route::resource('members', App\Http\Controllers\Admin\MemberController::class)->names('admin.members');
         Route::post('members/createLogin', [App\Http\Controllers\Admin\MemberController::class, 'createLogin'])->name('admin.members.createLogin');
         Route::resource('certificates', App\Http\Controllers\Admin\CertificateController::class)->names('admin.certificates');

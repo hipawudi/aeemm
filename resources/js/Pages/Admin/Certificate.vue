@@ -218,6 +218,7 @@ export default {
         .validateFields()
         .then(() => {
           this.$inertia.post(route("admin.certificates.store"), this.modal.data, {
+            preserveState: false,
             onSuccess: (page) => {
               this.modal.isOpen = false;
             },
@@ -239,6 +240,7 @@ export default {
             route("admin.certificates.update", this.modal.data.id),
             this.modal.data,
             {
+              preserveState: false,
               onSuccess: (page) => {
                 this.modal.isOpen = false;
               },
