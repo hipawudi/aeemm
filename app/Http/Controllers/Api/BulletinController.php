@@ -19,7 +19,7 @@ class BulletinController extends Controller
         $perPage = 10;
         $page = $request->input('page', 1);
 
-        $bulletins = Bulletin::paginate($perPage, ['*'], 'page', $page);
+        $bulletins = Bulletin::orderByDesc('date')->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json($bulletins);
     }

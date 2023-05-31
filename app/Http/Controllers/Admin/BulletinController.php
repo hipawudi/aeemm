@@ -107,9 +107,7 @@ class BulletinController extends Controller
             }
         }
         $bulletin_images = BulletinImage::where('bulletin_id', $bulletin->id)->get();
-        $content = strip_tags($bulletin->content, '<br>');
-        $content = preg_replace('/<br\\s*?\/??>/i', chr(10), $content);
-        $params = array('message' => $content);
+        $params = array('message' => $bulletin->content);
         foreach ($bulletin_images as $key => $bi) {
             $params["attached_media[$key]"] = "{'media_fbid':'$bi->facebook_id'}";
         }
@@ -119,11 +117,12 @@ class BulletinController extends Controller
             $response = $fb->post('/me/feed', $params, env('FACEBOOK_ACCESS_TOKEN'));
             $bulletin->post_id = $response->getDecodedBody()['id'];
             $bulletin->save();
+            return redirect()->back();
         } catch (Exception $e) {
             // When Graph returns an error
+            return redirect()->back()->withErrors(['error' => '新增成功,上傳facebook失敗']);
             exit;
         }
-        return redirect()->back();
         // dd($request);
     }
 
@@ -201,9 +200,10 @@ class BulletinController extends Controller
                     $bulletin_image->facebook_id = $response->getDecodedBody()['id'];
                 } catch (Exception $e) {
                     // When Graph returns an error
+
                     exit;
                 }
-
+                return redirect()->back()->withErrors(['error' => '更新相片成功,facebook更新相片失敗']);
                 $bulletin_image->save();
             }
         }
@@ -212,23 +212,21 @@ class BulletinController extends Controller
             $bulletin->cover_image_path = $bulletin_image->image_path;
             $bulletin->save();
         }
-
-        $bulletin_images = BulletinImage::where('bulletin_id', $bulletin->id)->get();
-        $content = strip_tags($bulletin->content, '<br></p>');
-        $content = preg_replace('/<br\\s*?\/??>/', "\r\n", $content);
-        $content = preg_replace('/<\/p\b[^>]*>/', "\r\n", $content);
-        $params = array('message' => $content);
-        foreach ($bulletin_images as $key => $bi) {
-            $params["attached_media[$key]"] = "{'media_fbid':'$bi->facebook_id'}";
-        }
-        try {
-            // Get the \Facebook\GraphNodes\GraphUser object for the current user.
-            // If you provided a 'default_access_token', the '{access-token}' is optional.
-            $response = $fb->post("/$bulletin->post_id", $params, env('FACEBOOK_ACCESS_TOKEN'));
-        } catch (Exception $e) {
-            // When Graph returns an error
-            dd($e);
-            exit;
+        if ($bulletin->post_id != null) {
+            $bulletin_images = BulletinImage::where('bulletin_id', $bulletin->id)->get();
+            $params = array('message' => $bulletin->content);
+            foreach ($bulletin_images as $key => $bi) {
+                $params["attached_media[$key]"] = "{'media_fbid':'$bi->facebook_id'}";
+            }
+            try {
+                // Get the \Facebook\GraphNodes\GraphUser object for the current user.
+                // If you provided a 'default_access_token', the '{access-token}' is optional.
+                $response = $fb->post("/$bulletin->post_id", $params, env('FACEBOOK_ACCESS_TOKEN'));
+                return redirect()->back();
+            } catch (Exception $e) {
+                // When Graph returns an error
+                return redirect()->back()->withErrors(['error' => '更新成功,facebook更新失敗']);
+            }
         }
     }
 
@@ -244,7 +242,7 @@ class BulletinController extends Controller
 
         $bulletin->delete();
 
-        return Redirect::route('admin.bulletins.index');
+        return redirect()->back();
         //
     }
     public function save_test(Request $request)

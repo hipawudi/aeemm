@@ -184,8 +184,9 @@ export default {
         },
       ],
       rules: {
-        field: { required: true },
-        label: { required: true },
+        title: { required: true },
+        date: { required: true },
+        category: { required: true },
       },
       validateMessages: {
         required: "${label} is required!",
@@ -237,6 +238,7 @@ export default {
             preserveState: false,
             onSuccess: (page) => {
               this.modal.isOpen = false;
+              console.log(page);
               message.success("新增成功");
             },
             onError: (err) => {
@@ -268,6 +270,7 @@ export default {
               },
               onError: (error) => {
                 console.log(error);
+                message.error(error.error);
               },
             }
           );

@@ -21,7 +21,7 @@ Route::prefix('/')->group(function () {
     Route::get('/courses', [\App\Http\Controllers\Api\CourseController::class, 'getCourses']);
     Route::get('/course/{id}', [\App\Http\Controllers\Api\CourseController::class, 'getCourse']);
     Route::get('/newCourses', [\App\Http\Controllers\Api\CourseController::class, 'getNewCourses']);
-    Route::get('/bulletins', [\App\Http\Controllers\Api\BulletinController::class, 'getBulletins']);
+    Route::get('/getBulletins', [\App\Http\Controllers\Api\BulletinController::class, 'getBulletins']);
     Route::get('/bulletin/{id}', [\App\Http\Controllers\Api\BulletinController::class, 'getBulletin']);
     Route::get('/newBulletins', [\App\Http\Controllers\Api\BulletinController::class, 'getNewBulletins']);
 });
