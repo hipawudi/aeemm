@@ -51,7 +51,7 @@
       "resources/js/Pages/Welcome.vue"
     ],
     "css": [
-      "assets/app.65ff451d.css"
+      "assets/app.a3f09ce9.css"
     ]
   },
   "resources/js/Pages/API/Index.vue": {
@@ -921,44 +921,44 @@
       "resources/js/app.js"
     ]
   },
-  "resources/js/Pages/Forms/FormDefault.css": {
-    "file": "assets/FormDefault.bd77b05d.css",
-    "src": "resources/js/Pages/Forms/FormDefault.css"
-  },
   "resources/js/Pages/Admin/Course/Create.css": {
     "file": "assets/Create.af5a8755.css",
     "src": "resources/js/Pages/Admin/Course/Create.css"
-  },
-  "resources/js/Pages/Member/Membership.css": {
-    "file": "assets/Membership.b1838cff.css",
-    "src": "resources/js/Pages/Member/Membership.css"
-  },
-  "MemberLayout.css": {
-    "file": "assets/MemberLayout.bdb81462.css",
-    "src": "MemberLayout.css"
-  },
-  "AdminLayout.css": {
-    "file": "assets/AdminLayout.0489c0a2.css",
-    "src": "AdminLayout.css"
-  },
-  "resources/js/Pages/Admin/Course/Show.css": {
-    "file": "assets/Show.af5a8755.css",
-    "src": "resources/js/Pages/Admin/Course/Show.css"
   },
   "resources/js/Pages/Courses/CourseDetail.css": {
     "file": "assets/CourseDetail.af5a8755.css",
     "src": "resources/js/Pages/Courses/CourseDetail.css"
   },
+  "resources/js/Pages/Member/Membership.css": {
+    "file": "assets/Membership.b1838cff.css",
+    "src": "resources/js/Pages/Member/Membership.css"
+  },
+  "resources/js/Pages/Forms/FormDefault.css": {
+    "file": "assets/FormDefault.bd77b05d.css",
+    "src": "resources/js/Pages/Forms/FormDefault.css"
+  },
+  "resources/js/Pages/Admin/Course/Show.css": {
+    "file": "assets/Show.af5a8755.css",
+    "src": "resources/js/Pages/Admin/Course/Show.css"
+  },
   "resources/js/Pages/Admin/Course/Edit.css": {
     "file": "assets/Edit.af5a8755.css",
     "src": "resources/js/Pages/Admin/Course/Edit.css"
+  },
+  "AdminLayout.css": {
+    "file": "assets/AdminLayout.0489c0a2.css",
+    "src": "AdminLayout.css"
+  },
+  "MemberLayout.css": {
+    "file": "assets/MemberLayout.bdb81462.css",
+    "src": "MemberLayout.css"
   },
   "index.css": {
     "file": "assets/index.16c8fc1c.css",
     "src": "index.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app.65ff451d.css",
+    "file": "assets/app.a3f09ce9.css",
     "src": "resources/js/app.css"
   }
 }

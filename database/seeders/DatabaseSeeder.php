@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             ConfigSeeder::class,
             CourseSeeder::class,
             BulletinSeeder::class,
+            BulletinImage::class,
         ]);
 
 

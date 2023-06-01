@@ -25,7 +25,7 @@ class BulletinController extends Controller
     }
     public function getBulletin(Request $request)
     {
-        $bulletin = Bulletin::where('id', $request->id)->first();
+        $bulletin = Bulletin::with('images')->where('id', $request->id)->first();
 
         return response()->json($bulletin);
     }

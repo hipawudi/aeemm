@@ -171,7 +171,9 @@ class BulletinController extends Controller
         $bulletin->title = $request->title;
         $bulletin->content = $request->content;
         $bulletin->updated_by = Auth()->user()->id;
-
+  
+        $bulletin->save();
+  
         $bulletin_images = BulletinImage::where('bulletin_id', $id)->get()->toArray();
         $result = array_diff(array_column($bulletin_images, 'id'), array_column($request->images, 'id'));
 
