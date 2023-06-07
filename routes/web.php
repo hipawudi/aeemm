@@ -61,6 +61,7 @@ Route::middleware([
         Route::resource('forms.fields', App\Http\Controllers\Admin\FormFieldController::class)->names('admin.forms.fields');
         Route::get('certificate-delete-media/{media}', [App\Http\Controllers\Admin\CertificateController::class, 'deleteMedia'])->name('admin.certificate-delete-media');
         Route::get('form-delete-media/{media}', [App\Http\Controllers\Admin\FormController::class, 'deleteMedia'])->name('admin.form-delete-media');
+        Route::get('course/published-from/{course_id}', [App\Http\Controllers\Admin\CourseController::class, 'publishedForm'])->name('admin.courses.publishedForm');
         Route::resource('courses', App\Http\Controllers\Admin\CourseController::class)->names('admin.courses');
         Route::resource('messages', App\Http\Controllers\Admin\MessageController::class)->names('admin.messages');
         Route::resource('bulletins', App\Http\Controllers\Admin\BulletinController::class)->names('admin.bulletins');

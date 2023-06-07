@@ -67,8 +67,18 @@
               :field-names="{ label: 'display_name', value: 'id' }"
             />
           </a-form-item>
-          <a-form-item label="認證名片號碼" name="number_display">
-            <a-input v-model:value="modal.data.number_display" />
+          <a-form-item label="證書號碼" name="number_display">
+            <div class="flex gap-2 items-center">
+              <div class="flex-initial">
+                {{
+                  certificates.find((x) => x.id == modal.data.certificate_id)
+                    ?.number_format
+                }}
+              </div>
+              <div class="flex-auto">
+                <a-input v-model:value="modal.data.number_display" />
+              </div>
+            </div>
           </a-form-item>
           <a-form-item label="簽發日期" name="issue_date">
             <a-date-picker
@@ -218,9 +228,10 @@ export default {
         },
       ],
       rules: {
-        name_zh: { required: true },
-        mobile: { required: true },
-        state: { required: true },
+        certificate_id: { required: true },
+        member_id: { required: true },
+        issue_date: { required: true },
+        authorize_by: { required: true },
       },
       validateMessages: {
         required: "${label} is required!",

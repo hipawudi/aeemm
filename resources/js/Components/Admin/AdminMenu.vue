@@ -142,7 +142,6 @@ export default {
     };
   },
   mounted() {
-    console.log(route().current().split(".").slice(1).join("."));
     this.openKeys.push(route().current().split(".").slice(1, 2).join("."));
     this.selectedKeys.push(route().current().split(".").slice(1).join("."));
   },

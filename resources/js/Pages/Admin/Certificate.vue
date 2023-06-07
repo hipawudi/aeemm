@@ -42,15 +42,23 @@
           :rules="rules"
           :validate-messages="validateMessages"
         >
-          <a-input type="hidden" v-model:value="modal.data.id" />
-          <a-form-item label="專業認證" name="name">
-            <a-input v-model:value="modal.data.name" />
-          </a-form-item>
           <a-form-item label="認證名稱" name="cert_title">
             <a-input v-model:value="modal.data.cert_title" />
           </a-form-item>
           <a-form-item label="認證機構" name="cert_body">
             <a-input v-model:value="modal.data.cert_body" />
+          </a-form-item>
+          <a-form-item label="認證內容" name="cert_content">
+            <a-textarea v-model:value="modal.data.cert_content" />
+          </a-form-item>
+          <a-form-item label="編號格式" name="number_format">
+            <a-input v-model:value="modal.data.number_format" />
+          </a-form-item>
+          <a-form-item label="等級" name="rank_caption">
+            <a-input v-model:value="modal.data.rank_caption" />
+          </a-form-item>
+          <a-form-item label="簡介" name="description">
+            <a-textarea v-model:value="modal.data.description" />
           </a-form-item>
           <!-- <a-form-item label="機構標誌" name="cert_logo">
             <div v-if="modal.data.media.length">
@@ -92,18 +100,6 @@
               </a-button>
             </a-upload>
           </a-form-item> -->
-          <a-form-item label="認證樣式" name="cert_template">
-            <a-input v-model:value="modal.data.cert_template" />
-          </a-form-item>
-          <a-form-item label="編號格式" name="number_format">
-            <a-input v-model:value="modal.data.number_format" />
-          </a-form-item>
-          <a-form-item label="等級標題" name="rank_caption">
-            <a-input v-model:value="modal.data.rank_caption" />
-          </a-form-item>
-          <a-form-item label="簡介" name="description">
-            <a-textarea v-model:value="modal.data.description" />
-          </a-form-item>
         </a-form>
         <template #footer>
           <a-button
@@ -132,7 +128,8 @@
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { UploadOutlined } from "@ant-design/icons-vue";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
-
+import { Inertia } from "@inertiajs/inertia";
+import { message } from "ant-design-vue";
 import { defineComponent, reactive } from "vue";
 
 export default {
@@ -152,10 +149,6 @@ export default {
       },
       columns: [
         {
-          title: "專業認證",
-          dataIndex: "name",
-        },
-        {
           title: "認證名稱",
           dataIndex: "cert_title",
         },
@@ -164,8 +157,8 @@ export default {
           dataIndex: "cert_body",
         },
         {
-          title: "認證樣式",
-          dataIndex: "cert_template",
+          title: "認證內容",
+          dataIndex: "cert_content",
         },
         {
           title: "編號格式",
@@ -178,9 +171,9 @@ export default {
         },
       ],
       rules: {
-        name_zh: { required: true },
-        mobile: { required: true },
-        state: { required: true },
+        cert_title: { required: true },
+        cert_body: { required: true },
+        number_format: { required: true },
       },
       validateMessages: {
         required: "${label} is required!",
@@ -221,9 +214,11 @@ export default {
             preserveState: false,
             onSuccess: (page) => {
               this.modal.isOpen = false;
+              message.success("新增成功");
             },
             onError: (err) => {
               console.log(err);
+              message.error("新增失敗");
             },
           });
         })
@@ -242,9 +237,11 @@ export default {
             {
               preserveState: false,
               onSuccess: (page) => {
+                message.success("修改成功");
                 this.modal.isOpen = false;
               },
               onError: (error) => {
+                message.error("修改成功");
                 console.log(error);
               },
             }

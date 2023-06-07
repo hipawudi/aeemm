@@ -19,6 +19,9 @@
             <template v-if="column.key === 'published'">
               {{ record.published === 1 ? "公開" : "未公開" }}
             </template>
+            <template v-if="column.key === 'for_course'">
+              {{ record.course_id !== null ? "是" : "否" }}
+            </template>
             <template v-if="column.key === 'for_member'">
               {{ record.for_member === 1 ? "是" : "否" }}
             </template>
@@ -63,10 +66,6 @@
           :rules="rules"
           :validate-messages="validateMessages"
         >
-          <a-input type="hidden" v-model:value="modal.data.id" />
-          <a-form-item label="名稱" name="name">
-            <a-input v-model:value="modal.data.name" />
-          </a-form-item>
           <a-form-item label="標題" name="title">
             <a-input v-model:value="modal.data.title" />
           </a-form-item>
@@ -181,12 +180,13 @@ export default {
       },
       columns: [
         {
-          title: "名稱",
-          dataIndex: "name",
-        },
-        {
           title: "標題",
           dataIndex: "title",
+        },
+        {
+          title: "課程表格",
+          dataIndex: "course_id",
+          key: "for_course",
         },
         {
           title: "必須登錄",
@@ -302,7 +302,7 @@ export default {
           message.success("刪除成功");
         },
         onError: (error) => {
-          message.warning("不能刪除帶有欄位的表格");
+          message.error(error.message);
         },
       });
     },

@@ -255,7 +255,7 @@ export default {
         route("admin.messages.index"),
         {
           page: page.current,
-          per_page: 10,
+          per_page: page.pageSize,
         },
         {
           onSuccess: (page) => {

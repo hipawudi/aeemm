@@ -38,7 +38,7 @@ const logout = () => {
     <div class="min-h-screen bg-gray-100">
       <nav class="bg-white border-b border-gray-100">
         <!-- Primary Navigation Menu -->
-        <div class="px-8">
+        <div class="px-4 md:px-8">
           <div class="flex justify-between h-16">
             <div class="flex flex-auto w-1/2">
               <!-- Logo -->
@@ -47,7 +47,9 @@ const logout = () => {
                   <img src="/images/aeemm_logo.jpg" style="width: 64px" />
                 </Link>
               </div>
-              <MemberMenu />
+              <div class="hidden sm:block">
+                <MemberMenu />
+              </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -173,7 +175,7 @@ const logout = () => {
 
       <!-- Page Heading -->
       <header v-if="$slots.header" class="bg-white shadow">
-        <div class="px-16 py-4 sm:px-16 lg:px-28">
+        <div class="px-4 py-2 sm:px-16 lg:px-28">
           <slot name="header" />
         </div>
       </header>

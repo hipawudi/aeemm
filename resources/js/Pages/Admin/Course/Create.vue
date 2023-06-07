@@ -1,7 +1,7 @@
 <template>
   <AdminLayout title="Dashboard">
-    <div class="p-8 pt-8">
-      <div class="flex pb-2">
+    <div class="md:p-8 pt-8">
+      <div class="flex md:pb-2">
         <div
           class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
         >
@@ -27,32 +27,34 @@
           </div>
           <div class="card bg-white rounded-md p-4" v-if="current === 0">
             <div class="text-lg font-bold pb-2">基本資料</div>
-            <div class="flex-col">
-              <div class="flex gap-6">
-                <div class="flex-1">
+            <div class="flex flex-col flex-wrap">
+              <div class="flex flex-wrap gap-6">
+                <div class="flex-auto">
                   <a-form-item label="課程名稱(中文)" name="name_zh">
                     <a-input v-model:value="course.name_zh" />
                   </a-form-item>
                 </div>
-                <div class="flex-1">
+                <div class="flex-auto">
                   <a-form-item label="課程名稱(英文)" name="name_en">
                     <a-input v-model:value="course.name_en" />
                   </a-form-item>
                 </div>
-                <div class="flex-1">
+                <div class="flex-auto">
                   <a-form-item label="課程編號" name="number">
                     <a-input v-model:value="course.number"></a-input>
                   </a-form-item>
                 </div>
               </div>
-              <a-form-item label="課程簡介(中文)" name="description_zh">
-                <a-textarea v-model:value="course.description_zh" />
-              </a-form-item>
+              <div class="flex-auto">
+                <a-form-item label="課程簡介(中文)" name="description_zh">
+                  <a-textarea v-model:value="course.description_zh" />
+                </a-form-item>
+              </div>
               <a-form-item label="課程簡介(英文)" name="description_en">
                 <a-textarea v-model:value="course.description_en" />
               </a-form-item>
               <div class="flex gap-6">
-                <div class="flex flex-auto w-1/2 gap-6">
+                <div class="flex flex-wrap gap-6">
                   <a-form-item label="報名開始日期" name="start_date">
                     <a-date-picker
                       v-model:value="course.start_date"
@@ -77,8 +79,6 @@
                   <a-form-item label="時數" name="hours">
                     <a-input-number v-model:value="course.hours" :min="0" />
                   </a-form-item>
-                </div>
-                <div class="flex flex-auto w-1/2 gap-6">
                   <a-form-item label="學費(非會員)" name="fee">
                     <a-input-number v-model:value="course.fee" :min="0" />
                   </a-form-item>
@@ -109,10 +109,19 @@
                 </div>
               </div>
               <div class="flex gap-6">
-                <div class="flex-auto w-1/2">
+                <div class="flex-auto w-1/4">
                   <a-form-item label="發佈" name="published">
                     <a-switch
                       v-model:checked="course.published"
+                      :unCheckedValue="0"
+                      :checkedValue="1"
+                    />
+                  </a-form-item>
+                </div>
+                <div class="flex-auto w-1/4">
+                  <a-form-item label="會員優先" name="member_priority">
+                    <a-switch
+                      v-model:checked="course.member_priority"
                       :unCheckedValue="0"
                       :checkedValue="1"
                     />
@@ -174,7 +183,7 @@ import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { UploadOutlined } from "@ant-design/icons-vue";
 import { quillEditor } from "vue3-quill";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
-import { message } from "ant-design-vue";
+import { Modal, message } from "ant-design-vue";
 import dayjs from "dayjs";
 
 export default {
@@ -214,18 +223,20 @@ export default {
       this.$refs.modalRef
         .validateFields()
         .then(() => {
-          this.$inertia.post(route("admin.courses.store"), formData, {
+          this.$inertia.post(route("admin.courses.store"), this.course, {
             onSuccess: (page) => {
               message.success("新增成功");
               console.log(page);
             },
             onError: (err) => {
               console.log(err);
+              message.success("新增失敗");
             },
           });
         })
         .catch((err) => {
           console.log(err);
+          message.success("新增失敗");
         });
     },
     nextPage() {

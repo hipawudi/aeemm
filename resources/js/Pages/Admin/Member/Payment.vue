@@ -238,7 +238,7 @@ export default {
       this.modal.data = { ...record };
       this.modal.data.payment_image = [
         {
-          name: this.modal.data.payment_image_path.split("/").pop(),
+          name: this.modal.data.payment_image_path?.split("/").pop(),
           url: this.modal.data.payment_image_path,
         },
       ];
@@ -302,7 +302,7 @@ export default {
       console.log(page.current);
       this.$inertia.get(route("admin.members.payments.index"), {
         page: page.current,
-        per_page: 10,
+        per_page: page.pageSize,
       });
     },
   },

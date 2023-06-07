@@ -107,7 +107,7 @@ class BulletinController extends Controller
             }
         }
         $bulletin_images = BulletinImage::where('bulletin_id', $bulletin->id)->get();
-        $params = array('message' => $bulletin->content);
+        $params = array('message' => $bulletin->content, 'published' => $bulletin->published);
         foreach ($bulletin_images as $key => $bi) {
             $params["attached_media[$key]"] = "{'media_fbid':'$bi->facebook_id'}";
         }
@@ -171,9 +171,9 @@ class BulletinController extends Controller
         $bulletin->title = $request->title;
         $bulletin->content = $request->content;
         $bulletin->updated_by = Auth()->user()->id;
-  
+
         $bulletin->save();
-  
+
         $bulletin_images = BulletinImage::where('bulletin_id', $id)->get()->toArray();
         $result = array_diff(array_column($bulletin_images, 'id'), array_column($request->images, 'id'));
 
@@ -216,7 +216,7 @@ class BulletinController extends Controller
         }
         if ($bulletin->post_id != null) {
             $bulletin_images = BulletinImage::where('bulletin_id', $bulletin->id)->get();
-            $params = array('message' => $bulletin->content);
+            $params = array('message' => $bulletin->content, 'published' => $bulletin->published);
             foreach ($bulletin_images as $key => $bi) {
                 $params["attached_media[$key]"] = "{'media_fbid':'$bi->facebook_id'}";
             }

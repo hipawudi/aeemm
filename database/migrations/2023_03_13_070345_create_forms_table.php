@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('forms', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('title')->nullable();
+            $table->string('title');
+            $table->integer('course_id')->nullable();
             $table->text('description')->nullable();
             $table->boolean('for_account')->default(false);
             $table->boolean('for_member')->default(false);

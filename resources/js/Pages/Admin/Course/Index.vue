@@ -5,7 +5,7 @@
         <div
           class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
         >
-          會員列表
+          課程管理
         </div>
         <div class="flex-auto w-1/2 text-right">
           <inertia-link :href="route('admin.courses.create')"
@@ -18,6 +18,15 @@
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
               <div class="space-x-2">
+                <a-popconfirm
+                  v-if="record.form.published === 0"
+                  title="是否確定公開這個課程報名"
+                  ok-text="是"
+                  cancel-text="否"
+                  @confirm="publishedForm(record.id)"
+                >
+                  <a-button>公開報名</a-button>
+                </a-popconfirm>
                 <inertia-link
                   :href="route('admin.courses.edit', record.id)"
                   class="ant-btn"
@@ -44,6 +53,7 @@
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { UploadOutlined } from "@ant-design/icons-vue";
 import Icon, { RestFilled } from "@ant-design/icons-vue";
+import { message } from "ant-design-vue";
 
 export default {
   components: {
@@ -123,6 +133,20 @@ export default {
           alert(error.message);
         },
       });
+    },
+    publishedForm(recordId) {
+      this.$inertia.get(
+        route("admin.courses.publishedForm", recordId),
+        {},
+        {
+          onSuccess: (page) => {
+            message.success("公開成功");
+          },
+          onError: (error) => {
+            message.error(error.message);
+          },
+        }
+      );
     },
   },
 };

@@ -16,61 +16,58 @@ class FormSeeder extends Seeder
     public function run()
     {
         DB::table('forms')->insert([
-            'name'=>'first form',
-            'title'=>'First form of title'
+            'title' => '水技術提升培訓課程',
+            'published' => false,
+            'course_id' => '1',
         ]);
         DB::table('form_fields')->insert([
             'form_id' => '1',
-            'field_name'=>'username',
-            'field_label'=>'Username',
-            'type'=>'input'
+            'field_name' => 'username',
+            'field_label' => 'Username',
+            'type' => 'input'
         ]);
         DB::table('form_fields')->insert([
             'form_id' => '1',
-            'field_name'=>'gender',
-            'field_label'=>'Gender',
-            'type'=>'radio',
-            'options'=>'[{"value":"M","label":"Male"},{"value":"F","label":"Female"}]'
+            'field_name' => 'gender',
+            'field_label' => 'Gender',
+            'type' => 'radio',
+            'options' => '[{"value":"M","label":"Male"},{"value":"F","label":"Female"}]'
         ]);
         DB::table('form_fields')->insert([
             'form_id' => '1',
-            'field_name'=>'dob',
-            'field_label'=>'DOB',
-            'type'=>'date',
+            'field_name' => 'dob',
+            'field_label' => 'DOB',
+            'type' => 'date',
         ]);
         DB::table('form_fields')->insert([
             'form_id' => '1',
-            'field_name'=>'education',
-            'field_label'=>'Education',
-            'type'=>'select',
-            'options'=>'[{"value":"B","label":"Bachalor"},{"value":"M","label":"Master"},{"value":"D","label":"PhD."}]'
+            'field_name' => 'education',
+            'field_label' => 'Education',
+            'type' => 'select',
+            'options' => '[{"value":"B","label":"Bachalor"},{"value":"M","label":"Master"},{"value":"D","label":"PhD."}]'
         ]);
         DB::table('form_fields')->insert([
             'form_id' => '1',
-            'field_name'=>'email',
-            'field_label'=>'Email',
-            'type'=>'email'
+            'field_name' => 'email',
+            'field_label' => 'Email',
+            'type' => 'email'
         ]);
         DB::table('form_fields')->insert([
             'form_id' => '1',
-            'field_name'=>'remark',
-            'field_label'=>'Remark',
-            'type'=>'textarea'
+            'field_name' => 'remark',
+            'field_label' => 'Remark',
+            'type' => 'textarea'
         ]);
-
-
         DB::table('forms')->insert([
-            'name'=>'second form',
-            'title'=>'Second form of title',
-            'published'=>true
+            'title' => '屋宇電氣系統設計課程2023',
+            'published' => false,
+            'course_id' => '2',
         ]);
         DB::table('form_fields')->insert([
             'form_id' => '2',
-            'field_name'=>'username',
-            'field_label'=>'Username',
-            'type'=>'input',
+            'field_name' => 'username',
+            'field_label' => 'Username',
+            'type' => 'input',
         ]);
-
-
     }
 }

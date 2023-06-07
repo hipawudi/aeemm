@@ -119,7 +119,7 @@ export default {
           dataIndex: "name_en",
         },
         {
-          title: "別名",
+          title: "顯示名稱",
           dataIndex: "gender",
         },
         {
@@ -158,6 +158,7 @@ export default {
         mode: "",
       },
       pagination: {
+        showSizeChanger: this.members.total > 10 ? ture : false,
         total: this.members.total,
         current: this.members.current_page,
         pageSize: this.members.per_page,
@@ -211,14 +212,17 @@ export default {
             onSuccess: (page) => {
               this.modal.data = {};
               this.modal.isOpen = false;
+              message.success("新增成功");
             },
             onError: (err) => {
               console.log(err);
+              message.success("新增失敗");
             },
           });
         })
         .catch((err) => {
           console.log(err);
+          message.success("新增失敗");
         });
     },
     updateRecord() {
@@ -239,15 +243,18 @@ export default {
         })
         .catch((err) => {
           console.log("error", err);
+          message.success("新增失敗");
         });
     },
     deleteRecord(recordId) {
       this.$inertia.delete("/admin/members/" + recordId, {
         onSuccess: (page) => {
           console.log(page);
+          message.success("刪除成功");
         },
         onError: (error) => {
           console.log(error);
+          message.success("刪除失敗");
         },
       });
     },
@@ -264,16 +271,16 @@ export default {
             },
             onError: (error) => {
               console.log(error);
+              message.success("發送驗證郵件失敗");
             },
           }
         );
       }
     },
     onPaginationChange(page, filters, sorter) {
-      console.log(page.current);
       this.$inertia.get(route("admin.members.index"), {
         page: page.current,
-        per_page: 10,
+        per_page: page.pageSize,
       });
     },
   },

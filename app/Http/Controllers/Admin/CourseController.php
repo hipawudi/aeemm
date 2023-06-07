@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Course;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CourseImage;
+use App\Models\Form;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class CourseController extends Controller
@@ -26,7 +27,7 @@ class CourseController extends Controller
     public function index()
     {
         return Inertia::render('Admin/Course/Index', [
-            'courses' => Course::with('media')->get()
+            'courses' => Course::with('form')->get()
         ]);
     }
 
@@ -78,6 +79,14 @@ class CourseController extends Controller
             $course->addMedia($request->file('poster')[0]['originFileObj'])->toMediaCollection('poster');
         }
         $course->save();
+
+        $form = new Form;
+        $form->title = $course->name_zh ?? $course->name_en ?? '';
+        $form->description = $course->description_zh ?? $course->description_en ?? '';
+        $form->course_id = $course->id;
+
+        $form->save();
+
         return redirect()->route('admin.courses.index');
     }
 
@@ -147,7 +156,7 @@ class CourseController extends Controller
         $course->target = $request->target;
         $course->published = $request->published;
         $course->tutor = $request->tutor;
-        
+
         if ($request->hasFile('poster')) {
             $file = $request->file('poster')[0]['originFileObj'];
 
@@ -179,5 +188,18 @@ class CourseController extends Controller
     public function deleteMedia(Media $media)
     {
         $media->delete();
+    }
+
+    public function publishedForm($id)
+    {
+        $form = Form::where('course_id', $id)->first();
+        if ($form->published == 0) {
+            $form->published = 1;
+            $form->save();
+        } else {
+            return redirect()->back()->withErrors(['message' => '此課程已公開報名']);
+        }
+
+        return redirect()->back();
     }
 }

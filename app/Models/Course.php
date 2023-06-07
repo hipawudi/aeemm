@@ -18,6 +18,10 @@ class Course extends Model implements HasMedia
     protected $appends = [
         'poster_url',
     ];
+    public function form()
+    {
+        return $this->hasOne(Form::class);
+    }
 
     public function registerMediaConversions(Media $media = null): void
     {
@@ -32,7 +36,7 @@ class Course extends Model implements HasMedia
         $this->addMediaCollection('poster')
             ->useDisk('course');
     }
-    
+
     public function getPosterUrlAttribute(): ?string
     {
         return $this->poster_path ? Storage::url($this->poster_path) : null;

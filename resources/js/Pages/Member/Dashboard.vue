@@ -17,8 +17,8 @@ export default {
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">會員專區</h2>
     </template>
     <div class="container mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <div class="lg:col-span-3">
+      <div class="flex flex-col-reverse md:flex-row gap-6">
+        <div class="flex-auto md:w-1/2">
           <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg pl-5">
               <a-list item-layout="horizontal" :data-source="messages">
@@ -43,28 +43,16 @@ export default {
             </div>
           </div>
         </div>
-        <div class="lg:col-span-2">
+        <div class="flex-auto lg:w-1/2">
           <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg">
-              <div class="p-5">
-                <img
-                  src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                  alt=""
-                  class="rounded-full mx-auto absolute w-32 h-32 shadow-md border-4 border-white transition duration-200 transform hover:scale-110"
-                />
-              </div>
-
-              <div class="mt-16">
-                <h1 class="font-bold text-center text-3xl text-gray-900">
-                  {{ member.display_name }}
-                </h1>
-                <p class="text-center text-sm text-gray-400 font-medium">
-                  澳門機電工程師學會
-                </p>
-                <p>
-                  <span> </span>
-                </p>
-                <div class="my-5 px-6">
+              <div class="">
+                <MembershipCard v-for="card in cardHolder" :card="card">
+                  <template #description>
+                    <div v-html="card.description"></div>
+                  </template>
+                </MembershipCard>
+                <!-- <div class="my-5 px-6">
                   <a
                     href="#"
                     class="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white"
@@ -92,16 +80,16 @@ export default {
                     class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3"
                     >Email</a
                   >
-                </div>
+                </div> -->
 
-                <div class="w-full">
+                <div class="">
                   <h3 class="font-medium text-gray-900 text-left px-6">近況</h3>
                   <div
                     class="mt-5 w-full flex flex-col items-center overflow-hidden text-sm"
                   >
                     <a
                       href="#"
-                      class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
+                      class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
                     >
                       <img
                         src="https://avatars0.githubusercontent.com/u/35900628?v=4"
@@ -114,7 +102,7 @@ export default {
 
                     <a
                       href="#"
-                      class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
+                      class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
                     >
                       <img
                         src="https://avatars0.githubusercontent.com/u/35900628?v=4"
@@ -127,7 +115,7 @@ export default {
 
                     <a
                       href="#"
-                      class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
+                      class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
                     >
                       <img
                         src="https://avatars0.githubusercontent.com/u/35900628?v=4"
@@ -140,7 +128,7 @@ export default {
 
                     <a
                       href="#"
-                      class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
+                      class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
                     >
                       <img
                         src="https://avatars0.githubusercontent.com/u/35900628?v=4"
@@ -153,7 +141,7 @@ export default {
 
                     <a
                       href="#"
-                      class="w-full border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150 overflow-hidden"
+                      class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150 overflow-hidden"
                     >
                       <img
                         src="https://avatars0.githubusercontent.com/u/35900628?v=4"
@@ -173,3 +161,18 @@ export default {
     </div>
   </MemberLayout>
 </template>
+<script setup>
+import MembershipCard from "@/Components/Member/MembershipCard.vue";
+const cardHolder = [
+  {
+    organization: "澳門柔道協會會員",
+    title: "裁判資格認證",
+    display_name: "謝廣漢",
+    number: "0001",
+    rank_caption: "段數",
+    rank: "1",
+    face: "/images/card1.png",
+    description: "澳門柔道總會裁判資格認證<br><ul><li>aaa</li></ul>",
+  },
+];
+</script>

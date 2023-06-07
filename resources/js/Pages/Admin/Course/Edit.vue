@@ -52,7 +52,7 @@
                 <a-textarea v-model:value="course.description_en" />
               </a-form-item>
               <div class="flex gap-6">
-                <div class="flex flex-auto w-1/2 gap-6">
+                <div class="flex w-1/2 gap-6">
                   <a-form-item label="開始日期" name="start_date">
                     <a-date-picker
                       v-model:value="course.start_date"
@@ -86,7 +86,7 @@
                     <a-input-number v-model:value="course.fee_member" :min="0" />
                   </a-form-item>
                   <a-form-item label="名額" name="quota">
-                    <a-input-number v-model:value="course.quota" :min="1" />
+                    <a-input-number v-model:value="course.quota" />
                   </a-form-item>
                   <a-form-item label="語言" name="language">
                     <a-input v-model:value="course.language" />
@@ -109,7 +109,16 @@
                 </div>
               </div>
               <div class="flex gap-6">
-                <div class="flex-auto w-1/2">
+                <div class="flex-auto w-1/4">
+                  <a-form-item label="會員優先" name="member_priority">
+                    <a-switch
+                      v-model:checked="course.member_priority"
+                      :unCheckedValue="0"
+                      :checkedValue="1"
+                    />
+                  </a-form-item>
+                </div>
+                <div class="flex-auto w-1/4">
                   <a-form-item label="發佈" name="published">
                     <a-switch
                       v-model:checked="course.published"

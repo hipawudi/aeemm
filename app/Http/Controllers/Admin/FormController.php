@@ -131,8 +131,10 @@ class FormController extends Controller
      */
     public function destroy(Form $form)
     {
-        if ($form->hasChild()) {
-            return redirect()->back()->withErrors(['message' => 'No permission or restriced deletion of records with child records.']);
+        if ($form->hasCourse()) {
+            return redirect()->back()->withErrors(['message' => '不能刪除課程表格。']);
+        } else if ($form->hasChild()) {
+            return redirect()->back()->withErrors(['message' => '不能刪除帶有欄位的表格。']);
         } else {
             $form->delete();
             return redirect()->back();

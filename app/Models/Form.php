@@ -14,15 +14,25 @@ class Form extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-    public function organization(){
+    public function organization()
+    {
         return $this->belongsTo(Organization::class);
     }
-
-    public function fields(){
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+    public function fields()
+    {
         return $this->hasMany(FormField::class);
     }
-    public function hasChild(){
+    public function hasChild()
+    {
         return $this->fields()->exists();
+    }
+    public function hasCourse()
+    {
+        return $this->course()->exists();
     }
     public function registerMediaConversions(Media $media = null): void
     {
@@ -36,5 +46,5 @@ class Form extends Model implements HasMedia
     {
         $this->addMediaCollection('image')
             ->useDisk('media');
-    }    
+    }
 }

@@ -16,16 +16,11 @@ class CertificateSeeder extends Seeder
     public function run()
     {
         DB::table('certificates')->insert([
-            'name' => '機電工程資格認證',
             'cert_title' => '機電工程資格認證',
             'cert_body' => '澳門機電工程師學會',
-            'description' => '澳門機電工程資格認證<br><ul><li>aaa</li></ul>'
-        ]);
-        DB::table('certificates')->insert([
-            'name' => '機電工程資格認證',
-            'cert_title' => '機電工程資格認證',
-            'cert_body' => '澳門機電工程師學會',
-            'description' => '澳門機電工程資格認證<br><ul><li>aaa</li></ul>'
+            'cert_content' => '此證書證明閣下已通過澳門機電工程師學會機電工程資格認證',
+            'number_format'=> 'CERT-',
+            'description' => '澳門機電工程資格認證'
         ]);
 
         DB::table('professionals')->insert([
@@ -37,18 +32,6 @@ class CertificateSeeder extends Seeder
             'issue_date' => '2023-01-01',
             'valid_from' => '2023-01-01',
             'valid_until' => '2024-12-31',
-            'authorize_by' => '管理員',
-            'rank' => '1',
-        ]);
-        DB::table('professionals')->insert([
-            'certificate_id' => '2',
-            'member_id' => '1',
-            'display_name' => '管理員',
-            'number' => '2',
-            'number_display' => 'CERT-0002',
-            'issue_date' => '2023-02-01',
-            'valid_from' => '2023-02-01',
-            'valid_until' => '2025-12-31',
             'authorize_by' => '管理員',
             'rank' => '1',
         ]);

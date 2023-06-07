@@ -61,7 +61,7 @@ export default {
   created() {
     this.cardHolder = this.certificates;
     this.cardHolder[0].face = "/images/card1.png";
-    this.cardHolder[1].face = "/images/card2.png";
+    // this.cardHolder[1].face = "/images/card2.png";
   },
   methods: {},
 };

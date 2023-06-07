@@ -35,6 +35,7 @@ return new class extends Migration
             $table->longText('tutor')->nullable();
             $table->text('poster_path')->nullable();
             $table->boolean('published')->default(0);
+            $table->boolean('member_priority')->default(0);
             $table->timestamps();
         });
     }

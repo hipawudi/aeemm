@@ -294,7 +294,7 @@ export default {
     onPaginationChange(page, filters, sorter) {
       this.$inertia.get(route("admin.bulletins.index"), {
         page: page.current,
-        per_page: 10,
+        per_page: page.pageSize,
       });
     },
   },
