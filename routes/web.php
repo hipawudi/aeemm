@@ -24,8 +24,8 @@ Route::get('/', function () {
     ]);
 });
 Route::resource('forms', \App\Http\Controllers\FormController::class)->names('forms');
-Route::get('courses', [\App\Http\Controllers\CourseController::class, 'index'])->name('courses');
 Route::get('course/{course}', [\App\Http\Controllers\CourseController::class, 'detail']);
+Route::resource('courses', \App\Http\Controllers\CourseController::class)->names('courses');
 
 Route::middleware([
     'auth:sanctum',
@@ -33,8 +33,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('professionals', App\Http\Controllers\Member\ProfessionalController::class);
-    Route::get('membership', [App\Http\Controllers\Member\MembershipController::class, 'index'])->name('membership');
+    Route::resource('professionals', App\Http\Controllers\Member\ProfessionalController::class)->names('professionals');
 });
 
 Route::prefix('api')->group(function () {

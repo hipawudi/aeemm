@@ -31,7 +31,7 @@ export default {
                       <template #avatar>
                         <div class="flex flex-col">
                           <div class="text-center">
-                            <a-avatar src="https://joeschmoe.io/api/v1/random" />
+                            <a-avatar src="images/aeemm_logo.jpg" />
                           </div>
                           <div class="w-20 text-center">{{ item.send_date }}</div>
                         </div>
@@ -43,115 +43,83 @@ export default {
             </div>
           </div>
         </div>
-        <div class="flex-auto lg:w-1/2">
+        <div class="flex-auto md:w-1/2">
           <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg">
-              <div class="">
-                <MembershipCard v-for="card in cardHolder" :card="card">
-                  <template #description>
-                    <div v-html="card.description"></div>
-                  </template>
-                </MembershipCard>
-                <!-- <div class="my-5 px-6">
+              <MembershipCard v-for="card in cardHolder" :card="card">
+                <template #description>
+                  <div v-html="card.description"></div>
+                </template>
+              </MembershipCard>
+              <div>
+                <h3 class="font-medium text-gray-900 text-left px-6">近況</h3>
+                <div
+                  class="mt-5 w-full flex flex-col items-center overflow-hidden text-sm"
+                >
                   <a
                     href="#"
-                    class="text-gray-200 block rounded-lg text-center font-medium leading-6 px-6 py-3 bg-gray-900 hover:bg-black hover:text-white"
-                    >Connect with <span class="font-bold">@pantazisoft</span></a
+                    class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
                   >
-                </div>
-                <div class="flex justify-between items-center my-5 px-6">
+                    <img
+                      src="https://avatars0.githubusercontent.com/u/35900628?v=4"
+                      alt=""
+                      class="rounded-full h-6 shadow-md inline-block mr-2"
+                    />
+                    Updated his status
+                    <span class="text-gray-500 text-xs">24 min ago</span>
+                  </a>
+
                   <a
-                    href=""
-                    class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3"
-                    >Facebook</a
+                    href="#"
+                    class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
                   >
+                    <img
+                      src="https://avatars0.githubusercontent.com/u/35900628?v=4"
+                      alt=""
+                      class="rounded-full h-6 shadow-md inline-block mr-2"
+                    />
+                    Added new profile picture
+                    <span class="text-gray-500 text-xs">42 min ago</span>
+                  </a>
+
                   <a
-                    href=""
-                    class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3"
-                    >Twitter</a
+                    href="#"
+                    class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
                   >
+                    <img
+                      src="https://avatars0.githubusercontent.com/u/35900628?v=4"
+                      alt=""
+                      class="rounded-full h-6 shadow-md inline-block mr-2"
+                    />
+                    Posted new article in <span class="font-bold">#Web Dev</span>
+                    <span class="text-gray-500 text-xs">49 min ago</span>
+                  </a>
+
                   <a
-                    href=""
-                    class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3"
-                    >Instagram</a
+                    href="#"
+                    class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
                   >
+                    <img
+                      src="https://avatars0.githubusercontent.com/u/35900628?v=4"
+                      alt=""
+                      class="rounded-full h-6 shadow-md inline-block mr-2"
+                    />
+                    Edited website settings
+                    <span class="text-gray-500 text-xs">1 day ago</span>
+                  </a>
+
                   <a
-                    href=""
-                    class="text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition duration-150 ease-in font-medium text-sm text-center w-full py-3"
-                    >Email</a
+                    href="#"
+                    class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150 overflow-hidden"
                   >
-                </div> -->
-
-                <div class="">
-                  <h3 class="font-medium text-gray-900 text-left px-6">近況</h3>
-                  <div
-                    class="mt-5 w-full flex flex-col items-center overflow-hidden text-sm"
-                  >
-                    <a
-                      href="#"
-                      class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
-                    >
-                      <img
-                        src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                        alt=""
-                        class="rounded-full h-6 shadow-md inline-block mr-2"
-                      />
-                      Updated his status
-                      <span class="text-gray-500 text-xs">24 min ago</span>
-                    </a>
-
-                    <a
-                      href="#"
-                      class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
-                    >
-                      <img
-                        src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                        alt=""
-                        class="rounded-full h-6 shadow-md inline-block mr-2"
-                      />
-                      Added new profile picture
-                      <span class="text-gray-500 text-xs">42 min ago</span>
-                    </a>
-
-                    <a
-                      href="#"
-                      class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
-                    >
-                      <img
-                        src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                        alt=""
-                        class="rounded-full h-6 shadow-md inline-block mr-2"
-                      />
-                      Posted new article in <span class="font-bold">#Web Dev</span>
-                      <span class="text-gray-500 text-xs">49 min ago</span>
-                    </a>
-
-                    <a
-                      href="#"
-                      class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150"
-                    >
-                      <img
-                        src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                        alt=""
-                        class="rounded-full h-6 shadow-md inline-block mr-2"
-                      />
-                      Edited website settings
-                      <span class="text-gray-500 text-xs">1 day ago</span>
-                    </a>
-
-                    <a
-                      href="#"
-                      class="border-t border-gray-100 text-gray-600 py-4 pl-6 pr-3 w-full block hover:bg-gray-100 transition duration-150 overflow-hidden"
-                    >
-                      <img
-                        src="https://avatars0.githubusercontent.com/u/35900628?v=4"
-                        alt=""
-                        class="rounded-full h-6 shadow-md inline-block mr-2"
-                      />
-                      Added new rank
-                      <span class="text-gray-500 text-xs">5 days ago</span>
-                    </a>
-                  </div>
+                    <img
+                      src="https://avatars0.githubusercontent.com/u/35900628?v=4"
+                      alt=""
+                      class="rounded-full h-6 shadow-md inline-block mr-2"
+                    />
+                    Added new rank
+                    <span class="text-gray-500 text-xs">5 days ago</span>
+                  </a>
                 </div>
               </div>
             </div>

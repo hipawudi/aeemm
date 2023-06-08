@@ -9,12 +9,39 @@ defineProps({
 
 <template>
   <div class="flex justify-center">
-    <div class="pt-4 w-xl">
-      <div class="absolute z-50 flex flex-col p-4 text-white font-serif">
-        <div class="flex-auto">名字:</div>
+    <div class="relative py-4 w-96 hover:scale-105 transform transition-transform mb-4">
+      <div
+        class="absolute z-50 flex flex-col py-3 px-8 text-white shadow-xl text-sm font-serif w-96 h-52"
+      >
+        <div class="flex flex-col w-xl">
+          <div class="flex justify-center">
+            <div class="text-lg font-bold">澳門機電工程師學會</div>
+          </div>
+          <div class="flex">
+            <div class="flex flex-col flex-auto gap-1">
+              <div class="">姓名</div>
+              <div class="mb-2">陳大文</div>
+              <div class="">學會編號</div>
+              <div class="font-sans mb-2">00001</div>
+            </div>
+            <div class="flex-auto text-right">
+              <img class="w-14 h-14" src="images/aeemm_logo.jpg" />
+            </div>
+          </div>
+        </div>
+        <div class="flex text-xs">
+          <div class="flex flex-col gap-1 flex-auto">
+            <div class="">有效期</div>
+            <div class="font-sans text-base">2023-03-31</div>
+          </div>
+          <div class="flex flex-col gap-1 flex-auto">
+            <div class="">失效期</div>
+            <div class="font-sans text-base">2025-03-31</div>
+          </div>
+        </div>
       </div>
       <img
-        class="relative object-cover w-full h-full rounded-lg z-0"
+        class="relative object-cover w-96 h-52 rounded-lg z-0"
         :src="card.face"
         width="10px"
       />

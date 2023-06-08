@@ -49,17 +49,10 @@ export default defineComponent({
         role: true,
       },
       {
-        key: "membership",
-        icon: "idcard-outlined",
-        title: "會籍",
-        route: "membership",
-        role: true,
-      },
-      {
-        key: "courses",
+        key: "courses.index",
         icon: "bank-outlined",
         title: "課程",
-        route: "courses",
+        route: "courses.index",
         role: true,
       },
       {
@@ -83,7 +76,7 @@ export default defineComponent({
     };
   },
   created() {
-    this.menuItems[5].role = this.$page.props.user.roles[0] == "admin";
+    this.menuItems[4].role = this.$page.props.user.roles[0] == "admin";
     this.current[0] = route().current();
   },
 });

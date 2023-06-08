@@ -1,7 +1,7 @@
 <template>
   <MemberLayout title="Dashboard">
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard..</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">專業認證</h2>
     </template>
 
     <div class="py-12">

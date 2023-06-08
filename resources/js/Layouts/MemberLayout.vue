@@ -38,7 +38,7 @@ const logout = () => {
     <div class="min-h-screen bg-gray-100">
       <nav class="bg-white border-b border-gray-100">
         <!-- Primary Navigation Menu -->
-        <div class="px-4 md:px-8">
+        <div class="px-4 md:px-16 lg:px-28">
           <div class="flex justify-between h-16">
             <div class="flex flex-auto w-1/2">
               <!-- Logo -->
@@ -47,7 +47,7 @@ const logout = () => {
                   <img src="/images/aeemm_logo.jpg" style="width: 64px" />
                 </Link>
               </div>
-              <div class="hidden sm:block">
+              <div class="hidden sm:flex">
                 <MemberMenu />
               </div>
             </div>
@@ -118,8 +118,42 @@ const logout = () => {
 
             <!-- Hamburger -->
             <div class="-mr-2 flex items-center sm:hidden">
-              <button
-                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition"
+              <a-button
+                class="px-4 py-2 !h-10 bg-cyan-500 text-white !rounded-md shadow-sm"
+                @click="showingNavigationDropdown = !showingNavigationDropdown"
+              >
+                <div class="flex items-center">
+                  <svg
+                    class="h-6 w-6"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      :class="{
+                        hidden: showingNavigationDropdown,
+                        'inline-flex': !showingNavigationDropdown,
+                      }"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                    <path
+                      :class="{
+                        hidden: !showingNavigationDropdown,
+                        'inline-flex': showingNavigationDropdown,
+                      }"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </div>
+              </a-button>
+              <!-- <button
+                class="inline-flex items-center justify-center p-2 rounded-md border-rose-100"
                 @click="showingNavigationDropdown = !showingNavigationDropdown"
               >
                 <svg
@@ -149,7 +183,7 @@ const logout = () => {
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
-              </button>
+              </button> -->
             </div>
           </div>
         </div>
@@ -167,7 +201,25 @@ const logout = () => {
               :href="route('dashboard')"
               :active="route().current('dashboard')"
             >
-              Dashboard
+              主頁
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              :href="route('professionals.index')"
+              :active="route().current('professionals.index')"
+            >
+              專業認證
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              :href="route('courses.index')"
+              :active="route().current('courses.index')"
+            >
+              課程
+            </ResponsiveNavLink>
+            <ResponsiveNavLink
+              :href="route('forms.index')"
+              :active="route().current('forms.index')"
+            >
+              報名
             </ResponsiveNavLink>
           </div>
         </div>
