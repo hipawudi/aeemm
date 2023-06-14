@@ -75,6 +75,6 @@ class CourseSeeder extends Seeder
             'tutor' => 'Mr. Angelo Tavares graduated in Electrical Engineering from Faculdade de Ciências e Tecnlogia Universidade de Coimbra in 1980, holding degree in Electrical Engineering, Network and Power Systems. He joined CEM since 1989, management of MV, LV and PL Network Design, Construction, and Maintenance, also HV Network Construction. Customer Substations and Electrical Connections analyze and design for new and existing buildings. Analyze power increase and other power supply request / design for connection to public network. He also responsible for EV and PV project analyze. Mr. Angelo Tavares has over 30 years experience in building electrical design in Macau.',
             'published' => '1',
         ]);
-        // }
     }
+    // }
 }

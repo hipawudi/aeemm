@@ -75,11 +75,13 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($token));
     }
 
-    public function hasPasswordSet () {
+    public function hasPasswordSet()
+    {
         return $this->password !== 'need-to-set';
     }
 
-    public function member(){
+    public function member()
+    {
         return $this->hasOne(Member::class);
     }
 }

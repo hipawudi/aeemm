@@ -3,18 +3,33 @@
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">課程內容</h2>
     </template>
-    <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-      <div
-        class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
-      >
-        <div class="flex">
-          <div class="w-3/4">
-            <div v-html="course.title_zh" class="text-3xl text-teal-600"></div>
-            <div v-html="course.title_en" class="text-3xl"></div>
-            <div v-html="course.content"></div>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-4">
+      <div class="flex gap-8">
+        <div class="flex-auto w-2/3">
+          <div class="flex flex-col gap-6">
+            <div class="flex flex-col bg-white rounded-md p-4">
+              <div class="text-xl font-bold text-center">
+                {{ course.name_zh ?? course.name_en }}
+              </div>
+              <div class="">
+                <img src="/images/aeemm_banner.jpg" class="w-full h-56" />
+              </div>
+            </div>
+            <div class="flex flex-col bg-white rounded-md p-4 space-y-2">
+              <div class="text-lg font-bold">課程內容</div>
+              <div class="" v-html="course.content ?? course.description_en"></div>
+              <div class="text-lg font-bold">上堂時間(共{{ course.hours }}小時)</div>
+              <div class="">{{ course.class_time }}</div>
+            </div>
           </div>
-          <div class="w-1/4">
-            <div v-html="course.tutor" class="pt-20 pb-20 bg-blue-500 text-white"></div>
+        </div>
+        <div class="flex-auto w-1/3">
+          <div class="flex flex-col bg-white rounded-md p-4">
+            <div class="text-center text-lg font-bold">課程導師</div>
+            <div class="flex justify-center">
+              <img src="/images/aeemm_logo.jpg" class="h-32 w-28" />
+            </div>
+            <div class="flex leading-6" v-html="course.tutor"></div>
           </div>
         </div>
       </div>
