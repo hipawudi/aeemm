@@ -77,13 +77,13 @@ class FormController extends Controller
      */
     public function show($id)
     {
-        $form = Form::with('fields')->find($id);
+        $form = Form::with('fields')->where('course_id', $id)->first();
         if (
             $form->published == 0 ||
             ($form->for_account == 1 && !Auth()->user()) ||
             ($form->for_member == 1 && !Auth()->user()->member)
         ) {
-            return redirect('forms');
+            return redirect()->back();
         }
         return Inertia::render('Forms/FormDefault', [
             'form' => $form,

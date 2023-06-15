@@ -8,25 +8,24 @@
         class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
       >
         <a-form :model="formData" ref="formRef" name="default" layout="vertical">
-          <div class="pb-5" v-if="form.require_member && $page.props.user">
-            <a-alert message="Login Member" type="info">
+          <div class="pb-5">
+            <a-alert>
               <template #description>
-                <div><strong>Member: </strong>{{ $page.props.user.name }}</div>
-                <div><strong>Email: </strong>{{ $page.props.user.email }}</div>
+                <div class="flex flex-col space-y-2">
+                  <div class="text-xl font-bold">會員信息</div>
+                  <div class="flex gap-3">
+                    <div class="text-base font-bold">會員名稱:</div>
+                    <div class="text-base">{{ $page.props.user.name }}</div>
+                  </div>
+                  <div class="flex gap-3">
+                    <div class="text-base font-bold">會員電郵:</div>
+                    <div class="text-base">{{ $page.props.user.email }}</div>
+                  </div>
+                </div>
               </template>
             </a-alert>
           </div>
           <div v-for="field in form.fields">
-            <div v-if="form.require_member">
-              <a-form-item
-                label="Member Id"
-                :name="field.field_name"
-                :rules="[{ required: field.require }]"
-              >
-                <a-input v-model:value="$page.props.user.id" />
-              </a-form-item>
-            </div>
-
             <div v-if="field.type == 'input'">
               <a-form-item
                 :label="field.field_label"
@@ -125,8 +124,8 @@
               </a-form-item>
             </div>
           </div>
-          <div class="text-center pb-10">
-            <a-button @click="storeRecord" type="primary">Submit</a-button>
+          <div class="text-center">
+            <a-button @click="storeRecord" type="primary">提交</a-button>
           </div>
         </a-form>
       </div>

@@ -32,7 +32,7 @@ class CourseController extends Controller
     public function show(Course $course)
     {
         return Inertia::render('Courses/CourseDetail', [
-            'course' => $course
+            'course' => $course->with('form')->first()
         ]);
     }
     public function detail(Course $course)

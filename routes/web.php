@@ -22,8 +22,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
-Route::resource('forms', \App\Http\Controllers\FormController::class)->names('forms');
+})->name('index');
 Route::get('course/{course}', [\App\Http\Controllers\CourseController::class, 'detail']);
 Route::resource('courses', \App\Http\Controllers\CourseController::class)->names('courses');
 
@@ -34,6 +33,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('professionals', App\Http\Controllers\Member\ProfessionalController::class)->names('professionals');
+    Route::resource('forms', \App\Http\Controllers\FormController::class)->names('forms');
 });
 
 Route::prefix('api')->group(function () {
