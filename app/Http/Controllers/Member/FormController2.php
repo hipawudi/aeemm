@@ -20,9 +20,9 @@ class FormController extends Controller
     public function index()
     {
         dd(Auth()->user());
-        $forms=Form::where('published',1)->get();
-        return Inertia::render('Member/Forms/Form',[
-            'forms'=>$forms
+        $forms = Form::where('published', 1)->get();
+        return Inertia::render('Member/Forms/Form', [
+            'forms' => $forms
         ]);
     }
 
@@ -45,22 +45,22 @@ class FormController extends Controller
     public function store(Request $request)
     {
         //date('Y-m-d',strtotime($request->date))
-            // $this->validate($request,[
-            //     'form_id'=>'required',
-            // ]);
-                $response=new Response();
-                $response->form_id=$request->form['id'];
-                $response->member_id=Auth()->user()->id;
-                $response->save();
-                
-                foreach($request->fields as $key=>$value){
-                    $field=new ResponseField();
-                    $field->response_id=$response->id;
-                    $field->field_name=$key;
-                    $field->field_value=$value;
-                    $field->save();
-                }
-                return redirect()->back();
+        // $this->validate($request,[
+        //     'form_id'=>'required',
+        // ]);
+        $response = new Response();
+        $response->form_id = $request->form['id'];
+        $response->member_id = Auth()->user()->id;
+        $response->save();
+
+        foreach ($request->fields as $key => $value) {
+            $field = new ResponseField();
+            $field->response_id = $response->id;
+            $field->field_name = $key;
+            $field->field_value = $value;
+            $field->save();
+        }
+        return redirect()->back();
     }
 
     /**
@@ -71,11 +71,10 @@ class FormController extends Controller
      */
     public function show($id)
     {
-        $form=Form::with('fields')->find($id);
-        return Inertia::render('Member/Forms/FormDefault',[
-            'form'=>$form,
+        $form = Form::with('fields')->find($id);
+        return Inertia::render('Member/Forms/FormDefault', [
+            'form' => $form,
         ]);
-        
     }
 
     /**

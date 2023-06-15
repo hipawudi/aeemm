@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('form_applications', function (Blueprint $table) {
             $table->id();
             $table->integer('form_id');
-            $table->integer('user_id')->nullable();
+            $table->integer('user_id');
+            $table->text('images_path');
             $table->timestamps();
         });
     }

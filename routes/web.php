@@ -33,7 +33,8 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('professionals', App\Http\Controllers\Member\ProfessionalController::class)->names('professionals');
-    Route::resource('forms', \App\Http\Controllers\FormController::class)->names('forms');
+    Route::resource('forms', \App\Http\Controllers\Member\FormController::class)->names('forms');
+    Route::resource('forms.applications', \App\Http\Controllers\Member\FormApplicationController::class)->names('forms.applications');
 });
 
 Route::prefix('api')->group(function () {

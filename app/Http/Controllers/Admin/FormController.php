@@ -48,12 +48,10 @@ class FormController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
             'title' => 'required',
         ]);
 
         $form = new Form();
-        $form->name = $request->name;
         $form->title = $request->title;
         $form->description = $request->description;
         $form->for_account = $request->for_account;
@@ -104,21 +102,16 @@ class FormController extends Controller
     {
         $this->validate($request, [
             'id' => 'required',
-            'name' => 'required',
             'title' => 'required',
             // 'image'=>'array',
             // 'image.*.originFileObj' => 'image|mimes:jpeg,jpg,gif,png|max:1024'
         ]);
         $form = Form::find($request->id);
-        $form->name = $request->name;
         $form->title = $request->title;
         $form->description = $request->description;
         $form->for_account = $request->for_account;
         $form->for_member = $request->for_member;
         $form->published = $request->published;
-        if ($request->file('image')) {
-            $form->addMedia($request->file('image')[0]['originFileObj'])->toMediaCollection('image');
-        }
         $form->save();
         return redirect()->back();
     }

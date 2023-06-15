@@ -29,20 +29,20 @@
             <div v-if="field.type == 'input'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
-                <a-input v-model:value="formData[field.field_name]" />
+                <a-input v-model:value="formData[field.id]" />
               </a-form-item>
             </div>
             <div v-else-if="field.type == 'select'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
                 <a-select
-                  v-model:value="formData[field.field_name]"
+                  v-model:value="formData[field.id]"
                   :options="JSON.parse(field.options)"
                 ></a-select>
               </a-form-item>
@@ -50,11 +50,11 @@
             <div v-else-if="field.type == 'radio'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
                 <a-radio-group
-                  v-model:value="formData[field.field_name]"
+                  v-model:value="formData[field.id]"
                   :options="JSON.parse(field.options)"
                 ></a-radio-group>
               </a-form-item>
@@ -62,11 +62,11 @@
             <div v-else-if="field.type == 'checkbox'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
                 <a-checkbox-group
-                  v-model:value="formData[field.field_name]"
+                  v-model:value="formData[field.id]"
                   :options="JSON.parse(field.options)"
                 ></a-checkbox-group>
               </a-form-item>
@@ -74,20 +74,20 @@
             <div v-else-if="field.type == 'textarea'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
-                <a-textarea v-model:value="formData[field.field_name]" />
+                <a-textarea v-model:value="formData[field.id]" />
               </a-form-item>
             </div>
             <div v-else-if="field.type == 'richtext'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
                 <quill-editor
-                  v-model:value="formData[field.field_name]"
+                  v-model:value="formData[field.id]"
                   style="min-height: 200px"
                 />
               </a-form-item>
@@ -95,11 +95,11 @@
             <div v-else-if="field.type == 'date'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
                 <a-date-picker
-                  v-model:value="formData[field.field_name]"
+                  v-model:value="formData[field.id]"
                   :format="dateFormat"
                   :valueFormat="dateFormat"
                 />
@@ -108,16 +108,16 @@
             <div v-else-if="field.type == 'email'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }, { type: 'email' }]"
               >
-                <a-input v-model:value="formData[field.field_name]" />
+                <a-input v-model:value="formData[field.id]" />
               </a-form-item>
             </div>
             <div v-else>
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }, { type: 'email' }]"
               >
                 <p>Data type undefined</p>
@@ -149,15 +149,12 @@
               </template>
             </a-alert>
           </div>
-          <quill-editor
-            v-model:value="formData[field.field_name]"
-            style="min-height: 200px"
-          />
+          <quill-editor v-model:value="formData[field.id]" style="min-height: 200px" />
           <div v-for="field in form.fields">
             <div v-if="form.require_member">
               <a-form-item
                 label="Member Id"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
                 <a-input v-model:value="$page.props.user.id" />
@@ -167,20 +164,20 @@
             <div v-if="field.type == 'input'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
-                <a-input v-model:value="formData[field.field_name]" />
+                <a-input v-model:value="formData[field.id]" />
               </a-form-item>
             </div>
             <div v-else-if="field.type == 'select'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
                 <a-select
-                  v-model:value="formData[field.field_name]"
+                  v-model:value="formData[field.id]"
                   :options="JSON.parse(field.options)"
                 ></a-select>
               </a-form-item>
@@ -188,11 +185,11 @@
             <div v-else-if="field.type == 'radio'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
                 <a-radio-group
-                  v-model:value="formData[field.field_name]"
+                  v-model:value="formData[field.id]"
                   :options="JSON.parse(field.options)"
                 ></a-radio-group>
               </a-form-item>
@@ -200,11 +197,11 @@
             <div v-else-if="field.type == 'checkbox'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
                 <a-checkbox-group
-                  v-model:value="formData[field.field_name]"
+                  v-model:value="formData[field.id]"
                   :options="JSON.parse(field.options)"
                 ></a-checkbox-group>
               </a-form-item>
@@ -212,16 +209,16 @@
             <div v-else-if="field.type == 'textarea'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
-                <a-textarea v-model:value="formData[field.field_name]" />
+                <a-textarea v-model:value="formData[field.id]" />
               </a-form-item>
             </div>
             <div v-else-if="field.type == 'richtext'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
                 <quill-editor v-model:value="richText" style="min-height: 200px" />
@@ -230,11 +227,11 @@
             <div v-else-if="field.type == 'date'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }]"
               >
                 <a-date-picker
-                  v-model:value="formData[field.field_name]"
+                  v-model:value="formData[field.id]"
                   :format="dateFormat"
                   :valueFormat="dateFormat"
                 />
@@ -243,16 +240,16 @@
             <div v-else-if="field.type == 'email'">
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }, { type: 'email' }]"
               >
-                <a-input v-model:value="formData[field.field_name]" />
+                <a-input v-model:value="formData[field.id]" />
               </a-form-item>
             </div>
             <div v-else>
               <a-form-item
                 :label="field.field_label"
-                :name="field.field_name"
+                :name="field.id"
                 :rules="[{ required: field.require }, { type: 'email' }]"
               >
                 <p>Data type undefined</p>
@@ -283,31 +280,6 @@ export default {
   data() {
     return {
       formData: {},
-      richText: "<p>Jose</p>",
-      dateFormat: "YYYY-MM-DD",
-      columns: [
-        {
-          title: "Name",
-          dataIndex: "name",
-        },
-        {
-          title: "Title",
-          dataIndex: "title",
-        },
-        {
-          title: "With Login",
-          dataIndex: "with_login",
-        },
-        {
-          title: "With Member",
-          dataIndex: "with_member",
-        },
-        {
-          title: "Action",
-          dataIndex: "operation",
-          key: "operation",
-        },
-      ],
       rules: {
         field: { required: true },
         label: { required: true },
@@ -341,9 +313,8 @@ export default {
         .validateFields()
         .then(() => {
           this.$inertia.post(
-            route("forms.store"),
+            route("forms.applications.store", this.form.id),
             {
-              form: this.form,
               fields: this.formData,
             },
             {
