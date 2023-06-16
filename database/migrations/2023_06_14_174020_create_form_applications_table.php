@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('form_id');
             $table->integer('user_id');
-            $table->text('images_path');
+            $table->text('images_path')->nullable();
             $table->timestamps();
         });
     }

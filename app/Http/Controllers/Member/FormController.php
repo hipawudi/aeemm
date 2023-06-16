@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Form;
+use App\Models\FormApplication;
 use App\Models\Response;
 use App\Models\ResponseField;
 
@@ -78,12 +79,15 @@ class FormController extends Controller
     public function show($id)
     {
         $form = Form::with('fields')->where('course_id', $id)->first();
+        $form_application = FormApplication::where('form_id', $form->id)->where('user_id', Auth()->user()->id)->first();
         if (
             $form->published == 0 ||
             ($form->for_account == 1 && !Auth()->user()) ||
             ($form->for_member == 1 && !Auth()->user()->member)
         ) {
-            return redirect()->back();
+            return redirect()->back()->withErrors(['message' => '本課程未開始報名']);
+        } else if ($form_application) {
+            return redirect()->back()->withErrors(['message' => '你已報名此課程']);
         }
         return Inertia::render('Forms/FormDefault', [
             'form' => $form,

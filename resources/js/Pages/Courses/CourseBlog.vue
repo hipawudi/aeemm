@@ -3,6 +3,7 @@
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">課程列表</h2>
     </template>
+
     <div class="flex flex-col sm:flex-row relative">
       <div class="sm:w-48 sticky top-[7.2rem] z-10" v-if="left">
         <div
@@ -267,6 +268,8 @@
 import MemberLayout from "@/Layouts/MemberLayout.vue";
 import WebLayout from "@/Layouts/WebLayout.vue";
 import { SettingOutlined, EditOutlined, EllipsisOutlined } from "@ant-design/icons-vue";
+import { Inertia } from "@inertiajs/inertia";
+import { message } from "ant-design-vue";
 
 export default {
   components: {
@@ -282,10 +285,16 @@ export default {
     return {
       loading: false,
       left: true,
+      remove: "",
       page: 1,
       previousScrollTop: 0,
       pageSizeOptions: ["9", "18", "27", "36"],
     };
+  },
+  mounted() {
+    if (this.$page.props.errors.message) {
+      message.error(this.$page.props.errors.message);
+    }
   },
   created() {
     // window.addEventListener("scroll", () => {

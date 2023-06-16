@@ -189,6 +189,7 @@
 import MemberLayout from "@/Layouts/MemberLayout.vue";
 import dayjs from "dayjs";
 import WebLayout from "@/Layouts/WebLayout.vue";
+import { message } from "ant-design-vue";
 
 export default {
   components: {
@@ -255,7 +256,11 @@ export default {
       this.course.class_time = this.course.class_time;
     }
   },
-  mounted() {},
+  mounted() {
+    if (this.$page.props.errors.message) {
+      message.error(this.$page.props.errors.message);
+    }
+  },
   computed: {
     classTimeFormat() {
       if (!Array.isArray(this.course.class_time)) {
