@@ -235,6 +235,7 @@
             </div>
           </template>
         </div>
+
         <div class="my-6 text-right">
           <a-pagination
             v-model:current="courses.current_page"

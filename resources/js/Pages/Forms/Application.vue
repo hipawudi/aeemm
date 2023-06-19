@@ -3,13 +3,37 @@
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">報名列表</h2>
     </template>
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto mt-6 flex flex-col gap-3">
       <template v-for="a in applications">
-        <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
-          <div class="flex flex-col">
-            <div class=""></div>
-            <div class=""></div>
-            <div class=""></div>
+        <div
+          class="m-2 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
+        >
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="flex items-center gap-3 sm:w-1/3">
+              <div class="flex-auto sm:flex-none text-lg font-bold">
+                {{ a.form.title }}
+              </div>
+              <div class="">
+                <div
+                  class="p-1 px-2 rounded-md text-green-500 bg-green-100 border border-solid border-green-500"
+                >
+                  {{ states.find((x) => x.value == a.state).label }}
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center text-base sm:w-1/3">
+              已提交報名申請,請等待工作人員審批
+            </div>
+            <div class="flex items-center justify-end sm:w-1/3 gap-3">
+              <div v-if="a.state == 0">
+                <inertia-link :href="route('applications.show')">
+                  <a-button type="primary" shape="round">查看</a-button>
+                </inertia-link>
+              </div>
+              <div v-if="a.state == 1">
+                <a-button type="primary" shape="round">提交繳費單</a-button>
+              </div>
+            </div>
           </div>
         </div>
       </template>
@@ -36,7 +60,7 @@ export default {
     MemberLayout,
     WebLayout,
   },
-  props: ["forms"],
+  props: ["applications", "states"],
   data() {
     return {
       left: true,

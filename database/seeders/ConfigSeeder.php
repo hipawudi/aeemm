@@ -54,5 +54,22 @@ class ConfigSeeder extends Seeder
                 }]
             ',
         ]);
+
+        DB::table('configs')->insert([
+            'key'=>'application_states',
+            'value'=>'[{
+                "value":"0",
+                "label":"待審批"
+            },{
+                "value":"1",
+                "label":"待繳費"
+            },{
+                "value":"2",
+                "label":"待確認"
+            },{
+                "value":"3",
+                "label":"已完成"
+            }]'
+        ]);
     }
 }

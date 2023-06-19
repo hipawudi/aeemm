@@ -18,6 +18,8 @@ return new class extends Migration
             $table->integer('form_id');
             $table->integer('user_id');
             $table->text('images_path')->nullable();
+            $table->text('remark')->nullable();
+            $table->integer('state')->default(0);
             $table->timestamps();
         });
     }

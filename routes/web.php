@@ -34,7 +34,8 @@ Route::middleware([
     Route::get('/dashboard', [\App\Http\Controllers\Member\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('professionals', App\Http\Controllers\Member\ProfessionalController::class)->names('professionals');
     Route::resource('forms', \App\Http\Controllers\Member\FormController::class)->names('forms');
-    Route::resource('forms.applications', \App\Http\Controllers\Member\FormApplicationController::class)->names('forms.applications');
+    Route::post('forms/{form}/applications', [\App\Http\Controllers\Member\FormApplicationController::class, 'store'])->name('forms.applications.store');
+    Route::resource('applications', \App\Http\Controllers\Member\FormApplicationController::class)->names('applications');
 });
 
 Route::prefix('api')->group(function () {

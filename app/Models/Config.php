@@ -12,6 +12,7 @@ class Config extends Model
     static function item($key)
     {
         $item = Config::where('key', $key)->first();
+
         if ($item) {
             return json_decode($item->value);
         } else {

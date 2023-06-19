@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\Config;
 use App\Models\Form;
 use App\Models\FormApplication;
 use App\Models\FormApplicationField;
@@ -12,6 +13,16 @@ use Illuminate\Http\Request;
 class FormApplicationController extends Controller
 {
     //
+    public function index(Request $request)
+    {
+        $applications = FormApplication::with('form')->where('user_id', Auth()->user()->id)->get();
+        // dd(Config::item('bulletin_categories'));
+        return Inertia::render('Forms/Application', [
+            'applications' => $applications,
+            'states' => Config::item('application_states'),
+        ]);
+    }
+
     public function store(Form $form, Request $request)
     {
         $user = Auth()->user();
@@ -35,6 +46,14 @@ class FormApplicationController extends Controller
             }
         }
 
-        return Inertia::render('ApplicationSuccess');
+        return Inertia::render('Forms/ApplicationSuccess');
+    }
+
+    public function show(FormApplication $application)
+    {
+        $application_fields = FormApplicationField::where('application_id', $application->id)->get();
+        return Inertia::render('Forms/ApplicationShow', [
+            'application' => $application
+        ]);
     }
 }

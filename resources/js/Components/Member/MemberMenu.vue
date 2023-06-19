@@ -56,10 +56,10 @@ export default defineComponent({
         role: true,
       },
       {
-        key: "forms.index",
+        key: "applications.index",
         icon: "edit-outlined",
         title: "報名",
-        route: "forms.index",
+        route: "applications.index",
         role: true,
       },
       {

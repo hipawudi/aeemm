@@ -47,7 +47,7 @@ const logout = () => {
                   <img src="/images/aeemm_logo.jpg" style="width: 64px" />
                 </Link>
               </div>
-              <div class="hidden sm:flex">
+              <div class="invisible sm:visible">
                 <MemberMenu />
               </div>
             </div>
