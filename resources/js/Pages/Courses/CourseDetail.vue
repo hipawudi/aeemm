@@ -1,5 +1,5 @@
 <template>
-  <MemberLayout title="Dashboard" v-if="$page.props.user.id">
+  <MemberLayout title="課程內容" v-if="$page.props.user.id">
     <template #header>
       <div class="flex">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">課程內容</h2>
@@ -97,14 +97,16 @@
       <div class="flex">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">課程內容</h2>
         <div class="flex-auto flex justify-end">
-          <a-button
-            type="primary"
-            shape="round"
-            :disabled="
-              new Date(course.end_date) < new Date() || course.form.published == 0
-            "
-            >立即報名</a-button
-          >
+          <inertia-link :href="route('forms.show', course.id)">
+            <a-button
+              type="primary"
+              shape="round"
+              :disabled="
+                new Date(course.end_date) < new Date() || course.form.published == 0
+              "
+              >立即報名</a-button
+            >
+          </inertia-link>
         </div>
       </div>
     </template>

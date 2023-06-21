@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('form_fields', function (Blueprint $table) {
             $table->id();
             $table->foreignId('form_id')->constrained()->restrictOnDelete();
-            $table->string('field_name');
             $table->string('field_label');
             $table->string('type')->default('input');
             $table->string('text')->nullable();

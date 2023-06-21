@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Inertia\Inertia;
 use App\Models\Form;
-use App\Models\Response;
-use App\Models\ResponseField;
 
 class FormController extends Controller
 {
@@ -48,19 +46,6 @@ class FormController extends Controller
         // $this->validate($request,[
         //     'form_id'=>'required',
         // ]);
-        $response = new Response();
-        $response->form_id = $request->form['id'];
-        $response->member_id = Auth()->user()->id;
-        $response->save();
-
-        foreach ($request->fields as $key => $value) {
-            $field = new ResponseField();
-            $field->response_id = $response->id;
-            $field->field_name = $key;
-            $field->field_value = $value;
-            $field->save();
-        }
-        return redirect()->back();
     }
 
     /**

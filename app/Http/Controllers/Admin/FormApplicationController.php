@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Member;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Config;
@@ -16,9 +16,19 @@ class FormApplicationController extends Controller
     //
     public function index(Request $request)
     {
-        $applications = FormApplication::with('form')->where('user_id', Auth()->user()->id)->get();
+        if ($request->per_page) {
+            $per_page = 10;
+        } else {
+            $per_page = $request->per_page;
+        }
+
+        if ($request->form_id) {
+            $applications = FormApplication::with('form', 'user', 'fields')->where('form_id', $request->id)->paginate($per_page);
+        } else {
+            $applications = FormApplication::with('form', 'user', 'fields')->paginate($per_page);
+        }
         // dd(Config::item('bulletin_categories'));
-        return Inertia::render('Forms/Application', [
+        return Inertia::render('Admin/Application', [
             'applications' => $applications,
             'states' => Config::item('application_states'),
         ]);
@@ -26,30 +36,6 @@ class FormApplicationController extends Controller
 
     public function store(Form $form, Request $request)
     {
-        $user = Auth()->user();
-        if (FormApplication::where('form_id', $form->id)->where('user_id', $user->id)->first()) {
-            return redirect()->back()->withErrors(['message' => '你已報名此課程']);
-        };
-        $application = new FormApplication;
-
-        $application->form_id = $form->id;
-        $application->user_id = $user->id;
-
-        $application->save();
-
-        if ($request->fields) {
-            foreach ($request->fields as $key => $f) {
-                $field = new FormApplicationField;
-                $field->application_id = $application->id;
-                $field->field_id = $key;
-                $field->value = $f;
-
-                $field->save();
-                // $field->
-            }
-        }
-
-        return Inertia::render('Forms/ApplicationSuccess');
     }
 
     public function show(FormApplication $application)

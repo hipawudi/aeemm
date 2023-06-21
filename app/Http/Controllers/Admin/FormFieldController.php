@@ -49,13 +49,11 @@ class FormFieldController extends Controller
     {
         $this->validate($request, [
             'form_id' => 'required',
-            'field_name' => 'required',
             'field_label' => 'required',
         ]);
 
         $field = new FormField();
         $field->form_id = $request->form_id;
-        $field->field_name = $request->field_name;
         $field->field_label = $request->field_label;
         $field->type = $request->type;
         $field->require = $request->require;
@@ -98,12 +96,10 @@ class FormFieldController extends Controller
     {
         $this->validate($request, [
             'form_id' => 'required',
-            'field_name' => 'required',
             'field_label' => 'required',
         ]);
         $field = FormField::find($request->id);
         $field->form_id = $request->form_id;
-        $field->field_name = $request->field_name;
         $field->field_label = $request->field_label;
         $field->type = $request->type;
         $field->require = $request->require;

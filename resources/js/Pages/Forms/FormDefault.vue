@@ -1,5 +1,5 @@
 <template>
-  <MemberLayout title="Dashboard" v-if="$page.props.user.id">
+  <MemberLayout :title="form.title" v-if="$page.props.user.id">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ form.title }}</h2>
     </template>
@@ -160,7 +160,6 @@
                 <a-input v-model:value="$page.props.user.id" />
               </a-form-item>
             </div>
-
             <div v-if="field.type == 'input'">
               <a-form-item
                 :label="field.field_label"
@@ -280,6 +279,7 @@ export default {
   data() {
     return {
       formData: {},
+      dateFormat: "YYYY-MM-DD",
       rules: {
         field: { required: true },
         label: { required: true },

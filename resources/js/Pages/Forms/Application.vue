@@ -1,52 +1,198 @@
 <template>
-  <MemberLayout title="Dashboard" v-if="$page.props.user.id">
+  <MemberLayout title="報名列表" v-if="$page.props.user.id">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">報名列表</h2>
     </template>
-    <div class="max-w-7xl mx-auto mt-6 flex flex-col gap-3">
-      <template v-for="a in applications">
+    <div class="flex flex-col sm:flex-row relative">
+      <div class="sm:w-48 sticky top-[7.2rem] z-10" v-if="left">
         <div
-          class="m-2 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
+          class="flex flex-row sm:flex-col p-2 sm:pt-6 bg-white gap-3 z-40 sm:w-48 sm:fixed h-full"
         >
-          <div class="flex flex-col sm:flex-row gap-3">
-            <div class="flex items-center gap-3 sm:w-1/3">
-              <div class="flex-auto sm:flex-none text-lg font-bold">
-                {{ a.form.title }}
+          <div class="text-lg text-center flex-auto sm:flex-none">
+            <a
+              :class="category == 'all' ? 'text-blue' : 'text-black'"
+              @click="searchApplication('all')"
+              >所有報名</a
+            >
+          </div>
+          <div class="text-lg text-center flex-auto sm:flex-none">
+            <a
+              :class="category == 'new' ? 'text-blue' : 'text-black'"
+              @click="searchApplication('new')"
+              >待處理報名</a
+            >
+          </div>
+          <div class="text-lg text-center flex-auto sm:flex-none">
+            <a
+              :class="category == 'old' ? 'text-blue' : 'text-black'"
+              @click="searchApplication('old')"
+              >待繳費報名</a
+            >
+          </div>
+          <div class="text-lg text-center flex-auto sm:flex-none">
+            <a
+              :class="category == 'old' ? 'text-blue' : 'text-black'"
+              @click="searchApplication('old')"
+              >報名結果</a
+            >
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex-none flex justify-center -mt-2 sm:h-[50vh] sticky"
+        :class="left ? 'top-[9.45rem]' : 'top-[6.75rem]'"
+      >
+        <div
+          class="bg-white w-10 h-12 rounded-r-full flex justify-center items-center sticky sm:top-[50vh] sm:-left-2 rotate-90 sm:rotate-0 text-center"
+        >
+          <a v-if="left" @click="closeLeft()"
+            ><img
+              src="/images/icons/right.png"
+              class="w-6 h-6 hover:scale-105 rotate-180"
+          /></a>
+          <a v-if="!left" @click="openLeft()"
+            ><img src="/images/icons/right.png" class="w-6 h-6 hover:scale-105"
+          /></a>
+        </div>
+      </div>
+      <div class="flex-auto mx-auto max-w-6xl pt-2">
+        <template v-for="a in applications">
+          <div
+            class="m-2 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
+          >
+            <div class="flex flex-col sm:flex-row gap-3">
+              <div class="flex items-center gap-3 sm:w-1/3">
+                <div class="flex-auto sm:flex-none text-lg font-bold">
+                  {{ a.form.title }}
+                </div>
+                <div class="">
+                  <div
+                    class="p-1 px-2 rounded-md border border-solid"
+                    :class="
+                      a.state == 1
+                        ? 'text-blue-500 bg-blue-100'
+                        : 'text-green-500 bg-green-100'
+                    "
+                  >
+                    {{ states.find((x) => x.value == a.state).label }}
+                  </div>
+                </div>
               </div>
-              <div class="">
-                <div
-                  class="p-1 px-2 rounded-md text-green-500 bg-green-100 border border-solid border-green-500"
-                >
-                  {{ states.find((x) => x.value == a.state).label }}
+              <div class="flex flex-auto items-center text-base sm:w-1/3">
+                已提交報名申請,請等待工作人員審批
+              </div>
+              <div class="flex items-center justify-end gap-3">
+                <div v-if="a.state == 0">
+                  <inertia-link :href="route('applications.show', a.id)">
+                    <a-button type="primary" shape="round">查看</a-button>
+                  </inertia-link>
+                </div>
+                <div v-if="a.state == 1">
+                  <a-button type="primary" shape="round">提交繳費單</a-button>
                 </div>
               </div>
             </div>
-            <div class="flex items-center text-base sm:w-1/3">
-              已提交報名申請,請等待工作人員審批
-            </div>
-            <div class="flex items-center justify-end sm:w-1/3 gap-3">
-              <div v-if="a.state == 0">
-                <inertia-link :href="route('applications.show')">
-                  <a-button type="primary" shape="round">查看</a-button>
-                </inertia-link>
-              </div>
-              <div v-if="a.state == 1">
-                <a-button type="primary" shape="round">提交繳費單</a-button>
-              </div>
-            </div>
           </div>
-        </div>
-      </template>
+        </template>
+      </div>
     </div>
   </MemberLayout>
-  <WebLayout title="Dashboard" v-else>
+  <WebLayout title="報名列表" v-else>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">報名列表</h2>
     </template>
-    <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row relative">
+      <div class="sm:w-48 sticky top-[7.2rem] z-10" v-if="left">
+        <div
+          class="flex flex-row sm:flex-col p-2 sm:pt-6 bg-white gap-3 z-40 sm:w-48 sm:fixed h-full"
+        >
+          <div class="text-lg text-center flex-auto sm:flex-none">
+            <a
+              :class="category == 'all' ? 'text-blue' : 'text-black'"
+              @click="searchApplication('all')"
+              >所有報名</a
+            >
+          </div>
+          <div class="text-lg text-center flex-auto sm:flex-none">
+            <a
+              :class="category == 'new' ? 'text-blue' : 'text-black'"
+              @click="searchApplication('new')"
+              >待處理報名</a
+            >
+          </div>
+          <div class="text-lg text-center flex-auto sm:flex-none">
+            <a
+              :class="category == 'old' ? 'text-blue' : 'text-black'"
+              @click="searchApplication('old')"
+              >待繳費報名</a
+            >
+          </div>
+          <div class="text-lg text-center flex-auto sm:flex-none">
+            <a
+              :class="category == 'old' ? 'text-blue' : 'text-black'"
+              @click="searchApplication('old')"
+              >報名結果</a
+            >
+          </div>
+        </div>
+      </div>
       <div
-        class="mt-8 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
-      ></div>
+        class="flex-none flex justify-center -mt-2 sm:h-[50vh] sticky"
+        :class="left ? 'top-[9.45rem]' : 'top-[6.75rem]'"
+      >
+        <div
+          class="bg-white w-10 h-12 rounded-r-full flex justify-center items-center sticky sm:top-[50vh] sm:-left-2 rotate-90 sm:rotate-0 text-center"
+        >
+          <a v-if="left" @click="closeLeft()"
+            ><img
+              src="/images/icons/right.png"
+              class="w-6 h-6 hover:scale-105 rotate-180"
+          /></a>
+          <a v-if="!left" @click="openLeft()"
+            ><img src="/images/icons/right.png" class="w-6 h-6 hover:scale-105"
+          /></a>
+        </div>
+      </div>
+      <div class="flex-auto mx-auto max-w-6xl pt-2">
+        <template v-for="a in applications">
+          <div
+            class="m-2 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
+          >
+            <div class="flex flex-col sm:flex-row gap-3">
+              <div class="flex items-center gap-3 sm:w-1/3">
+                <div class="flex-auto sm:flex-none text-lg font-bold">
+                  {{ a.form.title }}
+                </div>
+                <div class="">
+                  <div
+                    class="p-1 px-2 rounded-md border border-solid"
+                    :class="
+                      a.state == 1
+                        ? 'text-blue-500 bg-blue-100'
+                        : 'text-green-500 bg-green-100'
+                    "
+                  >
+                    {{ states.find((x) => x.value == a.state).label }}
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center text-base sm:w-1/3">
+                已提交報名申請,請等待工作人員審批
+              </div>
+              <div class="flex items-center justify-end sm:w-1/3 gap-3">
+                <div v-if="a.state == 0">
+                  <inertia-link :href="route('applications.show', a.id)">
+                    <a-button type="primary" shape="round">查看</a-button>
+                  </inertia-link>
+                </div>
+                <div v-if="a.state == 1">
+                  <a-button type="primary" shape="round">提交繳費單</a-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
     </div>
   </WebLayout>
 </template>
@@ -98,6 +244,7 @@ export default {
           range: "${label} must be between ${min} and ${max}",
         },
       },
+      category: "all",
       labelCol: {
         style: {
           width: "150px",
@@ -106,6 +253,31 @@ export default {
     };
   },
   created() {},
-  methods: {},
+  methods: {
+    searchApplication(application) {
+      console.log(this.courses.current_page);
+      this.$inertia.get(
+        route("applications.index"),
+        { category: category ?? this.category },
+        {
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: (visit) => {
+            console.log(this.courses);
+            this.loading = false;
+          },
+          onError: (error) => {
+            this.loading = false;
+          },
+        }
+      );
+    },
+    closeLeft() {
+      this.left = false;
+    },
+    openLeft() {
+      this.left = true;
+    },
+  },
 };
 </script>

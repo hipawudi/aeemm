@@ -24,7 +24,7 @@ class Form extends Model implements HasMedia
     }
     public function fields()
     {
-        return $this->hasMany(FormField::class);
+        return $this->hasMany(FormField::class,'');
     }
     public function hasChild()
     {

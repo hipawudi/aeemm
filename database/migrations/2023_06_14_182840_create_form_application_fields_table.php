@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('form_application_fields', function (Blueprint $table) {
             $table->id();
-            $table->integer('application_id');
+            $table->integer('form_application_id');
             $table->integer('field_id');
             $table->text('key');
             $table->text('value');

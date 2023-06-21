@@ -28,6 +28,14 @@
                   <a-button>公開報名</a-button>
                 </a-popconfirm>
                 <inertia-link
+                  v-if="record.form.published === 1"
+                  :href="
+                    route('admin.forms.applications.index', { id: record.form['id'] })
+                  "
+                  class="ant-btn"
+                  >查看報名</inertia-link
+                >
+                <inertia-link
                   :href="route('admin.courses.edit', record.id)"
                   class="ant-btn"
                   >修改</inertia-link

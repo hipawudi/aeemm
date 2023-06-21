@@ -1,5 +1,5 @@
 <template>
-  <MemberLayout title="Dashboard" v-if="$page.props.user.id">
+  <MemberLayout title="課程列表" v-if="$page.props.user.id">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">課程列表</h2>
     </template>
@@ -132,7 +132,7 @@
       </div>
     </div>
   </MemberLayout>
-  <WebLayout title="Dashboard" v-else>
+  <WebLayout title="課程列表" v-else>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">課程列表</h2>
     </template>
@@ -213,15 +213,17 @@
                     </div>
                     <div class="flex">
                       <div class="flex-auto text-center">
-                        <a-button
-                          :disabled="
-                            new Date(course.end_date) < new Date() ||
-                            course.form.published == 0
-                          "
-                          type="primary"
-                          shape="round"
-                          >立即報名</a-button
-                        >
+                        <inertia-link :href="route('forms.show', course.id)">
+                          <a-button
+                            :disabled="
+                              new Date(course.end_date) < new Date() ||
+                              course.form.published == 0
+                            "
+                            type="primary"
+                            shape="round"
+                            >立即報名</a-button
+                          >
+                        </inertia-link>
                       </div>
                       <div class="flex-auto text-center">
                         <inertia-link :href="route('courses.show', course.id)">

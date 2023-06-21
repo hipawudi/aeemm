@@ -47,7 +47,7 @@ const logout = () => {
               <!-- Logo -->
               <div class="shrink-0 flex items-center">
                 <Link :href="route('dashboard')">
-                  <img src="images/aeemm_logo.jpg" style="width: 64px" />
+                  <img src="/images/aeemm_logo.jpg" style="width: 64px" />
                 </Link>
               </div>
 
@@ -60,7 +60,6 @@ const logout = () => {
                   Dashboard
                 </NavLink>
                 <NavLink :href="route('professionals.index')"> Professional </NavLink>
-                <NavLink :href="route('membership')"> Membership </NavLink>
                 <NavLink :href="route('forms.index')"> Forms </NavLink>
               </div>
             </div>

@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Form;
 use App\Models\FormApplication;
-use App\Models\Response;
-use App\Models\ResponseField;
 
 class FormController extends Controller
 {
@@ -55,19 +53,6 @@ class FormController extends Controller
         // $this->validate($request,[
         //     'form_id'=>'required',
         // ]);
-        $response = new Response();
-        $response->form_id = $request->form['id'];
-        $response->member_id = Auth()->user()->id;
-        $response->save();
-
-        foreach ($request->fields as $key => $value) {
-            $field = new ResponseField();
-            $field->response_id = $response->id;
-            $field->field_name = $key;
-            $field->field_value = $value;
-            $field->save();
-        }
-        return redirect()->back();
     }
 
     /**
@@ -80,12 +65,10 @@ class FormController extends Controller
     {
         $form = Form::with('fields')->where('course_id', $id)->first();
         $form_application = FormApplication::where('form_id', $form->id)->where('user_id', Auth()->user()->id)->first();
-        if (
-            $form->published == 0 ||
-            ($form->for_account == 1 && !Auth()->user()) ||
-            ($form->for_member == 1 && !Auth()->user()->member)
-        ) {
+        if ($form->published == 0) {
             return redirect()->back()->withErrors(['message' => '本課程未開始報名']);
+        } else if ($form->for_member == 1 && !Auth()->user()->member) {
+            return redirect()->back()->withErrors(['message' => '抱歉，此課程只供會員報名']);
         } else if ($form_application) {
             return redirect()->back()->withErrors(['message' => '你已報名此課程']);
         }

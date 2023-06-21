@@ -66,5 +66,6 @@ Route::middleware([
         Route::resource('courses', App\Http\Controllers\Admin\CourseController::class)->names('admin.courses');
         Route::resource('messages', App\Http\Controllers\Admin\MessageController::class)->names('admin.messages');
         Route::resource('bulletins', App\Http\Controllers\Admin\BulletinController::class)->names('admin.bulletins');
+        Route::resource('applications', App\Http\Controllers\Admin\FormApplicationController::class)->names('admin.forms.applications');
     })->name('admin');;
 });
