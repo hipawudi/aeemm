@@ -10,6 +10,8 @@ use App\Models\FormApplicationField;
 use App\Models\FormField;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class FormApplicationController extends Controller
 {
@@ -21,6 +23,7 @@ class FormApplicationController extends Controller
         return Inertia::render('Forms/Application', [
             'applications' => $applications,
             'states' => Config::item('application_states'),
+            'states_message' => Config::item('states_messages'),
         ]);
     }
 
@@ -40,7 +43,7 @@ class FormApplicationController extends Controller
         if ($request->fields) {
             foreach ($request->fields as $key => $f) {
                 $field = new FormApplicationField;
-                $field->application_id = $application->id;
+                $field->form_application_id = $application->id;
                 $field->field_id = $key;
                 $field->value = $f;
 
@@ -54,7 +57,7 @@ class FormApplicationController extends Controller
 
     public function show(FormApplication $application)
     {
-        $application_fields = FormApplicationField::where('application_id', $application->id)->get();
+        $application_fields = FormApplicationField::where('form_application_id', $application->id)->get();
         $form_fields = FormField::where('form_id', $application->form_id)->get();
 
         // dd($form_fields);
@@ -64,5 +67,24 @@ class FormApplicationController extends Controller
             'application' => $application->with('form')->first(),
             'states' => Config::item('application_states'),
         ]);
+    }
+
+    public function uploadPaymentImage(FormApplication $application, Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'payment' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors(['message' => '請選擇你的繳費單']);
+        }
+        $file = $request->file('payment')[0]['originFileObj'];
+
+        $path = Storage::putFile('public/images/payment', $file);
+
+        $application->images_path = $path;
+        $application->state = 2;
+        $application->save();
+
+        return redirect()->back();
     }
 }

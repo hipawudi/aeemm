@@ -41,7 +41,12 @@
                 }}</a-descriptions-item>
               </template>
             </a-descriptions>
-            <div class="text-base font-bold">提交繳費單</div>
+            <div class="text-base font-bold">繳費單</div>
+            <div>
+              <a :href="application.url" target="_blank"
+                ><img :src="application.url" class="h-64 w-64"
+              /></a>
+            </div>
           </div>
         </div>
       </div>

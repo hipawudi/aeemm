@@ -79,16 +79,21 @@
                 </div>
               </div>
               <div class="flex flex-auto items-center text-base sm:w-1/3">
-                已提交報名申請,請等待工作人員審批
+                {{ states_message.find((x) => x.value == a.state).label }}
               </div>
               <div class="flex items-center justify-end gap-3">
-                <div v-if="a.state == 0">
+                <div>
                   <inertia-link :href="route('applications.show', a.id)">
                     <a-button type="primary" shape="round">查看</a-button>
                   </inertia-link>
                 </div>
                 <div v-if="a.state == 1">
-                  <a-button type="primary" shape="round">提交繳費單</a-button>
+                  <a-button
+                    :type="a.state == 1 ? 'primary' : ''"
+                    shape="round"
+                    @click="openPayment(a)"
+                    >提交繳費單</a-button
+                  >
                 </div>
               </div>
             </div>
@@ -177,7 +182,7 @@
                 </div>
               </div>
               <div class="flex items-center text-base sm:w-1/3">
-                已提交報名申請,請等待工作人員審批
+                {{ states_message.find((x) => x.value == a.state).label }}
               </div>
               <div class="flex items-center justify-end sm:w-1/3 gap-3">
                 <div v-if="a.state == 0">
@@ -186,7 +191,9 @@
                   </inertia-link>
                 </div>
                 <div v-if="a.state == 1">
-                  <a-button type="primary" shape="round">提交繳費單</a-button>
+                  <a-button type="primary" shape="round" @click="openPayment(a)"
+                    >上傳繳費單</a-button
+                  >
                 </div>
               </div>
             </div>
@@ -195,20 +202,53 @@
       </div>
     </div>
   </WebLayout>
+  <a-modal v-model:visible="modal.isOpen" width="40%" title="上傳繳費單">
+    <div class="flex flex-col gap-3">
+      <div class="text-xl font-bold">{{ modal.data.form.title }}</div>
+      <a-upload
+        v-model:file-list="modal.payment"
+        :multiple="false"
+        :beforeUpload="() => false"
+        :max-count="1"
+        list-type="picture-card"
+      >
+        <a-button>
+          <upload-outlined></upload-outlined>
+          上傳
+        </a-button>
+      </a-upload>
+    </div>
+    <template #footer>
+      <a-button @click="modal.isOpen = false">關閉</a-button>
+      <a-button type="primary" @click="uploadPaymentImage(modal.data.id)">上傳</a-button>
+    </template>
+  </a-modal>
 </template>
 
 <script>
 import MemberLayout from "@/Layouts/MemberLayout.vue";
 import WebLayout from "@/Layouts/WebLayout.vue";
+import { UploadOutlined } from "@ant-design/icons-vue";
+import { message } from "ant-design-vue";
 
 export default {
   components: {
     MemberLayout,
     WebLayout,
+    UploadOutlined,
   },
-  props: ["applications", "states"],
+  props: ["applications", "states", "states_message"],
   data() {
     return {
+      modal: {
+        isOpen: false,
+        data: {
+          title: "",
+          payment: "",
+        },
+        title: "公告",
+        mode: "",
+      },
       left: true,
       columns: [
         {
@@ -254,6 +294,11 @@ export default {
   },
   created() {},
   methods: {
+    openPayment(data) {
+      console.log(data);
+      this.modal.isOpen = true;
+      this.modal.data = data;
+    },
     searchApplication(application) {
       console.log(this.courses.current_page);
       this.$inertia.get(
@@ -268,6 +313,23 @@ export default {
           },
           onError: (error) => {
             this.loading = false;
+          },
+        }
+      );
+    },
+    uploadPaymentImage(application_id) {
+      this.$inertia.post(
+        route("applications.uploadPaymentImage", application_id),
+        {
+          payment: this.modal.payment,
+        },
+        {
+          onSuccess: (page) => {
+            this.modal.isOpen = false;
+            message.success("上傳成功");
+          },
+          onError: (error) => {
+            message.error(error.message);
           },
         }
       );

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class FormApplication extends Model
 {
     use HasFactory;
+    protected $appends = ['url'];
 
     public function user()
     {
@@ -21,5 +23,9 @@ class FormApplication extends Model
     public function fields()
     {
         return $this->hasMany(FormApplicationField::class);
+    }
+    public function getUrlAttribute()
+    {
+        return $this->images_path ? Storage::url($this->images_path) : '';
     }
 }

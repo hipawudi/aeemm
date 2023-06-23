@@ -35,6 +35,7 @@ Route::middleware([
     Route::resource('professionals', App\Http\Controllers\Member\ProfessionalController::class)->names('professionals');
     Route::resource('forms', \App\Http\Controllers\Member\FormController::class)->names('forms');
     Route::post('forms/{form}/applications', [\App\Http\Controllers\Member\FormApplicationController::class, 'store'])->name('forms.applications.store');
+    Route::post('applications/{application}/uploadPaymentImage', [\App\Http\Controllers\Member\FormApplicationController::class, 'uploadPaymentImage'])->name('applications.uploadPaymentImage');
     Route::resource('applications', \App\Http\Controllers\Member\FormApplicationController::class)->names('applications');
 });
 
@@ -66,6 +67,7 @@ Route::middleware([
         Route::resource('courses', App\Http\Controllers\Admin\CourseController::class)->names('admin.courses');
         Route::resource('messages', App\Http\Controllers\Admin\MessageController::class)->names('admin.messages');
         Route::resource('bulletins', App\Http\Controllers\Admin\BulletinController::class)->names('admin.bulletins');
+        Route::post('applications/{application}/changeState', [App\Http\Controllers\Admin\FormApplicationController::class, 'changeState'])->name('admin.applications.changeState');
         Route::resource('applications', App\Http\Controllers\Admin\FormApplicationController::class)->names('admin.forms.applications');
     })->name('admin');;
 });

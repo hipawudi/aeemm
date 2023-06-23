@@ -56,8 +56,8 @@ class ConfigSeeder extends Seeder
         ]);
 
         DB::table('configs')->insert([
-            'key'=>'application_states',
-            'value'=>'[{
+            'key' => 'application_states',
+            'value' => '[{
                 "value":"0",
                 "label":"待審批"
             },{
@@ -69,6 +69,29 @@ class ConfigSeeder extends Seeder
             },{
                 "value":"3",
                 "label":"已完成"
+            },{
+                "value":"4",
+                "label":"已拒絕"
+            }]'
+        ]);
+
+        DB::table('configs')->insert([
+            'key' => 'states_messages',
+            'value' => '[{
+                "value":"0",
+                "label":"已提交報名申請，請等待工作人員審批。"
+            },{
+                "value":"1",
+                "label":"報名申請已通過，請繳交課程費用並上傳繳費單。"
+            },{
+                "value":"2",
+                "label":"已上傳繳費單，請等待工作人員審核。"
+            },{
+                "value":"3",
+                "label":"恭喜你已成功完成報名，請按照課程的上課時間和地點上課。"
+            },{
+                "value":"4",
+                "label":"抱歉此報名被拒絕。"
             }]'
         ]);
     }

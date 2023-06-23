@@ -43,18 +43,29 @@
               <div class="space-x-2">
                 <a-button @click="showRecord(record)">查看</a-button>
                 <a-popconfirm
+                  v-if="record.state == 0"
                   title="是否確定通過這個報名"
                   ok-text="是"
                   cancel-text="否"
-                  @confirm="passRecord(record.id)"
+                  @confirm="passRecord(record.id, 1)"
                 >
                   <a-button>通過</a-button>
                 </a-popconfirm>
                 <a-popconfirm
+                  v-if="record.state == 2"
+                  title="是否確定這個報名的繳費單"
+                  ok-text="是"
+                  cancel-text="否"
+                  @confirm="passRecord(record.id, 3)"
+                >
+                  <a-button>確定</a-button>
+                </a-popconfirm>
+                <a-popconfirm
+                  v-if="record.state == 0 || record.state == 2"
                   title="是否確定拒絕這個報名"
                   ok-text="是"
                   cancel-text="否"
-                  @confirm="rejectRecord(record.id)"
+                  @confirm="rejectRecord(record.id, 4)"
                 >
                   <a-button>拒絕</a-button>
                 </a-popconfirm>
@@ -64,35 +75,36 @@
         </a-table>
       </div>
       <!-- Modal Start-->
-      <a-modal
-        v-model:visible="modal.isOpen"
-        :title="modal.mode == 'CREATE' ? '新增' : modal.mode == 'EDIT' ? '修改' : '查看'"
-        width="60%"
-      >
-        <!-- {{ modal.data.form.fields }} -->
-        <a-descriptions title="表格內容" bordered :column="{ xs: 1, sm: 2 }">
-          <a-descriptions-item label="姓名">{{
-            modal.data.user.name
-          }}</a-descriptions-item>
-          <a-descriptions-item label="電郵">{{
-            modal.data.user.email
-          }}</a-descriptions-item>
-          <template v-for="f in modal.data.form.fields">
-            <a-descriptions-item :label="f.field_label">{{
-              f.options
-                ? JSON.parse(f.options).find(
-                    (x) =>
-                      x.value == modal.data.fields.find((x) => x.field_id == f.id)?.value
-                  )?.label
-                : modal.data.fields.find((x) => x.field_id == f.id)?.value
-            }}</a-descriptions-item>
-          </template>
-        </a-descriptions>
-        <div class="text-base font-bold mt-4">繳費單</div>
-      </a-modal>
     </div>
     <!-- Modal End-->
   </AdminLayout>
+  <a-modal
+    v-model:visible="modal.isOpen"
+    :title="modal.mode == 'CREATE' ? '新增' : modal.mode == 'EDIT' ? '修改' : '查看'"
+    width="60%"
+  >
+    <!-- {{ modal.data.form.fields }} -->
+    <a-descriptions title="表格內容" bordered :column="{ xs: 1, sm: 2 }">
+      <a-descriptions-item label="姓名">{{ modal.data.user.name }}</a-descriptions-item>
+      <a-descriptions-item label="電郵">{{ modal.data.user.email }}</a-descriptions-item>
+      <template v-for="f in modal.data.form.fields">
+        <a-descriptions-item :label="f.field_label">{{
+          f.options
+            ? JSON.parse(f.options).find(
+                (x) => x.value == modal.data.fields.find((x) => x.field_id == f.id)?.value
+              )?.label
+            : modal.data.fields.find((x) => x.field_id == f.id)?.value
+        }}</a-descriptions-item>
+      </template>
+    </a-descriptions>
+    <div class="text-base font-bold mt-4">繳費單</div>
+    <a :href="modal.data.url" target="_blank"
+      ><img :src="modal.data.url" class="h-64 w-64"
+    /></a>
+    <template #footer>
+      <a-button @click="modal.isOpen = false">Close</a-button>
+    </template>
+  </a-modal>
 </template>
 
 <script>
@@ -194,57 +206,20 @@ export default {
       this.modal.mode = "SHOW";
       this.modal.isOpen = true;
     },
-    storeRecord() {
-      this.loading = true;
-      this.$refs.modalRef
-        .validateFields()
-        .then(() => {
-          this.$inertia.post(route("admin.applications.store"), this.modal.data, {
-            preserveState: false,
-            onSuccess: (page) => {
-              this.modal.isOpen = false;
-              console.log(page);
-              message.success("新增成功");
-            },
-            onError: (err) => {
-              console.log(err);
-            },
-            onFinish: (visit) => {
-              this.loading = false;
-            },
-          });
-        })
-        .catch((err) => {
-          this.loading = false;
-          console.log(err);
-        });
+    passRecord(id, state, remark) {
+      this.$inertia.post(
+        "/admin/applications/" + id + "/changeState",
+        { state: state, remark: remark },
+        {
+          onSuccess: (page) => {
+            console.log(page);
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        }
+      );
     },
-    updateRecord() {
-      this.$refs.modalRef
-        .validateFields()
-        .then(() => {
-          this.modal.data._method = "PATCH";
-          this.$inertia.post(
-            route("admin.applications.update", this.modal.data.id),
-            this.modal.data,
-            {
-              preserveState: false,
-              onSuccess: (page) => {
-                this.modal.isOpen = false;
-                message.success("修改成功");
-              },
-              onError: (error) => {
-                console.log(error);
-                message.error(error.error);
-              },
-            }
-          );
-        })
-        .catch((err) => {
-          console.log("error", err);
-        });
-    },
-
     deleteRecord(recordId) {
       this.$inertia.delete("/admin/applications/" + recordId, {
         preserveState: false,

@@ -51,4 +51,17 @@ class FormApplicationController extends Controller
             'states' => Config::item('application_states'),
         ]);
     }
+    public function changeState(FormApplication $application, Request $request)
+    {
+        if ($request->state) {
+            $application->state = $request->state;
+        }
+        if ($request->remark) {
+            $application->remark = $request->remark;
+        }
+
+        $application->save();
+
+        return redirect()->back();
+    }
 }
