@@ -17,22 +17,22 @@
           </div>
           <div class="text-lg text-center flex-auto sm:flex-none">
             <a
-              :class="category == 'new' ? 'text-blue' : 'text-black'"
-              @click="searchApplication('new')"
+              :class="category == 'wait' ? 'text-blue' : 'text-black'"
+              @click="searchApplication('wait')"
               >待處理報名</a
             >
           </div>
           <div class="text-lg text-center flex-auto sm:flex-none">
             <a
-              :class="category == 'old' ? 'text-blue' : 'text-black'"
-              @click="searchApplication('old')"
+              :class="category == 'payment' ? 'text-blue' : 'text-black'"
+              @click="searchApplication('payment')"
               >待繳費報名</a
             >
           </div>
           <div class="text-lg text-center flex-auto sm:flex-none">
             <a
-              :class="category == 'old' ? 'text-blue' : 'text-black'"
-              @click="searchApplication('old')"
+              :class="category == 'result' ? 'text-blue' : 'text-black'"
+              @click="searchApplication('result')"
               >報名結果</a
             >
           </div>
@@ -55,8 +55,8 @@
           /></a>
         </div>
       </div>
-      <div class="flex-auto mx-auto max-w-6xl pt-2">
-        <template v-for="a in applications" :key="a.id">
+      <div class="flex-auto mx-auto max-w-6xl pt-2" v-if="applications.total">
+        <template v-for="a in applications.data" :key="a.id">
           <div
             class="m-2 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
           >
@@ -106,6 +106,30 @@
             </div>
           </div>
         </template>
+        <div class="my-6 text-right">
+          <a-pagination
+            v-model:current="applications.current_page"
+            :total="applications.total"
+            :page-size="applications.per_page"
+            :page-size-options="pageSizeOptions"
+            @change="changePage"
+          />
+        </div>
+      </div>
+      <div
+        class="flex-auto mx-auto max-w-6xl pt-2 flex items-center justify-center"
+        v-else
+      >
+        <a-empty
+          image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
+          :image-style="{
+            height: '300px',
+          }"
+        >
+          <template #description>
+            <div class="text-xl">沒有報名</div>
+          </template>
+        </a-empty>
       </div>
     </div>
   </MemberLayout>
@@ -207,6 +231,15 @@
           </div>
         </template>
       </div>
+      <div class="my-6 text-right">
+        <a-pagination
+          v-model:current="applications.current_page"
+          :total="applications.total"
+          :page-size="applications.per_page"
+          :page-size-options="pageSizeOptions"
+          @change="changePage"
+        />
+      </div>
     </div>
   </WebLayout>
   <a-modal v-model:visible="modal.isOpen" width="40%" :title="modal.title">
@@ -244,7 +277,7 @@ export default {
     WebLayout,
     UploadOutlined,
   },
-  props: ["applications", "states", "states_message"],
+  props: ["applications", "states", "states_message", "category"],
   data() {
     return {
       modal: {
@@ -277,6 +310,7 @@ export default {
           key: "operation",
         },
       ],
+      pageSizeOptions: ["10", "20", "30", "40"],
       rules: {
         field: { required: true },
         label: { required: true },
@@ -291,7 +325,6 @@ export default {
           range: "${label} must be between ${min} and ${max}",
         },
       },
-      category: "all",
       labelCol: {
         style: {
           width: "150px",
@@ -307,8 +340,8 @@ export default {
       this.modal.title = data.form.title;
       this.modal.data = data;
     },
-    searchApplication(application) {
-      console.log(this.courses.current_page);
+    searchApplication(category) {
+      console.log(this.applications);
       this.$inertia.get(
         route("applications.index"),
         { category: category ?? this.category },
@@ -317,6 +350,22 @@ export default {
           preserveState: true,
           onSuccess: (visit) => {
             console.log(this.courses);
+            this.loading = false;
+          },
+          onError: (error) => {
+            this.loading = false;
+          },
+        }
+      );
+    },
+    changePage(page, pageSize) {
+      this.$inertia.get(
+        route("applications.index"),
+        { applications: this.applications, page: page, per_page: pageSize },
+        {
+          preserveScroll: false,
+          preserveState: false,
+          onSuccess: (visit) => {
             this.loading = false;
           },
           onError: (error) => {

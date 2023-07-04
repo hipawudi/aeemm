@@ -18,10 +18,25 @@ class FormApplicationController extends Controller
     //
     public function index(Request $request)
     {
-        $applications = FormApplication::with('form')->where('user_id', Auth()->user()->id)->get();
+        $user = Auth()->user();
+        $perPage = 10;
+        if ($request->per_page != null) {
+            $perPage = $request->per_page;
+        }
+
+        if ($request->category == 'all' || $request->category == null) {
+            $applications = FormApplication::with('form')->where('user_id', $user->id)->paginate($perPage);
+        } else if ($request->category == 'wait') {
+            $applications = FormApplication::with('form')->where('user_id', $user->id)->where('state', 1)->paginate($perPage);
+        } else if ($request->category == 'payment') {
+            $applications = FormApplication::with('form')->where('user_id', $user->id)->where('state', 2)->paginate($perPage);
+        } else if ($request->category == 'result') {
+            $applications = FormApplication::with('form')->where('user_id', $user->id)->where('state', 4)->orWhere('state', 3)->paginate($perPage);
+        }
         // dd(Config::item('bulletin_categories'));
         return Inertia::render('Forms/Application', [
             'applications' => $applications,
+            'category' => $request->category ?? 'all',
             'states' => Config::item('application_states'),
             'states_message' => Config::item('states_messages'),
         ]);

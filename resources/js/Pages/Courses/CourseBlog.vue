@@ -51,7 +51,7 @@
       </div>
       <div class="flex-auto mx-auto max-w-6xl pt-2" v-if="courses.total">
         <div class="flex flex-col sm:grid lg:grid-cols-3 md:grid-cols-2 gap-6">
-          <template v-for="course in courses.data">
+          <template v-for="course in courses.data" :key="course.id">
             <div class="container mx-auto pt-4 w-auto">
               <div class="bg-white rounded-md">
                 <div class="flex flex-col">
@@ -183,7 +183,7 @@
       </div>
       <div class="flex-auto mx-auto max-w-6xl pt-2" v-if="courses.total">
         <div class="flex flex-col sm:grid lg:grid-cols-3 md:grid-cols-2 gap-6">
-          <template v-for="course in courses.data">
+          <template v-for="course in courses.data" :key="course.id">
             <div class="container mx-auto pt-4 w-auto">
               <div class="bg-white rounded-md">
                 <div class="flex flex-col">
