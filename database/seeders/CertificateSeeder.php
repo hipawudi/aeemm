@@ -27,7 +27,6 @@ class CertificateSeeder extends Seeder
             'certificate_id' => '1',
             'member_id' => '1',
             'display_name' => '管理員',
-            'number' => '1',
             'number_display' => 'CERT-0001',
             'issue_date' => '2023-01-01',
             'valid_from' => '2023-01-01',
