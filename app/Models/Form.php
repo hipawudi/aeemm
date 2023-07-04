@@ -13,10 +13,17 @@ class Form extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
-
-    public function organization()
+    
+    protected $appends = [
+        'wait_count'
+    ];
+    public function application()
     {
-        return $this->belongsTo(Organization::class);
+        return $this->hasMany(FormApplication::class);
+    }
+    public function getWaitCountAttribute()
+    {
+        return $this->hasMany(FormApplication::class)->where('state', 0)->orWhere('state', 2)->count();
     }
     public function course()
     {
@@ -24,7 +31,7 @@ class Form extends Model implements HasMedia
     }
     public function fields()
     {
-        return $this->hasMany(FormField::class,'');
+        return $this->hasMany(FormField::class, '');
     }
     public function hasChild()
     {

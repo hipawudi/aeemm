@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\Professional;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
@@ -16,8 +17,11 @@ class ProfessionalController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Member/Professional',[
-            'member'=>Auth()->user()->member,
+        $member = Auth()->user()->member;
+        $professionals = Professional::with('certificate')->where('member_id', $member->id)->get();
+        return Inertia::render('Member/Professional', [
+            'member' => $member,
+            'professionals' => $professionals,
         ]);
     }
 

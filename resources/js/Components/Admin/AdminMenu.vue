@@ -91,7 +91,11 @@ export default {
         route: "admin.members.index",
         children: [
           { key: "members.index", title: "會員列表", route: "admin.members.index" },
-          { key: "members.payments.index", title: "會員繳費", route: "admin.members.payments.index" },
+          {
+            key: "members.payments.index",
+            title: "會員繳費",
+            route: "admin.members.payments.index",
+          },
         ],
       },
       {

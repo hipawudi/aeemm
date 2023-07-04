@@ -39,10 +39,10 @@
               {{ messageCategories.find((x) => x.value == record.category)["label"] }}
             </template>
             <template v-else-if="column.dataIndex == 'receiver'">
-              <p v-if="record.category == 'personal' || record.category == 'public'">
+              <div v-if="record.category == 'personal' || record.category == 'public'">
                 {{ messageCategories.find((x) => x.value == record.category)["label"] }}
-              </p>
-              <p v-else>{{ record.receiver ?? "--" }}</p>
+              </div>
+              <div v-else>{{ record.receiver ?? "--" }}</div>
             </template>
           </template>
         </a-table>

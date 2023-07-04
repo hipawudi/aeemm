@@ -17,37 +17,45 @@
         <a-table :dataSource="courses" :columns="columns">
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-              <div class="space-x-2">
-                <a-popconfirm
-                  v-if="record.form.published === 0"
-                  title="是否確定公開這個課程報名"
-                  ok-text="是"
-                  cancel-text="否"
-                  @confirm="publishedForm(record.id)"
-                >
-                  <a-button>公開報名</a-button>
-                </a-popconfirm>
-                <inertia-link
-                  v-if="record.form.published === 1"
-                  :href="
-                    route('admin.forms.applications.index', { id: record.form['id'] })
-                  "
-                  class="ant-btn"
-                  >查看報名</inertia-link
-                >
-                <inertia-link
-                  :href="route('admin.courses.edit', record.id)"
-                  class="ant-btn"
-                  >修改</inertia-link
-                >
-                <a-popconfirm
-                  title="是否確定刪除這個課程"
-                  ok-text="是"
-                  cancel-text="否"
-                  @confirm="deleteRecord(record.id)"
-                >
-                  <a-button>刪除</a-button>
-                </a-popconfirm>
+              <div class="flex gap-3">
+                <div class="flex-auto" v-if="record.form.published === 0">
+                  <a-popconfirm
+                    title="是否確定公開這個課程報名"
+                    ok-text="是"
+                    cancel-text="否"
+                    @confirm="publishedForm(record.id)"
+                  >
+                    <a-button>公開報名</a-button>
+                  </a-popconfirm>
+                </div>
+                <div class="flex-auto" v-if="record.form.published === 1">
+                  <a-badge :count="record.form.wait_count">
+                    <inertia-link
+                      :href="
+                        route('admin.forms.applications.index', { id: record.form['id'] })
+                      "
+                      class="ant-btn"
+                      >查看報名</inertia-link
+                    >
+                  </a-badge>
+                </div>
+                <div class="flex-auto">
+                  <inertia-link
+                    :href="route('admin.courses.edit', record.id)"
+                    class="ant-btn"
+                    >修改</inertia-link
+                  >
+                </div>
+                <div class="flex-auto">
+                  <a-popconfirm
+                    title="是否確定刪除這個課程"
+                    ok-text="是"
+                    cancel-text="否"
+                    @confirm="deleteRecord(record.id)"
+                  >
+                    <a-button>刪除</a-button>
+                  </a-popconfirm>
+                </div>
               </div>
             </template>
           </template>

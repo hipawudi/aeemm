@@ -15,6 +15,8 @@
                   :class="
                     application.state == 1
                       ? 'text-blue-500 bg-blue-100'
+                      : application.state == 4
+                      ? 'text-red-500 bg-red-100'
                       : 'text-green-500 bg-green-100'
                   "
                 >
@@ -29,7 +31,7 @@
               <a-descriptions-item label="電郵">{{
                 $page.props.user.email
               }}</a-descriptions-item>
-              <template v-for="f in form_fields">
+              <template v-for="f in form_fields" :key="f.id">
                 <a-descriptions-item :label="f.field_label" class="overflow-auto">{{
                   f.options
                     ? JSON.parse(f.options).find(
@@ -42,7 +44,7 @@
               </template>
             </a-descriptions>
             <div class="text-base font-bold">繳費單</div>
-            <div>
+            <div v-if="application.url">
               <a :href="application.url" target="_blank"
                 ><img :src="application.url" class="h-64 w-64"
               /></a>

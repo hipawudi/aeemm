@@ -64,7 +64,7 @@
           <a-form-item label="顯示名稱" name="display_name">
             <a-input v-model:value="modal.data.display_name" />
           </a-form-item>
-          <a-form-item label="電子郵件" name="email">
+          <a-form-item label="電子郵箱" name="email">
             <a-input v-model:value="modal.data.email"></a-input>
           </a-form-item>
           <a-form-item label="手機" name="phone">
@@ -81,14 +81,14 @@
             key="Update"
             type="primary"
             @click="updateRecord()"
-            >Update</a-button
+            >上傳</a-button
           >
           <a-button
             v-if="modal.mode == 'CREATE'"
             key="Store"
             type="primary"
             @click="storeRecord()"
-            >Add</a-button
+            >新增</a-button
           >
         </template>
       </a-modal>
@@ -120,11 +120,15 @@ export default {
         },
         {
           title: "顯示名稱",
-          dataIndex: "gender",
+          dataIndex: "display_name",
+        },
+        {
+          title: "電子郵箱",
+          dataIndex: "email",
         },
         {
           title: "手機",
-          dataIndex: "dob",
+          dataIndex: "phone",
         },
         {
           title: "狀態",

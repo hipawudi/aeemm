@@ -56,7 +56,7 @@
         </div>
       </div>
       <div class="flex-auto mx-auto max-w-6xl pt-2">
-        <template v-for="a in applications">
+        <template v-for="a in applications" :key="a.id">
           <div
             class="m-2 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
           >
@@ -71,6 +71,8 @@
                     :class="
                       a.state == 1
                         ? 'text-blue-500 bg-blue-100'
+                        : a.state == 4
+                        ? 'text-red-500 bg-red-100'
                         : 'text-green-500 bg-green-100'
                     "
                   >
@@ -82,6 +84,11 @@
                 {{ states_message.find((x) => x.value == a.state).label }}
               </div>
               <div class="flex items-center justify-end gap-3">
+                <div>
+                  <inertia-link :href="route('courses.show', a.form.course_id)">
+                    <a-button type="primary" ghost shape="round">查看課程</a-button>
+                  </inertia-link>
+                </div>
                 <div>
                   <inertia-link :href="route('applications.show', a.id)">
                     <a-button type="primary" shape="round">查看</a-button>
@@ -159,7 +166,7 @@
         </div>
       </div>
       <div class="flex-auto mx-auto max-w-6xl pt-2">
-        <template v-for="a in applications">
+        <template v-for="a in applications" :key="a.id">
           <div
             class="m-2 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
           >
@@ -202,9 +209,9 @@
       </div>
     </div>
   </WebLayout>
-  <a-modal v-model:visible="modal.isOpen" width="40%" title="上傳繳費單">
+  <a-modal v-model:visible="modal.isOpen" width="40%" :title="modal.title">
     <div class="flex flex-col gap-3">
-      <div class="text-xl font-bold">{{ modal.data.form.title }}</div>
+      <div class="text-xl font-bold">上傳繳費單</div>
       <a-upload
         v-model:file-list="modal.payment"
         :multiple="false"
@@ -297,6 +304,7 @@ export default {
     openPayment(data) {
       console.log(data);
       this.modal.isOpen = true;
+      this.modal.title = data.form.title;
       this.modal.data = data;
     },
     searchApplication(application) {

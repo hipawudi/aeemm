@@ -48,7 +48,6 @@ class FormApplicationController extends Controller
                 $field->value = $f;
 
                 $field->save();
-                // $field->
             }
         }
 
@@ -57,6 +56,9 @@ class FormApplicationController extends Controller
 
     public function show(FormApplication $application)
     {
+        if ($application->user_id !== Auth()->user()->id) {
+            return to_route('applications.index');
+        }
         $application_fields = FormApplicationField::where('form_application_id', $application->id)->get();
         $form_fields = FormField::where('form_id', $application->form_id)->get();
 

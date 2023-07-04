@@ -46,7 +46,7 @@ export default {
         <div class="flex-auto md:w-1/2">
           <div class="container mx-auto pt-5">
             <div class="bg-white relative shadow rounded-lg">
-              <MembershipCard v-for="card in cardHolder" :card="card">
+              <MembershipCard :card="$page.props.user.member">
                 <template #description>
                   <div v-html="card.description"></div>
                 </template>
@@ -131,16 +131,4 @@ export default {
 </template>
 <script setup>
 import MembershipCard from "@/Components/Member/MembershipCard.vue";
-const cardHolder = [
-  {
-    organization: "澳門柔道協會會員",
-    title: "裁判資格認證",
-    display_name: "謝廣漢",
-    number: "0001",
-    rank_caption: "段數",
-    rank: "1",
-    face: "/images/card1.png",
-    description: "澳門柔道總會裁判資格認證<br><ul><li>aaa</li></ul>",
-  },
-];
 </script>

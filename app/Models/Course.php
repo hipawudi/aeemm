@@ -16,7 +16,7 @@ class Course extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $appends = [
-        'poster_url',
+        'poster_url'
     ];
     public function form()
     {
@@ -41,4 +41,5 @@ class Course extends Model implements HasMedia
     {
         return $this->poster_path ? Storage::url($this->poster_path) : null;
     }
+
 }

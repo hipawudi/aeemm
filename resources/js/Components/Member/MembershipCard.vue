@@ -20,9 +20,11 @@ defineProps({
           <div class="flex">
             <div class="flex flex-col flex-auto gap-1">
               <div class="">姓名</div>
-              <div class="mb-2">陳大文</div>
+              <div class="mb-2">{{ card.display_name }}</div>
               <div class="">學會編號</div>
-              <div class="font-sans mb-2">00001</div>
+              <div class="font-sans mb-2">
+                {{ ("0000" + card.id.toString()).slice(-5) }}
+              </div>
             </div>
             <div class="flex-auto text-right">
               <img class="w-14 h-14" src="images/aeemm_logo.jpg" />
@@ -32,17 +34,21 @@ defineProps({
         <div class="flex text-xs">
           <div class="flex flex-col gap-1 flex-auto">
             <div class="">有效期</div>
-            <div class="font-sans text-base">2023-03-31</div>
+            <div class="font-sans text-base">
+              {{ new Date().getFullYear() + "-03-31" }}
+            </div>
           </div>
           <div class="flex flex-col gap-1 flex-auto">
             <div class="">失效期</div>
-            <div class="font-sans text-base">2025-03-31</div>
+            <div class="font-sans text-base">
+              {{ new Date().getFullYear() + 1 + "-03-31" }}
+            </div>
           </div>
         </div>
       </div>
       <img
         class="relative object-cover w-96 h-52 rounded-lg z-0"
-        :src="card.face"
+        src="/images/card1.png"
         width="10px"
       />
     </div>

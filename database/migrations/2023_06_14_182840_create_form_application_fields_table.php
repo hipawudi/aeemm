@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->integer('form_application_id');
             $table->integer('field_id');
-            $table->text('key');
             $table->text('value');
             $table->timestamps();
         });

@@ -4,41 +4,24 @@
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">專業認證</h2>
     </template>
 
-    <div class="py-12">
+    <div class="py-12 h-full">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-          <a-row>
-            <a-col :span="8">
-              <div class="max-w-sm rounded overflow-hidden shadow-lg">
-                <img
-                  class="w-full"
-                  alt="Use any sample image here..."
-                  src="https://dummyimage.com/300x5:3"
-                />
-                <div class="px-6 py-4">
-                  <div class="font-bold text-xl mb-2">{{ member.display_name }}</div>
-                  <p class="text-gray-700 text-base">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-                    recusandae libero possimus culpa quod
-                  </p>
+        <div class="flex flex-col md:flex-row gap-3">
+          <template v-for="professional in professionals" :key="professional.id">
+            <div class="bg-white rounded-md w-1/3 flex-initial p-4">
+              <div class="flex flex-col gap-3">
+                <div class="text-lg font-bold">
+                  {{ professional.certificate.cert_title }}
                 </div>
-                <div class="px-6 py-4">
-                  <span
-                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
-                    >#hashtag</span
-                  ><span
-                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
-                    >#hashtag</span
-                  ><span
-                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
-                    >#hashtag</span
-                  >
+                <div class="">
+                  {{ professional.certificate.cert_content }}
+                </div>
+                <div class="text-gray-500">
+                  {{ professional.certificate.cert_body }}
                 </div>
               </div>
-            </a-col>
-            <a-col :span="8">col-6</a-col>
-            <a-col :span="8">col-6</a-col>
-          </a-row>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -52,7 +35,7 @@ export default {
   components: {
     MemberLayout,
   },
-  props: ["member"],
+  props: ["member", "professionals"],
   data() {
     return {
       title: "",

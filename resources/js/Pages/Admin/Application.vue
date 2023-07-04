@@ -29,6 +29,8 @@
                   :class="
                     record.state == 1
                       ? 'text-blue-500 bg-blue-100'
+                      : record.state == 4
+                      ? 'text-red-500 bg-red-100'
                       : 'text-green-500 bg-green-100'
                   "
                 >
@@ -98,9 +100,11 @@
       </template>
     </a-descriptions>
     <div class="text-base font-bold mt-4">繳費單</div>
-    <a :href="modal.data.url" target="_blank"
-      ><img :src="modal.data.url" class="h-64 w-64"
-    /></a>
+    <div v-if="modal.data.url">
+      <a :href="modal.data.url" target="_blank"
+        ><img :src="modal.data.url" class="h-64 w-64"
+      /></a>
+    </div>
     <template #footer>
       <a-button @click="modal.isOpen = false">Close</a-button>
     </template>
@@ -213,6 +217,22 @@ export default {
         {
           onSuccess: (page) => {
             console.log(page);
+            message.success("已通過此報名");
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        }
+      );
+    },
+    rejectRecord(id, state, remark) {
+      this.$inertia.post(
+        "/admin/applications/" + id + "/changeState",
+        { state: state, remark: remark },
+        {
+          onSuccess: (page) => {
+            console.log(page);
+            message.success("已拒絕此報名");
           },
           onError: (error) => {
             console.log(error);

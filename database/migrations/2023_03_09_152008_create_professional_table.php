@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('certificate_id');
             $table->bigInteger('member_id');
-            $table->integer('number');
             $table->string('number_display');
             $table->string('display_name')->nullable();
             $table->date('avata')->nullable();
