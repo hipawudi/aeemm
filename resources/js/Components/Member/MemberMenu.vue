@@ -85,7 +85,7 @@ export default defineComponent({
     };
   },
   created() {
-    this.menuItems[4].role = this.$page.props.user.roles[0] == "admin";
+    this.menuItems[5].role = this.$page.props.user.roles[0] == "admin";
     this.current[0] = route().current();
   },
 });
