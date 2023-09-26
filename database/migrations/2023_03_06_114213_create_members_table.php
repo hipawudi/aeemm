@@ -17,16 +17,17 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id')->nullable();
             $table->string('name_zh');
-            $table->string('name_en')->nullable();
-            $table->string('display_name')->nullable();
-            $table->char('gender', 1)->nullable();
-            $table->date('dob')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('country')->nullable();
-            $table->string('nationality')->nullable();
-            $table->string('address')->nullable();
-            $table->integer('state')->default(1);
+            $table->string('name_en')->nullable();;
+            $table->text('gender')->nullable();;
+            $table->text('photo_path')->nullable();
+            $table->date('birth')->nullable();;
+            $table->string('address')->nullable();;
+            $table->string('phone')->nullable();;
+            $table->string('email')->nullable();;
+            $table->string('company')->nullable();;
+            $table->string('position')->nullable();;
+            $table->text('membership_level')->default(3);
+            $table->text('state')->default(1);
             $table->timestamps();
         });
     }

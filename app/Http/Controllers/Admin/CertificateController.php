@@ -133,10 +133,8 @@ class CertificateController extends Controller
 
     public function members(Certificate $certificate)
     {
-        $this->authorize('view', $organization);
         $this->authorize('view', $certificate);
         return Inertia::render('Admin/CertificateMember', [
-            'organization' => $organization,
             'certificate' => $certificate,
             'members' => $certificate->members
         ]);

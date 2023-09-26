@@ -44,7 +44,7 @@ const logout = () => {
               <!-- Logo -->
               <div class="shrink-0 flex items-center">
                 <Link :href="route('dashboard')">
-                  <img src="/images/aeemm_logo.jpg" style="width: 64px" />
+                  <img src="/images/logo.jpg" style="height: 56px" />
                 </Link>
               </div>
               <div class="invisible sm:visible">
@@ -215,8 +215,8 @@ const logout = () => {
               課程
             </ResponsiveNavLink>
             <ResponsiveNavLink
-              :href="route('forms.index')"
-              :active="route().current('forms.index')"
+              :href="route('applications.index')"
+              :active="route().current('applications.index')"
             >
               報名
             </ResponsiveNavLink>

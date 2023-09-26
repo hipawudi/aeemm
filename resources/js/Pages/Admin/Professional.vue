@@ -11,7 +11,7 @@
       </div>
       <div class="card drop-shadow-md pt-4">
         <a-table :dataSource="professionals" :columns="columns">
-          <template #bodyCell="{ column, text, record, index }">
+          <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex == 'operation'">
               <div class="space-x-2">
                 <a-button @click="editRecord(record)">修改</a-button>
@@ -25,14 +25,14 @@
                 </a-popconfirm>
               </div>
             </template>
-            <template v-else-if="column.model == 'member'">
-              {{ record.member[column.dataIndex] }}
+            <template v-if="column.key == 'number_display'">
+              {{
+                certificates.find((x) => x.id == record.certificate_id)?.number_format +
+                record.number_display
+              }}
             </template>
-            <template v-else-if="column.model == 'certificate'">
-              {{ record.certificate[column.dataIndex] }}
-            </template>
-            <template v-else>
-              {{ record[column.dataIndex] }}
+            <template v-if="column.key == 'certificate'">
+              {{ certificates.find((x) => x.id == record.certificate_id).cert_title }}
             </template>
           </template>
         </a-table>
@@ -64,7 +64,7 @@
             <a-select
               v-model:value="modal.data.member_id"
               :options="members"
-              :field-names="{ label: 'display_name', value: 'id' }"
+              :field-names="{ label: 'name_zh', value: 'id' }"
             />
           </a-form-item>
           <a-form-item label="證書號碼" name="number_display">
@@ -194,16 +194,17 @@ export default {
         {
           title: "專業認證",
           dataIndex: "cert_title",
-          model: "certificate",
+          key: "certificate",
         },
         {
           title: "成員名稱",
           dataIndex: "display_name",
-          model: "member",
+          key: "member",
         },
         {
           title: "認證名片號碼",
           dataIndex: "number_display",
+          key: "number_display",
         },
         {
           title: "簽發日期",

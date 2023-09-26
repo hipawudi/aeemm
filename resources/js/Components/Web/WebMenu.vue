@@ -20,7 +20,6 @@ import {
   BankOutlined,
   EditOutlined,
   SettingOutlined,
-  DollarCircleOutlined,
 } from "@ant-design/icons-vue";
 export default defineComponent({
   components: {
@@ -31,25 +30,10 @@ export default defineComponent({
     BankOutlined,
     EditOutlined,
     SettingOutlined,
-    DollarCircleOutlined,
   },
   setup() {
     const current = ref(["dashboard"]);
     const menuItems = ref([
-      {
-        key: "dashboard",
-        icon: "home-outlined",
-        title: "主頁",
-        route: "dashboard",
-        role: true,
-      },
-      {
-        key: "professionals.index",
-        icon: "verified-outlined",
-        title: "專業認證",
-        route: "professionals.index",
-        role: true,
-      },
       {
         key: "courses.index",
         icon: "bank-outlined",
@@ -65,17 +49,10 @@ export default defineComponent({
         role: true,
       },
       {
-        key: "payments.index",
-        icon: "dollar-circle-outlined",
-        title: "會費",
-        route: "payments.index",
-        role: true,
-      },
-      {
-        key: "admin.index",
-        icon: "appstore-outlined",
-        title: "行政管理",
-        route: "admin.index",
+        key: "member.application.create",
+        icon: "edit-outlined",
+        title: "會員申請",
+        route: "member.application.create",
         role: true,
       },
     ]);
@@ -85,7 +62,6 @@ export default defineComponent({
     };
   },
   created() {
-    this.menuItems[4].role = this.$page.props.user.roles[0] == "admin";
     this.current[0] = route().current();
   },
 });

@@ -22,10 +22,9 @@ class RedirectIfAuthenticated
     {
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(config('fortify.home'));
+                return redirect(Auth::user()->getRedirectRoute());
             }
         }
-
         return $next($request);
     }
 }

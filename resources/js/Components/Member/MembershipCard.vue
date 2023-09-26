@@ -15,19 +15,19 @@ defineProps({
       >
         <div class="flex flex-col w-xl">
           <div class="flex justify-center">
-            <div class="text-lg font-bold">澳門機電工程師學會</div>
+            <div class="text-lg font-bold">澳門電腦學會</div>
           </div>
           <div class="flex">
             <div class="flex flex-col flex-auto gap-1">
               <div class="">姓名</div>
-              <div class="mb-2">{{ card.display_name }}</div>
+              <div class="mb-2">{{ card.name_zh }}</div>
               <div class="">學會編號</div>
               <div class="font-sans mb-2">
                 {{ ("0000" + card.id.toString()).slice(-5) }}
               </div>
             </div>
             <div class="flex-auto text-right">
-              <img class="w-14 h-14" src="images/aeemm_logo.jpg" />
+              <img class="w-14 h-14" src="/images/logo.jpg" />
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@ defineProps({
               <p class="font-light">Name</p>
               <p p class="font-medium tracking-widest">{{}}</p>
             </div>
-            <img class="w-14 h-14" src="images/aeemm_logo.jpg" />
+            <img class="w-14 h-14" src="images/logo.png" />
           </div>
           <div class="grid grid-cols-2 gap-2">
             <div class="pt-1">

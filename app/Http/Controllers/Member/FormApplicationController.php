@@ -23,7 +23,6 @@ class FormApplicationController extends Controller
         if ($request->per_page != null) {
             $perPage = $request->per_page;
         }
-
         if ($request->category == 'all' || $request->category == null) {
             $applications = FormApplication::with('form')->where('user_id', $user->id)->paginate($perPage);
         } else if ($request->category == 'wait') {
@@ -33,7 +32,6 @@ class FormApplicationController extends Controller
         } else if ($request->category == 'result') {
             $applications = FormApplication::with('form')->where('user_id', $user->id)->where('state', 4)->orWhere('state', 3)->paginate($perPage);
         }
-        // dd(Config::item('bulletin_categories'));
         return Inertia::render('Forms/Application', [
             'applications' => $applications,
             'category' => $request->category ?? 'all',
@@ -96,7 +94,7 @@ class FormApplicationController extends Controller
         }
         $file = $request->file('payment')[0]['originFileObj'];
 
-        $path = Storage::putFile('public/images/payment', $file);
+        $path = Storage::putFile('public/images/application', $file);
 
         $application->images_path = $path;
         $application->state = 2;

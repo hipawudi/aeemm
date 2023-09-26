@@ -23,7 +23,7 @@
           @change="onPaginationChange"
           ref="dataTable"
         >
-          <template #bodyCell="{ column, text, record, index }">
+          <template #bodyCell="{ column, text, record }">
             <template v-if="column.key == 'published'">{{
               record.published == 1 ? "發佈" : "非發佈"
             }}</template>

@@ -31,7 +31,7 @@ export default {
                       <template #avatar>
                         <div class="flex flex-col">
                           <div class="text-center">
-                            <a-avatar src="images/aeemm_logo.jpg" />
+                            <a-avatar src="/images/logo.jpg" />
                           </div>
                           <div class="w-20 text-center">{{ item.send_date }}</div>
                         </div>

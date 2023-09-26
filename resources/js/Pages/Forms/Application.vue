@@ -1,35 +1,39 @@
 <template>
-  <MemberLayout title="報名列表" v-if="$page.props.user.id">
+  <MemberLayout
+    title="報名列表"
+    v-if="$page.props.user.roles[0] !== 'visitor'"
+    class="overflow-hidden"
+  >
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">報名列表</h2>
     </template>
     <div class="flex flex-col sm:flex-row relative">
       <div class="sm:w-48 sticky top-[7.2rem] z-10" v-if="left">
         <div
-          class="flex flex-row sm:flex-col p-2 sm:pt-6 bg-white gap-3 z-40 sm:w-48 sm:fixed h-full"
+          class="text-sm sm:text-lg flex flex-row sm:flex-col p-2 sm:pt-6 bg-white gap-3 z-40 sm:w-48 sm:fixed h-full"
         >
-          <div class="text-lg text-center flex-auto sm:flex-none">
+          <div class="text-center flex-auto sm:flex-none">
             <a
               :class="category == 'all' ? 'text-blue' : 'text-black'"
               @click="searchApplication('all')"
               >所有報名</a
             >
           </div>
-          <div class="text-lg text-center flex-auto sm:flex-none">
+          <div class="text-center flex-auto sm:flex-none">
             <a
               :class="category == 'wait' ? 'text-blue' : 'text-black'"
               @click="searchApplication('wait')"
               >待處理報名</a
             >
           </div>
-          <div class="text-lg text-center flex-auto sm:flex-none">
+          <div class="text-center flex-auto sm:flex-none">
             <a
               :class="category == 'payment' ? 'text-blue' : 'text-black'"
               @click="searchApplication('payment')"
               >待繳費報名</a
             >
           </div>
-          <div class="text-lg text-center flex-auto sm:flex-none">
+          <div class="text-center flex-auto sm:flex-none">
             <a
               :class="category == 'result' ? 'text-blue' : 'text-black'"
               @click="searchApplication('result')"
@@ -40,7 +44,7 @@
       </div>
       <div
         class="flex-none flex justify-center -mt-2 sm:h-[50vh] sticky"
-        :class="left ? 'top-[9.45rem]' : 'top-[6.75rem]'"
+        :class="left ? 'top-[9rem]' : 'top-[6.75rem]'"
       >
         <div
           class="bg-white w-10 h-12 rounded-r-full flex justify-center items-center sticky sm:top-[50vh] sm:-left-2 rotate-90 sm:rotate-0 text-center"
@@ -123,7 +127,7 @@
         <a-empty
           image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
           :image-style="{
-            height: '300px',
+            height: '200px',
           }"
         >
           <template #description>
@@ -174,7 +178,7 @@
       </div>
       <div
         class="flex-none flex justify-center -mt-2 sm:h-[50vh] sticky"
-        :class="left ? 'top-[9.45rem]' : 'top-[6.75rem]'"
+        :class="left ? 'top-[9rem]' : 'top-[6.75rem]'"
       >
         <div
           class="bg-white w-10 h-12 rounded-r-full flex justify-center items-center sticky sm:top-[50vh] sm:-left-2 rotate-90 sm:rotate-0 text-center"
@@ -189,7 +193,7 @@
           /></a>
         </div>
       </div>
-      <div class="flex-auto mx-auto max-w-6xl pt-2">
+      <div class="flex-auto mx-auto max-w-6xl pt-2" v-if="applications.total">
         <template v-for="a in applications" :key="a.id">
           <div
             class="m-2 p-4 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg"
@@ -230,15 +234,30 @@
             </div>
           </div>
         </template>
+        <div class="my-6 text-right">
+          <a-pagination
+            v-model:current="applications.current_page"
+            :total="applications.total"
+            :page-size="applications.per_page"
+            :page-size-options="pageSizeOptions"
+            @change="changePage"
+          />
+        </div>
       </div>
-      <div class="my-6 text-right">
-        <a-pagination
-          v-model:current="applications.current_page"
-          :total="applications.total"
-          :page-size="applications.per_page"
-          :page-size-options="pageSizeOptions"
-          @change="changePage"
-        />
+      <div
+        class="flex-auto mx-auto max-w-6xl pt-2 flex items-center justify-center"
+        v-else
+      >
+        <a-empty
+          image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
+          :image-style="{
+            height: '200px',
+          }"
+        >
+          <template #description>
+            <div class="text-xl">沒有報名</div>
+          </template>
+        </a-empty>
       </div>
     </div>
   </WebLayout>

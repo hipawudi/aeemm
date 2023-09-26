@@ -96,6 +96,11 @@ export default {
             title: "會員繳費",
             route: "admin.members.payments.index",
           },
+          {
+            key: "members.applications.index",
+            title: "會員申請",
+            route: "admin.members.applications.index",
+          },
         ],
       },
       {
@@ -127,6 +132,20 @@ export default {
         icon: "message-outlined",
         title: "通信",
         route: "admin.messages.index",
+      },
+      {
+        key: "emails",
+        icon: "mail-outlined",
+        title: "電郵",
+        route: "admin.emails.index",
+        children: [
+          { key: "emails.index", title: "電郵記錄", route: "admin.emails.index" },
+          {
+            key: "emails.create",
+            title: "電郵發送",
+            route: "admin.emails.create",
+          },
+        ],
       },
       {
         key: "bulletins.index",

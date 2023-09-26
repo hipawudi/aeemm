@@ -17,8 +17,8 @@
         <a-table :dataSource="courses" :columns="columns">
           <template #bodyCell="{ column, text, record, index }">
             <template v-if="column.dataIndex == 'operation'">
-              <div class="flex gap-3">
-                <div class="flex-auto" v-if="record.form.published === 0">
+              <div class="flex flex-wrap gap-3">
+                <div class="" v-if="record.form.published === 0">
                   <a-popconfirm
                     title="是否確定公開這個課程報名"
                     ok-text="是"
@@ -28,7 +28,7 @@
                     <a-button>公開報名</a-button>
                   </a-popconfirm>
                 </div>
-                <div class="flex-auto" v-if="record.form.published === 1">
+                <div class="" v-if="record.form.published === 1">
                   <a-badge :count="record.form.wait_count">
                     <inertia-link
                       :href="
@@ -39,14 +39,14 @@
                     >
                   </a-badge>
                 </div>
-                <div class="flex-auto">
+                <div class="">
                   <inertia-link
                     :href="route('admin.courses.edit', record.id)"
                     class="ant-btn"
                     >修改</inertia-link
                   >
                 </div>
-                <div class="flex-auto">
+                <div class="">
                   <a-popconfirm
                     title="是否確定刪除這個課程"
                     ok-text="是"
@@ -115,6 +115,7 @@ export default {
           title: "操作",
           dataIndex: "operation",
           key: "operation",
+          width: "20rem",
         },
       ],
       rules: {

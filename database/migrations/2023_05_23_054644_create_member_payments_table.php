@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('member_payments', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->integer('member_id');
             $table->integer('cost');
             $table->integer('cost_percentage')->nullable();
@@ -23,7 +24,7 @@ return new class extends Migration
             $table->text('remark')->nullable();
             $table->text('return_remark')->nullable();
             $table->text('payment_image_path')->nullable();
-            $table->integer('state');
+            $table->text('state');
             $table->timestamps();
         });
     }

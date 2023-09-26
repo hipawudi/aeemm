@@ -18,7 +18,7 @@
           @change="onPaginationChange"
           ref="dataTable"
         >
-          <template #bodyCell="{ column, text, record, index }">
+          <template #bodyCell="{ column, record }">
             <template v-if="column.key == 'form_id'">{{ record.form.title }}</template>
             <template v-if="column.key == 'name'">{{ record.user.name }}</template>
             <template v-if="column.key == 'email'">{{ record.user.email }}</template>

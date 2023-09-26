@@ -11,6 +11,7 @@
             v-for="card in cardHolder"
             title="Professional Certificate"
             :card="card"
+            :key="card.id"
           >
             <template #description>
               <div v-html="card.description"></div>

@@ -48,31 +48,59 @@
           ref="modalRef"
           :model="modal.data"
           name="Teacher"
-          :label-col="{ span: 8 }"
-          :wrapper-col="{ span: 16 }"
           autocomplete="off"
+          layout="horizontal"
           :rules="rules"
+          :label-col="labelCol"
           :validate-messages="validateMessages"
         >
-          <!-- <a-input type="hidden" v-model:value="modal.data.id" /> -->
-          <a-form-item label="姓名(中文)" name="name_zh">
-            <a-input v-model:value="modal.data.name_zh" />
-          </a-form-item>
-          <a-form-item label="姓名(外文)" name="name_en">
-            <a-input v-model:value="modal.data.name_en" />
-          </a-form-item>
-          <a-form-item label="顯示名稱" name="display_name">
-            <a-input v-model:value="modal.data.display_name" />
-          </a-form-item>
-          <a-form-item label="電子郵箱" name="email">
-            <a-input v-model:value="modal.data.email"></a-input>
-          </a-form-item>
-          <a-form-item label="手機" name="phone">
-            <a-input v-model:value="modal.data.phone" />
-          </a-form-item>
-          <a-form-item label="狀態" name="state">
-            <a-select v-model:value="modal.data.state" :options="employmentStates" />
-          </a-form-item>
+          <div class="flex flex-col">
+            <div class="flex justify-between gap-3">
+              <div class="flex-auto w-3/4">
+                <a-form-item label="中文姓名" name="name_zh"
+                  ><a-input v-model:value="modal.data.name_zh"></a-input
+                ></a-form-item>
+              </div>
+              <div class="flex-auto w-1/4">
+                <a-form-item label="性別" name="gender"
+                  ><a-select
+                    :options="gender"
+                    v-model:value="modal.data.gender"
+                  ></a-select
+                ></a-form-item>
+              </div>
+            </div>
+            <a-form-item label="英文姓名" name="name_en"
+              ><a-input v-model:value="modal.data.name_en"></a-input
+            ></a-form-item>
+            <a-form-item label="出生日期" name="birth"
+              ><a-date-picker
+                v-model:value="modal.data.birth"
+                valueFormat="YYYY-MM-DD"
+              ></a-date-picker
+            ></a-form-item>
+            <a-form-item label="通迅地址" name="address"
+              ><a-input v-model:value="modal.data.address"></a-input
+            ></a-form-item>
+            <a-form-item label="聯絡電話" name="phone"
+              ><a-input v-model:value="modal.data.phone"></a-input
+            ></a-form-item>
+            <a-form-item label="電子郵箱" name="email">
+              <a-input v-model:value="modal.data.email"></a-input>
+            </a-form-item>
+            <a-form-item label="工作機構" name="company"
+              ><a-input v-model:value="modal.data.company"></a-input
+            ></a-form-item>
+            <a-form-item label="職位" name="position"
+              ><a-input v-model:value="modal.data.position"></a-input
+            ></a-form-item>
+            <a-form-item label="申請會籍" name="membership_level"
+              ><a-select
+                :options="membership_levels"
+                v-model:value="modal.data.membership_level"
+              ></a-select
+            ></a-form-item>
+          </div>
         </a-form>
         <template #footer>
           <a-button key="back" @click="modal.isOpen = false">取消</a-button>
@@ -81,7 +109,7 @@
             key="Update"
             type="primary"
             @click="updateRecord()"
-            >上傳</a-button
+            >確定</a-button
           >
           <a-button
             v-if="modal.mode == 'CREATE'"
@@ -106,7 +134,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["members"],
+  props: ["members", "gender", "membership_levels"],
   data() {
     return {
       columns: [
@@ -115,12 +143,8 @@ export default {
           dataIndex: "name_zh",
         },
         {
-          title: "姓名(外文)",
+          title: "姓名(英文)",
           dataIndex: "name_en",
-        },
-        {
-          title: "顯示名稱",
-          dataIndex: "display_name",
         },
         {
           title: "電子郵箱",
@@ -170,9 +194,16 @@ export default {
       filter: {},
       rules: {
         name_zh: { required: true },
-        mobile: { required: true },
-        state: { required: true },
-        email: { type: "email" },
+        name_en: { required: true },
+        gender: { required: true },
+        birth: { required: true },
+        address: { required: true },
+        name_en: { required: true },
+        phone: { required: true },
+        company: { required: true },
+        position: { required: true },
+        membership_level: { required: true },
+        email: { required: true, type: "email" },
       },
       validateMessages: {
         required: "請输入${label}",

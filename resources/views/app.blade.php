@@ -9,7 +9,7 @@
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap">
-    <link rel="icon" href="/images/aeemm_logo.jpg">
+    <link rel="icon" href="/images/logo.jpg">
     <!-- Scripts -->
     @routes
     @vite('resources/js/app.js')

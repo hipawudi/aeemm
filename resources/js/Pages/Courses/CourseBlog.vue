@@ -1,5 +1,9 @@
 <template>
-  <MemberLayout title="課程列表" v-if="$page.props.user.id">
+  <MemberLayout
+    title="課程列表"
+    v-if="$page.props.user.roles[0] !== 'visitor'"
+    class="overflow-hidden"
+  >
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">課程列表</h2>
     </template>
@@ -56,7 +60,7 @@
               <div class="bg-white rounded-md">
                 <div class="flex flex-col">
                   <img
-                    :src="course.url ?? '/images/aeemm_banner.jpg'"
+                    :src="course.url ?? '/images/course_cover.jpg'"
                     class="w-80 h-40 rounded-md"
                   />
                   <div class="flex flex-col p-4 gap-3">
@@ -122,7 +126,7 @@
         <a-empty
           image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
           :image-style="{
-            height: '300px',
+            height: '200px',
           }"
         >
           <template #description>
@@ -188,7 +192,7 @@
               <div class="bg-white rounded-md">
                 <div class="flex flex-col">
                   <img
-                    :src="course.url ?? '/images/aeemm_banner.jpg'"
+                    :src="course.url ?? '/images/course_cover.jpg'"
                     class="w-80 h-40 rounded-md"
                   />
                   <div class="flex flex-col p-4 gap-3">

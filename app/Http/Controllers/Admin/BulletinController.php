@@ -77,7 +77,7 @@ class BulletinController extends Controller
 
         if ($request->file('images') != null) {
             foreach ($request->file('images') as $idx => $image) {
-                // $bulletin->addMedia($image['originFileObj'])->toMediaCollection('bulletin');
+                $bulletin->addMedia($image['originFileObj'])->toMediaCollection('bulletin');
                 $path = Storage::putFile('public/images/bulletin', $image['originFileObj']);
 
                 $bulletin_image = new BulletinImage;
@@ -183,7 +183,7 @@ class BulletinController extends Controller
 
         if ($request->file('images') != null) {
             foreach ($request->file('images') as $idx => $image) {
-                // $bulletin->addMedia($image['originFileObj'])->toMediaCollection('bulletin');
+                $bulletin->addMedia($image['originFileObj'])->toMediaCollection('bulletin');
                 $path = Storage::putFile('public/images/bulletin', $image['originFileObj']);
 
                 $bulletin_image = new BulletinImage;

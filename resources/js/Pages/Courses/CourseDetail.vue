@@ -28,14 +28,14 @@
                 }})
               </div>
               <div class="">
-                <img src="/images/aeemm_banner.jpg" class="w-full h-56" />
+                <img src="/images/course_cover.jpg" class="w-full h-56" />
               </div>
             </div>
             <div
               class="flex flex-col bg-white rounded-md p-4 space-y-2 shadow-md relative"
             >
               <div class="absolute right-4 opacity-20 bottom-4">
-                <img src="/images/aeemm_logo.jpg" />
+                <img class="w-16" src="/images/logo.jpg" />
               </div>
               <div class="text-lg font-bold">課程內容</div>
               <div class="ml-4" v-html="course.content ?? course.description_en"></div>
@@ -49,7 +49,7 @@
             <div class="flex flex-col bg-white rounded-md p-4">
               <div class="text-center text-lg font-bold">課程導師</div>
               <div class="flex justify-center">
-                <img src="/images/aeemm_logo.jpg" class="h-32 w-28" />
+                <img src="/images/logo.jpg" class="h-32 w-28" />
               </div>
               <div class="flex leading-6" v-html="course.tutor"></div>
             </div>
@@ -121,14 +121,14 @@
                 }})
               </div>
               <div class="">
-                <img src="/images/aeemm_banner.jpg" class="w-full h-56" />
+                <img src="/images/course_cover.jpg" class="w-full h-56" />
               </div>
             </div>
             <div
               class="flex flex-col bg-white rounded-md p-4 space-y-2 shadow-md relative"
             >
               <div class="absolute right-4 opacity-20 bottom-4">
-                <img src="/images/aeemm_logo.jpg" />
+                <img class="w-16" src="/images/logo.jpg" />
               </div>
               <div class="text-lg font-bold">課程內容</div>
               <div class="ml-4" v-html="course.content ?? course.description_en"></div>
@@ -142,7 +142,7 @@
             <div class="flex flex-col bg-white rounded-md p-4">
               <div class="text-center text-lg font-bold">課程導師</div>
               <div class="flex justify-center">
-                <img src="/images/aeemm_logo.jpg" class="h-32 w-28" />
+                <img src="/images/logo.jpg" class="h-32 w-28" />
               </div>
               <div class="flex leading-6" v-html="course.tutor"></div>
             </div>

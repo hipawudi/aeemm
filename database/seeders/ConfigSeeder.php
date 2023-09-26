@@ -91,7 +91,67 @@ class ConfigSeeder extends Seeder
                 "label":"恭喜你已成功完成報名，請按照課程的上課時間和地點上課。"
             },{
                 "value":"4",
-                "label":"抱歉此報名被拒絕。"
+                "label":"抱歉，此報名被拒絕。"
+            }]'
+        ]);
+        DB::table('configs')->insert([
+            'key' => 'payment_states',
+            'value' => '[{
+                "value":"0",
+                "label":"待繳費"
+            },{
+                "value":"1",
+                "label":"待審核"
+            },{
+                "value":"2",
+                "label":"待處理"
+            },{
+                "value":"3",
+                "label":"逾期未繳費"
+            },{
+                "value":"4",
+                "label":"已繳費"
+            }]'
+        ]);
+        DB::table('configs')->insert([
+            'key' => 'membership_levels',
+            'value' => '[{
+                "value":"0",
+                "label":"初級會員"
+            },{
+                "value":"1",
+                "label":"附屬會員"
+            },{
+                "value":"2",
+                "label":"普通會員"
+            },{
+                "value":"3",
+                "label":"高級會員"
+            }]'
+        ]);
+
+        DB::table('configs')->insert([
+            'key' => 'gender',
+            'value' => '[{
+                "value":"0",
+                "label":"男"
+            },{
+                "value":"1",
+                "label":"女"
+            }]'
+        ]);
+
+        DB::table('configs')->insert([
+            'key' => 'member_application_state',
+            'value' => '[{
+                "value":"0",
+                "label":"待審核"
+            },{
+                "value":"1",
+                "label":"已通過"
+            },{
+                "value":"2",
+                "label":"已拒絕"
             }]'
         ]);
     }

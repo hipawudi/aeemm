@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -10,6 +12,7 @@ use Illuminate\Support\Str;
 class Member extends Model
 {
     use HasFactory;
+    use Notifiable;
 
     public function createUser(): User
     {
@@ -47,5 +50,9 @@ class Member extends Model
             'rank',
             'avata'
         );
+    }
+    public function routeNotificationForMail(Notification $notification)
+    {
+        return [$this->email => $this->name_zh];
     }
 }

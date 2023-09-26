@@ -32,7 +32,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role_id'
     ];
 
     /**
@@ -83,5 +83,15 @@ class User extends Authenticatable
     public function member()
     {
         return $this->hasOne(Member::class);
+    }
+
+    public function getRedirectRoute()
+    {
+        // dd($this->roles[0]);
+        return match ((int)$this->roles[0]->id) {
+            1 => '/admin',
+            2 => '/dashboard',
+            3 => '/courses',
+        };
     }
 }

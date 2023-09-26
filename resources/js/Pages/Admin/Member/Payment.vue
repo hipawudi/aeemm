@@ -18,7 +18,7 @@
           @change="onPaginationChange"
           ref="dataTable"
         >
-          <template #bodyCell="{ column, text, record, index }">
+          <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex == 'member_id'">
               {{ members.find((x) => x.id == record.member_id).name_zh }}
             </template>
@@ -26,13 +26,13 @@
               {{ (record.cost * (record.cost_percentage ?? 100)) / 100 }}
             </template>
             <template v-if="column.dataIndex == 'state'">
-              {{ paymentStates.find((x) => x.value == record.state).label }}
+              {{ payment_states.find((x) => x.value == record.state).label }}
             </template>
             <template v-if="column.dataIndex == 'operation'">
               <div class="space-x-2">
                 <a-button @click="editRecord(record)">修改</a-button>
                 <a-popconfirm
-                  title="是否確定刪除這個成員"
+                  title="是否確定刪除這個繳費單"
                   ok-text="是"
                   cancel-text="否"
                   @confirm="deleteRecord(record.id)"
@@ -58,6 +58,9 @@
           :validate-messages="validateMessages"
         >
           <!-- <a-input type="hidden" v-model:value="modal.data.id" /> -->
+          <a-form-item label="標題" name="title">
+            <a-input v-model:value="modal.data.title"></a-input>
+          </a-form-item>
           <a-form-item label="會員" name="member_id">
             <a-select v-model:value="modal.data.member_id" :options="options"> </a-select>
           </a-form-item>
@@ -85,14 +88,19 @@
             <a-textarea v-model:value="modal.data.remark" />
           </a-form-item>
           <a-form-item label="狀態" name="state">
-            <a-select v-model:value="modal.data.state" :options="paymentStates" />
+            <a-select v-model:value="modal.data.state" :options="payment_states" />
+          </a-form-item>
+          <a-form-item label="會費單相片" v-if="modal.mode == 'EDIT'" name="url">
+            <a :href="modal.data.url" v-if="modal.data.url" target="_blank"
+              ><img :src="modal.data.url" class="h-64 w-64"
+            /></a>
           </a-form-item>
           <a-form-item
-            label="繳費單相片"
-            v-if="modal.mode == 'EDIT'"
-            name="payment_image_path"
+            label="發送電郵通知"
+            name="send_email"
+            v-if="modal.mode == 'CREATE'"
           >
-            <img :scr="modal.data.payment_image_url" />
+            <a-checkbox v-model:checked="modal.data.send_email"></a-checkbox>
           </a-form-item>
         </a-form>
         <template #footer>
@@ -127,7 +135,7 @@ export default {
   components: {
     AdminLayout,
   },
-  props: ["payments", "members"],
+  props: ["payments", "members", "payment_states"],
   setup(props) {
     const options = props.members.map((x) => (x = { label: x.name_zh, value: x.id }));
     options.unshift({ label: "所有人", value: "0" });
@@ -136,6 +144,11 @@ export default {
   data() {
     return {
       columns: [
+        {
+          title: "標題",
+          dataIndex: "title",
+          key: "title",
+        },
         {
           title: "會員",
           dataIndex: "member_id",
@@ -165,28 +178,6 @@ export default {
           width: 300,
         },
       ],
-      paymentStates: [
-        {
-          label: "待繳費",
-          value: 1,
-        },
-        {
-          label: "待審核",
-          value: 2,
-        },
-        {
-          label: "待處理",
-          value: 3,
-        },
-        {
-          label: "逾期未繳費",
-          value: 4,
-        },
-        {
-          label: "已繳費",
-          value: 5,
-        },
-      ],
       modal: {
         isOpen: false,
         data: {},
@@ -201,6 +192,7 @@ export default {
       },
       filter: {},
       rules: {
+        title: { required: true },
         member_id: { required: true },
         cost: { required: true },
         start_date: { required: true },
@@ -228,7 +220,7 @@ export default {
   methods: {
     createRecord() {
       this.modal.data = {
-        state: 1,
+        state: "0",
       };
       this.modal.mode = "CREATE";
       this.modal.title = "新增繳費單";
@@ -254,9 +246,11 @@ export default {
             onSuccess: (page) => {
               this.modal.data = {};
               this.modal.isOpen = false;
+              message.success("新增成功");
             },
             onError: (err) => {
-              console.log(err);
+              message.success("新增成功");
+              message.error(err.message);
             },
           });
         })
@@ -292,6 +286,7 @@ export default {
       this.$inertia.delete("/admin/members/payments/" + recordId, {
         onSuccess: (page) => {
           console.log(page);
+          message.success("刪除成功");
         },
         onError: (error) => {
           console.log(error);

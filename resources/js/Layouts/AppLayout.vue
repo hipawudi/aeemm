@@ -47,7 +47,7 @@ const logout = () => {
               <!-- Logo -->
               <div class="shrink-0 flex items-center">
                 <Link :href="route('dashboard')">
-                  <img src="/images/aeemm_logo.jpg" style="width: 64px" />
+                  <img src="/images/logo.jpg" style="width: 64px" />
                 </Link>
               </div>
 
@@ -57,10 +57,10 @@ const logout = () => {
                   :href="route('dashboard')"
                   :active="route().current('dashboard')"
                 >
-                  Dashboard
+                  主頁
                 </NavLink>
-                <NavLink :href="route('professionals.index')"> Professional </NavLink>
-                <NavLink :href="route('forms.index')"> Forms </NavLink>
+                <NavLink :href="route('professionals.index')"> 專業認證 </NavLink>
+                <NavLink :href="route('forms.index')"> 報名 </NavLink>
               </div>
             </div>
 

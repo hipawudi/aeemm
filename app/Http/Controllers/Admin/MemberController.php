@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Member;
+use App\Models\Config;
 use App\Notifications\EmailNotification;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -33,6 +34,8 @@ class MemberController extends Controller
 
         return Inertia::render('Admin/Member/List', [
             'members' => $members,
+            'gender' => Config::item('gender'),
+            'membership_levels' => Config::item('membership_levels'),
         ]);
     }
 
@@ -63,10 +66,15 @@ class MemberController extends Controller
         $member = new Member;
 
         $member->name_zh = $request->name_zh;
-        $member->name_en = $request->name_en;
-        $member->display_name = $request->display_name;
+        $member->gender = $request->gender;
+        $member->birth = $request->birth;
+        $member->address = $request->address;
         $member->email = $request->email;
         $member->phone = $request->phone;
+        $member->company = $request->company;
+        $member->position = $request->position;
+        $member->membership_level = $request->membership_level;
+        $member->name_en = $request->name_en;
         $member->state = $request->state;
 
         $member->save();
@@ -112,11 +120,17 @@ class MemberController extends Controller
         ]);
 
         $member->name_zh = $request->name_zh;
-        $member->name_en = $request->name_en;
-        $member->display_name = $request->display_name;
+        $member->gender = $request->gender;
+        $member->birth = $request->birth;
+        $member->address = $request->address;
         $member->email = $request->email;
         $member->phone = $request->phone;
+        $member->company = $request->company;
+        $member->position = $request->position;
+        $member->membership_level = $request->membership_level;
+        $member->name_en = $request->name_en;
         $member->state = $request->state;
+
         $member->save();
 
         return redirect()->back();

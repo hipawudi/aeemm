@@ -47,7 +47,7 @@ class ProfessionalController extends Controller
         $professinal = new Professional;
 
         $professinal->certificate_id = $request->certificate_id;
-        $professinal->display_name = Member::where('id', $request->member_id)->first()->display_name;
+        $professinal->display_name = Member::where('id', $request->member_id)->first()->name_zh ?? Member::where('id', $request->member_id)->first()->name_en;
         $professinal->member_id = $request->member_id;
         $professinal->number_display = substr('000' . strval(Professional::where('certificate_id', $request->certificate_id)->count() + 1), -4);
         $professinal->issue_date = $request->issue_date;
@@ -93,9 +93,8 @@ class ProfessionalController extends Controller
         $professinal = Professional::where('id', $id)->first();
 
         $professinal->certificate_id = $request->certificate_id;
-        $professinal->display_name = Member::where('id', $request->member_id)->first()->display_name;
+        $professinal->display_name = Member::where('id', $request->member_id)->first()->name_zh ?? Member::where('id', $request->member_id)->first()->name_en;
         $professinal->member_id = $request->member_id;
-        $professinal->number = $request->certificate_id;
         $professinal->number_display = $request->number_display;
         $professinal->issue_date = $request->issue_date;
         $professinal->valid_from = $request->valid_from;
