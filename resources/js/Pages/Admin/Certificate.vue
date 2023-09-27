@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout title="Dashboard">
+  <AdminLayout title="專業認證">
     <div class="p-8 pt-8">
       <div class="flex pb-2">
         <div
@@ -15,7 +15,7 @@
       </div>
       <div class="card drop-shadow-md pt-4">
         <a-table :dataSource="certificates" :columns="columns">
-          <template #bodyCell="{ column, text, record, index }">
+          <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex == 'operation'">
               <div class="space-x-2">
                 <a-button @click="editRecord(record)">修改</a-button>

@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout title="Dashboard">
+  <AdminLayout title="通信管理">
     <div class="p-8 pt-8">
       <div class="flex pb-2">
         <div
@@ -21,7 +21,7 @@
           @change="onPaginationChange"
           ref="dataTable"
         >
-          <template #bodyCell="{ column, text, record, index }">
+          <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex == 'operation'">
               <div class="space-x-2">
                 <a-button @click="editRecord(record)">修改</a-button>

@@ -12,7 +12,7 @@ export default {
 </script>
 
 <template>
-  <MemberLayout title="Dashboard">
+  <MemberLayout title="會員專區">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">會員專區</h2>
     </template>

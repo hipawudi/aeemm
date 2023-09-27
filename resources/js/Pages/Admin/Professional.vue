@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout title="Dashboard">
+  <AdminLayout title="專業認證">
     <div class="p-8 pt-8">
       <div class="flex pb-2">
         <div class="basis-1/2 font-semibold text-xl text-gray-800">專業證書</div>

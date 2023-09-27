@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout title="Dashboard">
+  <AdminLayout title="創建課程">
     <div class="md:p-8 pt-8">
       <div class="flex md:pb-2">
         <div

@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout title="Dashboard">
+  <AdminLayout title="繳費列表">
     <div class="p-8 pt-8">
       <div class="flex pb-2">
         <div class="basis-1/2 font-semibold text-xl text-gray-800">繳費列表</div>

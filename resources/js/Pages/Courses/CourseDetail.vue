@@ -92,7 +92,7 @@
       </div>
     </div>
   </MemberLayout>
-  <WebLayout title="Dashboard" v-else>
+  <WebLayout title="課程內容" v-else>
     <template #header>
       <div class="flex">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">課程內容</h2>

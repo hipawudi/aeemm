@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout title="Dashboard">
+  <AdminLayout title="會員列表">
     <div class="p-8 pt-8">
       <div class="flex pb-2">
         <div class="basis-1/2 font-semibold text-xl text-gray-800">會員列表</div>
@@ -18,7 +18,7 @@
           @change="onPaginationChange"
           ref="dataTable"
         >
-          <template #bodyCell="{ column, text, record, index }">
+          <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex == 'state'">
               {{ employmentStates.find((x) => x.value == record.state).label }}
             </template>

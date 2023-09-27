@@ -1,5 +1,5 @@
 <template>
-  <AdminLayout title="Dashboard">
+  <AdminLayout title="表格欄位管理">
     <div class="p-8 pt-8">
       <div class="flex pb-2">
         <div

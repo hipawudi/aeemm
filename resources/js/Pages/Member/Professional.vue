@@ -1,5 +1,5 @@
 <template>
-  <MemberLayout title="Dashboard" class="overflow-hidden">
+  <MemberLayout title="專業認證" class="overflow-hidden">
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">專業認證</h2>
     </template>
