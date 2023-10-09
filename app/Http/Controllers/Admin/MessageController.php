@@ -23,7 +23,7 @@ class MessageController extends Controller
         } else {
             $per_page = $request->per_page;
         }
-        $messages = Message::with('received_member')->paginate($per_page);
+        $messages = Message::with('received_member')->orderBy('created_at', 'desc')->paginate($per_page);
         return Inertia::render('Admin/Message', [
             'messages' => $messages,
             'messageCategories' => Config::item('message_categories'),

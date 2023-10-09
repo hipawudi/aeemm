@@ -51,18 +51,41 @@
           </div>
         </div>
       </div>
+      <div class="flex">
+        <div class="flex flex-col gap-6">
+          <div class="font-bold text-2xl">通知</div>
+          <div class="bg-white rounded-lg p-4 flex flex-col gap-2">
+            <div class="text-xl">會員申請</div>
+            <div class="text-lg">
+              有<span
+                class="font-bold"
+                :class="ApplicationMembersCount > 0 ? 'text-blue-500' : ''"
+                >{{ ApplicationMembersCount }}</span
+              >名用戶申請成為會員
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </AdminLayout>
 </template>
 
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
+import { FormOutlined } from "@ant-design/icons-vue";
 
 export default {
   components: {
     AdminLayout,
+    FormOutlined,
   },
-  props: ["membersCount", "coursesCount", "professionalsCount", "bulletinsCount"],
+  props: [
+    "membersCount",
+    "coursesCount",
+    "professionalsCount",
+    "bulletinsCount",
+    "ApplicationMembersCount",
+  ],
   data() {
     return {
       title: "早上好",

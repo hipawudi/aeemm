@@ -39,10 +39,12 @@
               {{ messageCategories.find((x) => x.value == record.category)["label"] }}
             </template>
             <template v-else-if="column.dataIndex == 'receiver'">
-              <div v-if="record.category == 'personal' || record.category == 'public'">
+              <div v-if="record.category == 'member' || record.category == 'public'">
                 {{ messageCategories.find((x) => x.value == record.category)["label"] }}
               </div>
-              <div v-else>{{ record.receiver ?? "--" }}</div>
+              <div v-else>
+                {{ record.received_member ?? "111" }}
+              </div>
             </template>
           </template>
         </a-table>
@@ -70,7 +72,9 @@
             <a-select
               v-model:value="modal.data.receiver"
               :options="members"
-              :field-names="{ label: 'display_name', value: 'id' }"
+              show-search
+              :filter-option="filterOption"
+              :field-names="{ label: 'name_zh', value: 'id' }"
             />
           </a-form-item>
           <a-form-item label="發件人" name="sender">
@@ -80,7 +84,7 @@
             <a-input v-model:value="modal.data.title" />
           </a-form-item>
           <a-form-item label="內容" name="content">
-            <quill-editor v-model:value="modal.data.content" style="min-height: 200px" />
+            <quill-editor v-model:value="modal.data.content" />
           </a-form-item>
         </a-form>
         <template #footer>
@@ -266,6 +270,10 @@ export default {
           },
         }
       );
+    },
+    filterOption(input, option) {
+      console.log(input);
+      return option.name_zh.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     },
   },
 };

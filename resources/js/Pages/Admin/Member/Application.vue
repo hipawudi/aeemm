@@ -13,16 +13,59 @@
           @change="onPaginationChange"
           ref="dataTable"
         >
+          <template
+            #customFilterDropdown="{
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+              column,
+            }"
+          >
+            <div style="padding: 8px">
+              <a-input
+                ref="searchInput"
+                :placeholder="`Search ${column.dataIndex}`"
+                :value="selectedKeys[0]"
+                style="width: 188px; margin-bottom: 8px; display: block"
+                @change="(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])"
+                @pressEnter="handleSearch(selectedKeys, confirm, column.dataIndex)"
+              />
+              <a-button
+                type="primary"
+                size="small"
+                style="width: 90px; margin-right: 8px"
+                @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
+              >
+                <template #icon><SearchOutlined /></template>
+                Search
+              </a-button>
+              <a-button
+                size="small"
+                style="width: 90px"
+                @click="handleReset(clearFilters)"
+              >
+                Reset
+              </a-button>
+            </div>
+          </template>
+          <template #customFilterIcon="{ filtered }">
+            <search-outlined :style="{ color: filtered ? '#108ee9' : undefined }" />
+          </template>
           <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex == 'state'">
               <div>
                 {{ member_application_state.find((x) => x.value == record.state)?.label }}
               </div>
             </template>
+
             <template v-if="column.dataIndex == 'operation'">
               <div class="space-x-2">
                 <a-button @click="viewRecord(record)">查看</a-button>
-                <a-button v-if="record.state == 0" @click="passRecord(record)"
+                <a-button
+                  type="primary"
+                  v-if="record.state == 0"
+                  @click="passRecord(record)"
                   >接受</a-button
                 >
                 <a-button v-if="record.state == 0" @click="rejectRecord(record)"
@@ -69,8 +112,15 @@
           }}</a-descriptions-item>
         </a-descriptions>
         <template #footer>
-          <a-button @click="passRecord(record)">接受</a-button>
-          <a-button @click="rejectRecord(record)">拒絕</a-button>
+          <a-button
+            v-if="modal.data.state == 0"
+            type="primary"
+            @click="passRecord(modal.data)"
+            >接受</a-button
+          >
+          <a-button v-if="modal.data.state == 0" @click="rejectRecord(modal.data)"
+            >拒絕</a-button
+          >
           <a-button key="back" @click="modal.isOpen = false">關閉</a-button>
         </template>
       </a-modal>
@@ -82,11 +132,13 @@
 <script>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import { message } from "ant-design-vue";
+import { SearchOutlined } from "@ant-design/icons-vue";
 import { defineComponent, reactive } from "vue";
 
 export default {
   components: {
     AdminLayout,
+    SearchOutlined,
   },
   props: [
     "member_applications",
@@ -100,6 +152,16 @@ export default {
         {
           title: "姓名(中文)",
           dataIndex: "name_zh",
+          customFilterDropdown: true,
+          onFilter: (value, record) =>
+            record.name.toString().toLowerCase().includes(value.toLowerCase()),
+          onFilterDropdownOpenChange: (visible) => {
+            if (visible) {
+              setTimeout(() => {
+                searchInput.value.focus();
+              }, 100);
+            }
+          },
         },
         {
           title: "姓名(外文)",
@@ -136,6 +198,11 @@ export default {
         current: this.member_applications.current_page,
         pageSize: this.member_applications.per_page,
       },
+      state: {
+        searchText: "",
+        searchedColumn: "",
+      },
+      searchInput: "",
       filter: {},
       rules: {
         name_zh: { required: true },

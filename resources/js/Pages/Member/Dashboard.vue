@@ -24,7 +24,7 @@ export default {
               <a-list item-layout="horizontal" :data-source="messages">
                 <template #renderItem="{ item }">
                   <a-list-item>
-                    <a-list-item-meta :description="item.content">
+                    <a-list-item-meta>
                       <template #title>
                         <div>{{ item.title }}</div>
                       </template>
@@ -35,6 +35,9 @@ export default {
                           </div>
                           <div class="w-20 text-center">{{ item.send_date }}</div>
                         </div>
+                      </template>
+                      <template #description>
+                        <div v-html="item.content"></div>
                       </template>
                     </a-list-item-meta>
                   </a-list-item>

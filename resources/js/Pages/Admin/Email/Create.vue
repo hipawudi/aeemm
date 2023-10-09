@@ -15,6 +15,7 @@
               v-model:value="email_log.member"
               :options="members"
               :filter-option="filterOption"
+              show-search
               mode="multiple"
               :field-names="{ label: 'name_zh', value: 'id' }"
             ></a-select>

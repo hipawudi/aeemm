@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('company');
             $table->string('position');
             $table->text('membership_level');
-            $table->text('state');
+            $table->integer('state');
             $table->timestamps();
         });
     }

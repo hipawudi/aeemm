@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MemberApplication;
 use App\Models\Config;
 use App\Models\Member;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -52,6 +53,10 @@ class MemberApplicationController extends Controller
         $member_application = MemberApplication::where('id', $request->id)->first();
         $member_application->state = 1;
         $member_application->save();
+
+        $user = User::where('id', $member->user_id)->first();
+        $user->removeRole('visitor');
+        $user->assignRole('member');
     }
     public function reject(Request $request)
     {
