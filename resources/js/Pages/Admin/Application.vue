@@ -1,6 +1,6 @@
 <template>
   <AdminLayout title="報名管理">
-    <div class="p-8 pt-8">
+    <div class="md:p-8 pt-8">
       <div class="flex pb-2">
         <div
           class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
@@ -8,73 +8,75 @@
           報名管理
         </div>
       </div>
-      <div class="card drop-shadow-md pt-4">
-        <!-- {{ new Date().getFullYear() - 2009 + 1 }}
+      <div class="container mx-auto pt-5">
+        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+          <!-- {{ new Date().getFullYear() - 2009 + 1 }}
           {{ yearLength }} -->
-        <a-table
-          :dataSource="applications.data"
-          :columns="columns"
-          :pagination="pagination"
-          @change="onPaginationChange"
-          ref="dataTable"
-        >
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.key == 'form_id'">{{ record.form.title }}</template>
-            <template v-if="column.key == 'name'">{{ record.user.name }}</template>
-            <template v-if="column.key == 'email'">{{ record.user.email }}</template>
-            <template v-if="column.key == 'state'"
-              ><div class="flex">
-                <div
-                  class="p-1 px-2 rounded-md border border-solid"
-                  :class="
-                    record.state == 1
-                      ? 'text-blue-500 bg-blue-100'
-                      : record.state == 4
-                      ? 'text-red-500 bg-red-100'
-                      : 'text-green-500 bg-green-100'
-                  "
-                >
-                  {{ states.find((x) => x.value == record.state).label }}
-                </div>
-              </div></template
-            >
-            <template v-if="column.key == 'published'">{{
-              record.published == 1 ? "發佈" : "非發佈"
-            }}</template>
-            <template v-if="column.dataIndex == 'operation'">
-              <div class="space-x-2">
-                <a-button @click="showRecord(record)">查看</a-button>
-                <a-popconfirm
-                  v-if="record.state == 0"
-                  title="是否確定通過這個報名"
-                  ok-text="是"
-                  cancel-text="否"
-                  @confirm="passRecord(record.id, 1)"
-                >
-                  <a-button>通過</a-button>
-                </a-popconfirm>
-                <a-popconfirm
-                  v-if="record.state == 2"
-                  title="是否確定這個報名的繳費單"
-                  ok-text="是"
-                  cancel-text="否"
-                  @confirm="passRecord(record.id, 3)"
-                >
-                  <a-button>確定</a-button>
-                </a-popconfirm>
-                <a-popconfirm
-                  v-if="record.state == 0 || record.state == 2"
-                  title="是否確定拒絕這個報名"
-                  ok-text="是"
-                  cancel-text="否"
-                  @confirm="rejectRecord(record.id, 4)"
-                >
-                  <a-button>拒絕</a-button>
-                </a-popconfirm>
-              </div></template
-            >
-          </template>
-        </a-table>
+          <a-table
+            :dataSource="applications.data"
+            :columns="columns"
+            :pagination="pagination"
+            @change="onPaginationChange"
+            ref="dataTable"
+          >
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.key == 'form_id'">{{ record.form.title }}</template>
+              <template v-if="column.key == 'name'">{{ record.user.name }}</template>
+              <template v-if="column.key == 'email'">{{ record.user.email }}</template>
+              <template v-if="column.key == 'state'"
+                ><div class="flex">
+                  <div
+                    class="p-1 px-2 rounded-md border border-solid"
+                    :class="
+                      record.state == 1
+                        ? 'text-blue-500 bg-blue-100'
+                        : record.state == 4
+                        ? 'text-red-500 bg-red-100'
+                        : 'text-green-500 bg-green-100'
+                    "
+                  >
+                    {{ states.find((x) => x.value == record.state).label }}
+                  </div>
+                </div></template
+              >
+              <template v-if="column.key == 'published'">{{
+                record.published == 1 ? "發佈" : "非發佈"
+              }}</template>
+              <template v-if="column.dataIndex == 'operation'">
+                <div class="space-x-2">
+                  <a-button @click="showRecord(record)">查看</a-button>
+                  <a-popconfirm
+                    v-if="record.state == 0"
+                    title="是否確定通過這個報名"
+                    ok-text="是"
+                    cancel-text="否"
+                    @confirm="passRecord(record.id, 1)"
+                  >
+                    <a-button>通過</a-button>
+                  </a-popconfirm>
+                  <a-popconfirm
+                    v-if="record.state == 2"
+                    title="是否確定這個報名的繳費單"
+                    ok-text="是"
+                    cancel-text="否"
+                    @confirm="passRecord(record.id, 3)"
+                  >
+                    <a-button>確定</a-button>
+                  </a-popconfirm>
+                  <a-popconfirm
+                    v-if="record.state == 0 || record.state == 2"
+                    title="是否確定拒絕這個報名"
+                    ok-text="是"
+                    cancel-text="否"
+                    @confirm="rejectRecord(record.id, 4)"
+                  >
+                    <a-button>拒絕</a-button>
+                  </a-popconfirm>
+                </div></template
+              >
+            </template>
+          </a-table>
+        </div>
       </div>
       <!-- Modal Start-->
     </div>

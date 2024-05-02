@@ -1,48 +1,52 @@
 <template>
   <AdminLayout title="繳費列表">
-    <div class="p-8 pt-8">
+    <div class="md:p-8 pt-8">
       <div class="flex pb-2">
-        <div class="basis-1/2 font-semibold text-xl text-gray-800">繳費列表</div>
+        <div
+          class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
+        >繳費列表</div>
         <div class="basis-1/2 text-right">
           <a-button @click="createRecord()" type="primary" class="!rounded"
             >新增繳費單</a-button
           >
         </div>
       </div>
-      <div class="card drop-shadow-md pt-4">
-        <a-table
-          :dataSource="payments.data"
-          text-right
-          :columns="columns"
-          :pagination="pagination"
-          @change="onPaginationChange"
-          ref="dataTable"
-        >
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.dataIndex == 'member_id'">
-              {{ members.find((x) => x.id == record.member_id).name_zh }}
+      <div class="container mx-auto pt-5">
+        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+          <a-table
+            :dataSource="payments.data"
+            text-right
+            :columns="columns"
+            :pagination="pagination"
+            @change="onPaginationChange"
+            ref="dataTable"
+          >
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.dataIndex == 'member_id'">
+                {{ members.find((x) => x.id == record.member_id).name_zh }}
+              </template>
+              <template v-if="column.dataIndex == 'cost'">
+                {{ (record.cost * (record.cost_percentage ?? 100)) / 100 }}
+              </template>
+              <template v-if="column.dataIndex == 'state'">
+                {{ payment_states.find((x) => x.value == record.state).label }}
+              </template>
+              <template v-if="column.dataIndex == 'operation'">
+                <div class="space-x-2">
+                  <a-button @click="editRecord(record)">修改</a-button>
+                  <a-popconfirm
+                    title="是否確定刪除這個繳費單"
+                    ok-text="是"
+                    cancel-text="否"
+                    @confirm="deleteRecord(record.id)"
+                  >
+                    <a-button>刪除</a-button>
+                  </a-popconfirm>
+                </div>
+              </template>
             </template>
-            <template v-if="column.dataIndex == 'cost'">
-              {{ (record.cost * (record.cost_percentage ?? 100)) / 100 }}
-            </template>
-            <template v-if="column.dataIndex == 'state'">
-              {{ payment_states.find((x) => x.value == record.state).label }}
-            </template>
-            <template v-if="column.dataIndex == 'operation'">
-              <div class="space-x-2">
-                <a-button @click="editRecord(record)">修改</a-button>
-                <a-popconfirm
-                  title="是否確定刪除這個繳費單"
-                  ok-text="是"
-                  cancel-text="否"
-                  @confirm="deleteRecord(record.id)"
-                >
-                  <a-button>刪除</a-button>
-                </a-popconfirm>
-              </div>
-            </template>
-          </template>
-        </a-table>
+          </a-table>
+        </div>
       </div>
       <!-- Modal Start-->
 

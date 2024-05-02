@@ -1,80 +1,86 @@
 <template>
   <AdminLayout title="申請列表">
-    <div class="p-8 pt-8">
+    <div class="md:p-8 pt-8">
       <div class="flex pb-2">
-        <div class="basis-1/2 font-semibold text-xl text-gray-800">申請列表</div>
+        <div
+          class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
+        >申請列表</div>
       </div>
-      <div class="card drop-shadow-md pt-4">
-        <a-table
-          :dataSource="member_applications.data"
-          text-right
-          :columns="columns"
-          :pagination="pagination"
-          @change="onPaginationChange"
-          ref="dataTable"
-        >
-          <template
-            #customFilterDropdown="{
-              setSelectedKeys,
-              selectedKeys,
-              confirm,
-              clearFilters,
-              column,
-            }"
+      <div class="container mx-auto pt-5">
+        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+          <a-table
+            :dataSource="member_applications.data"
+            text-right
+            :columns="columns"
+            :pagination="pagination"
+            @change="onPaginationChange"
+            ref="dataTable"
           >
-            <div style="padding: 8px">
-              <a-input
-                ref="searchInput"
-                :placeholder="`Search ${column.dataIndex}`"
-                :value="selectedKeys[0]"
-                style="width: 188px; margin-bottom: 8px; display: block"
-                @change="(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])"
-                @pressEnter="handleSearch(selectedKeys, confirm, column.dataIndex)"
-              />
-              <a-button
-                type="primary"
-                size="small"
-                style="width: 90px; margin-right: 8px"
-                @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
-              >
-                <template #icon><SearchOutlined /></template>
-                Search
-              </a-button>
-              <a-button
-                size="small"
-                style="width: 90px"
-                @click="handleReset(clearFilters)"
-              >
-                Reset
-              </a-button>
-            </div>
-          </template>
-          <template #customFilterIcon="{ filtered }">
-            <search-outlined :style="{ color: filtered ? '#108ee9' : undefined }" />
-          </template>
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.dataIndex == 'state'">
-              <div>
-                {{ member_application_state.find((x) => x.value == record.state)?.label }}
-              </div>
-            </template>
-
-            <template v-if="column.dataIndex == 'operation'">
-              <div class="space-x-2">
-                <a-button @click="viewRecord(record)">查看</a-button>
+            <template
+              #customFilterDropdown="{
+                setSelectedKeys,
+                selectedKeys,
+                confirm,
+                clearFilters,
+                column,
+              }"
+            >
+              <div style="padding: 8px">
+                <a-input
+                  ref="searchInput"
+                  :placeholder="`Search ${column.dataIndex}`"
+                  :value="selectedKeys[0]"
+                  style="width: 188px; margin-bottom: 8px; display: block"
+                  @change="(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])"
+                  @pressEnter="handleSearch(selectedKeys, confirm, column.dataIndex)"
+                />
                 <a-button
                   type="primary"
-                  v-if="record.state == 0"
-                  @click="passRecord(record)"
-                  >接受</a-button
+                  size="small"
+                  style="width: 90px; margin-right: 8px"
+                  @click="handleSearch(selectedKeys, confirm, column.dataIndex)"
                 >
-                <a-button v-if="record.state == 0" @click="rejectRecord(record)"
-                  >拒絕</a-button
+                  <template #icon><SearchOutlined /></template>
+                  Search
+                </a-button>
+                <a-button
+                  size="small"
+                  style="width: 90px"
+                  @click="handleReset(clearFilters)"
                 >
+                  Reset
+                </a-button>
               </div>
             </template>
-          </template>
-        </a-table>
+            <template #customFilterIcon="{ filtered }">
+              <search-outlined :style="{ color: filtered ? '#108ee9' : undefined }" />
+            </template>
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.dataIndex == 'state'">
+                <div>
+                  {{
+                    member_application_state.find((x) => x.value == record.state)?.label
+                  }}
+                </div>
+              </template>
+
+              <template v-if="column.dataIndex == 'operation'">
+                <div class="space-x-2">
+                  <a-button @click="viewRecord(record)">查看</a-button>
+                  <a-button
+                    type="primary"
+                    v-if="record.state == 0"
+                    @click="passRecord(record)"
+                    >接受</a-button
+                  >
+                  <a-button v-if="record.state == 0" @click="rejectRecord(record)"
+                    >拒絕</a-button
+                  >
+                </div>
+              </template>
+            </template>
+          </a-table>
+        </div>
       </div>
       <!-- Modal Start-->
 

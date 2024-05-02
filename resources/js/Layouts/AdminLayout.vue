@@ -8,10 +8,10 @@
       width="250px"
       class="shadow-md"
     >
-      <div class="m-4 text-center text-lg" v-if="collapsed">
-        <inertia-link :href="route('admin.index')">AEEMM</inertia-link>
+      <div class="m-4 text-center text-lg text-clip" v-if="collapsed">
+        <inertia-link :href="route('admin.index')">AEEM..</inertia-link>
       </div>
-      <div class="m-4 text-center text-lg" v-else>
+      <div class="m-4 text-center text-lg text-clip" v-else>
         <inertia-link :href="route('admin.index')">AEEMM</inertia-link>
       </div>
 

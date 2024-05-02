@@ -1,6 +1,6 @@
 <template>
   <AdminLayout title="通信管理">
-    <div class="p-8 pt-8">
+    <div class="md:p-8 pt-8">
       <div class="flex pb-2">
         <div
           class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
@@ -13,41 +13,43 @@
           >
         </div>
       </div>
-      <div class="card drop-shadow-md pt-4">
-        <a-table
-          :dataSource="messages.data"
-          :columns="columns"
-          :pagination="pagination"
-          @change="onPaginationChange"
-          ref="dataTable"
-        >
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.dataIndex == 'operation'">
-              <div class="space-x-2">
-                <a-button @click="editRecord(record)">修改</a-button>
-                <a-popconfirm
-                  title="是否確定刪除這個通信"
-                  ok-text="是"
-                  cancel-text="否"
-                  @confirm="deleteRecord(record.id)"
-                >
-                  <a-button>刪除</a-button>
-                </a-popconfirm>
-              </div>
-            </template>
-            <template v-else-if="column.dataIndex == 'category'">
-              {{ messageCategories.find((x) => x.value == record.category)["label"] }}
-            </template>
-            <template v-else-if="column.dataIndex == 'receiver'">
-              <div v-if="record.category == 'member' || record.category == 'public'">
+      <div class="container mx-auto pt-5">
+        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+          <a-table
+            :dataSource="messages.data"
+            :columns="columns"
+            :pagination="pagination"
+            @change="onPaginationChange"
+            ref="dataTable"
+          >
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.dataIndex == 'operation'">
+                <div class="space-x-2">
+                  <a-button @click="editRecord(record)">修改</a-button>
+                  <a-popconfirm
+                    title="是否確定刪除這個通信"
+                    ok-text="是"
+                    cancel-text="否"
+                    @confirm="deleteRecord(record.id)"
+                  >
+                    <a-button>刪除</a-button>
+                  </a-popconfirm>
+                </div>
+              </template>
+              <template v-else-if="column.dataIndex == 'category'">
                 {{ messageCategories.find((x) => x.value == record.category)["label"] }}
-              </div>
-              <div v-else>
-                {{ record.received_member ?? "111" }}
-              </div>
+              </template>
+              <template v-else-if="column.dataIndex == 'receiver'">
+                <div v-if="record.category == 'member' || record.category == 'public'">
+                  {{ messageCategories.find((x) => x.value == record.category)["label"] }}
+                </div>
+                <div v-else>
+                  {{ record.received_member ?? "111" }}
+                </div>
+              </template>
             </template>
-          </template>
-        </a-table>
+          </a-table>
+        </div>
       </div>
       <!-- Modal Start-->
       <a-modal v-model:visible="modal.isOpen" :title="modal.title" width="60%">

@@ -1,6 +1,6 @@
 <template>
   <AdminLayout title="創建課程">
-    <div class="p-8 pt-8">
+    <div class="md:p-8 pt-8">
       <div class="flex pb-2">
         <div
           class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"

@@ -1,6 +1,6 @@
 <template>
   <AdminLayout title="課程管理">
-    <div class="p-8 pt-8">
+    <div class="md:p-8 pt-8">
       <div class="flex pb-2">
         <div
           class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
@@ -13,53 +13,57 @@
           >
         </div>
       </div>
-      <div class="card drop-shadow-md pt-4">
-        <a-table :dataSource="courses" :columns="columns">
-          <template #bodyCell="{ column, text, record, index }">
-            <template v-if="column.dataIndex == 'operation'">
-              <div class="flex flex-wrap gap-3">
-                <div class="" v-if="record.form.published === 0">
-                  <a-popconfirm
-                    title="是否確定公開這個課程報名"
-                    ok-text="是"
-                    cancel-text="否"
-                    @confirm="publishedForm(record.id)"
-                  >
-                    <a-button>公開報名</a-button>
-                  </a-popconfirm>
-                </div>
-                <div class="" v-if="record.form.published === 1">
-                  <a-badge :count="record.form.wait_count">
-                    <inertia-link
-                      :href="
-                        route('admin.forms.applications.index', { id: record.form['id'] })
-                      "
-                      class="ant-btn"
-                      >查看報名</inertia-link
+      <div class="container mx-auto pt-5">
+        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+          <a-table :dataSource="courses" :columns="columns">
+            <template #bodyCell="{ column, text, record, index }">
+              <template v-if="column.dataIndex == 'operation'">
+                <div class="flex flex-wrap gap-3">
+                  <div class="" v-if="record.form.published === 0">
+                    <a-popconfirm
+                      title="是否確定公開這個課程報名"
+                      ok-text="是"
+                      cancel-text="否"
+                      @confirm="publishedForm(record.id)"
                     >
-                  </a-badge>
+                      <a-button>公開報名</a-button>
+                    </a-popconfirm>
+                  </div>
+                  <div class="" v-if="record.form.published === 1">
+                    <a-badge :count="record.form.wait_count">
+                      <inertia-link
+                        :href="
+                          route('admin.forms.applications.index', {
+                            id: record.form['id'],
+                          })
+                        "
+                        class="ant-btn"
+                        >查看報名</inertia-link
+                      >
+                    </a-badge>
+                  </div>
+                  <div class="">
+                    <inertia-link
+                      :href="route('admin.courses.edit', record.id)"
+                      class="ant-btn"
+                      >修改</inertia-link
+                    >
+                  </div>
+                  <div class="">
+                    <a-popconfirm
+                      title="是否確定刪除這個課程"
+                      ok-text="是"
+                      cancel-text="否"
+                      @confirm="deleteRecord(record.id)"
+                    >
+                      <a-button>刪除</a-button>
+                    </a-popconfirm>
+                  </div>
                 </div>
-                <div class="">
-                  <inertia-link
-                    :href="route('admin.courses.edit', record.id)"
-                    class="ant-btn"
-                    >修改</inertia-link
-                  >
-                </div>
-                <div class="">
-                  <a-popconfirm
-                    title="是否確定刪除這個課程"
-                    ok-text="是"
-                    cancel-text="否"
-                    @confirm="deleteRecord(record.id)"
-                  >
-                    <a-button>刪除</a-button>
-                  </a-popconfirm>
-                </div>
-              </div>
+              </template>
             </template>
-          </template>
-        </a-table>
+          </a-table>
+        </div>
       </div>
     </div>
   </AdminLayout>

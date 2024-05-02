@@ -1,45 +1,49 @@
 <template>
   <AdminLayout title="會員列表">
-    <div class="p-8 pt-8">
+    <div class="md:p-8 pt-8">
       <div class="flex pb-2">
-        <div class="basis-1/2 font-semibold text-xl text-gray-800">會員列表</div>
+        <div
+          class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
+        >會員列表</div>
         <div class="basis-1/2 text-right">
           <a-button @click="createRecord()" type="primary" class="!rounded"
             >新增會員</a-button
           >
         </div>
       </div>
-      <div class="card drop-shadow-md pt-4">
-        <a-table
-          :dataSource="members.data"
-          text-right
-          :columns="columns"
-          :pagination="pagination"
-          @change="onPaginationChange"
-          ref="dataTable"
-        >
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.dataIndex == 'state'">
-              {{ employmentStates.find((x) => x.value == record.state).label }}
+      <div class="container mx-auto pt-5">
+        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+          <a-table
+            :dataSource="members.data"
+            text-right
+            :columns="columns"
+            :pagination="pagination"
+            @change="onPaginationChange"
+            ref="dataTable"
+          >
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.dataIndex == 'state'">
+                {{ employmentStates.find((x) => x.value == record.state).label }}
+              </template>
+              <template v-if="column.dataIndex == 'operation'">
+                <div class="space-x-2">
+                  <a-button @click="editRecord(record)">修改</a-button>
+                  <a-popconfirm
+                    title="是否確定刪除這個成員"
+                    ok-text="是"
+                    cancel-text="否"
+                    @confirm="deleteRecord(record.id)"
+                  >
+                    <a-button>刪除</a-button>
+                  </a-popconfirm>
+                  <a-button v-if="!record.user" @click="createLogin(record)"
+                    >建立帳號</a-button
+                  >
+                </div>
+              </template>
             </template>
-            <template v-if="column.dataIndex == 'operation'">
-              <div class="space-x-2">
-                <a-button @click="editRecord(record)">修改</a-button>
-                <a-popconfirm
-                  title="是否確定刪除這個成員"
-                  ok-text="是"
-                  cancel-text="否"
-                  @confirm="deleteRecord(record.id)"
-                >
-                  <a-button>刪除</a-button>
-                </a-popconfirm>
-                <a-button v-if="!record.user" @click="createLogin(record)"
-                  >建立帳號</a-button
-                >
-              </div>
-            </template>
-          </template>
-        </a-table>
+          </a-table>
+        </div>
       </div>
       <!-- Modal Start-->
 

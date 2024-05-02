@@ -1,6 +1,6 @@
 <template>
   <AdminLayout title="表格欄位管理">
-    <div class="p-8 pt-8">
+    <div class="md:p-8 pt-8">
       <div class="flex pb-2">
         <div
           class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
@@ -13,24 +13,26 @@
           >
         </div>
       </div>
-      <div class="card drop-shadow-md pt-4">
-        <a-table :dataSource="fields" :columns="columns">
-          <template #bodyCell="{ column, text, record, index }">
-            <template v-if="column.dataIndex == 'operation'">
-              <div class="space-x-2">
-                <a-button @click="editRecord(record)">修改</a-button>
-                <a-popconfirm
-                  title="是否確定刪除這個欄位"
-                  ok-text="是"
-                  cancel-text="否"
-                  @confirm="deleteRecord(record)"
-                >
-                  <a-button>刪除</a-button>
-                </a-popconfirm>
-              </div>
+      <div class="container mx-auto pt-5">
+        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+          <a-table :dataSource="fields" :columns="columns">
+            <template #bodyCell="{ column, text, record, index }">
+              <template v-if="column.dataIndex == 'operation'">
+                <div class="space-x-2">
+                  <a-button @click="editRecord(record)">修改</a-button>
+                  <a-popconfirm
+                    title="是否確定刪除這個欄位"
+                    ok-text="是"
+                    cancel-text="否"
+                    @confirm="deleteRecord(record)"
+                  >
+                    <a-button>刪除</a-button>
+                  </a-popconfirm>
+                </div>
+              </template>
             </template>
-          </template>
-        </a-table>
+          </a-table>
+        </div>
       </div>
 
       <!-- Modal Start-->

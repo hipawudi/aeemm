@@ -1,6 +1,6 @@
 <template>
   <AdminLayout title="電郵記錄">
-    <div class="p-8 pt-8">
+    <div class="md:p-8 pt-8">
       <div class="flex pb-2">
         <div
           class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
@@ -8,25 +8,27 @@
           電郵記錄
         </div>
       </div>
-      <div class="card drop-shadow-md pt-4">
-        <a-table
-          :dataSource="email_logs.data"
-          :columns="columns"
-          :pagination="pagination"
-        >
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.dataIndex == 'member_id'">
-              <div class="w-16">
-                {{ members.find((x) => x.id == record.member_id)?.name_zh }}
-              </div>
+      <div class="container mx-auto pt-5">
+        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+          <a-table
+            :dataSource="email_logs.data"
+            :columns="columns"
+            :pagination="pagination"
+          >
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.dataIndex == 'member_id'">
+                <div class="w-16">
+                  {{ members.find((x) => x.id == record.member_id)?.name_zh }}
+                </div>
+              </template>
+              <template v-if="column.dataIndex == 'status'">
+                <div class="w-16">
+                  {{ record.status == 1 ? "發送成功" : "發送失敗" }}
+                </div>
+              </template>
             </template>
-            <template v-if="column.dataIndex == 'status'">
-              <div class="w-16">
-                {{ record.status == 1 ? "發送成功" : "發送失敗" }}
-              </div>
-            </template>
-          </template>
-        </a-table>
+          </a-table>
+        </div>
       </div>
     </div>
   </AdminLayout>

@@ -1,6 +1,6 @@
 <template>
   <AdminLayout title="表格管理">
-    <div class="p-8 pt-8">
+    <div class="md:p-8 pt-8">
       <div class="flex pb-2">
         <div
           class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
@@ -13,41 +13,43 @@
           >
         </div>
       </div>
-      <div class="card drop-shadow-md pt-4">
-        <a-table :dataSource="forms" :columns="columns">
-          <template #bodyCell="{ column, text, record, index }">
-            <template v-if="column.key === 'published'">
-              {{ record.published === 1 ? "公開" : "未公開" }}
+      <div class="container mx-auto pt-5">
+        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+          <a-table :dataSource="forms" :columns="columns">
+            <template #bodyCell="{ column, text, record, index }">
+              <template v-if="column.key === 'published'">
+                {{ record.published === 1 ? "公開" : "未公開" }}
+              </template>
+              <template v-if="column.key === 'for_course'">
+                {{ record.course_id !== null ? "是" : "否" }}
+              </template>
+              <template v-if="column.key === 'for_member'">
+                {{ record.for_member === 1 ? "是" : "否" }}
+              </template>
+              <template v-if="column.key === 'for_account'">
+                {{ record.require_login === 1 ? "是" : "否" }}
+              </template>
+              <template v-if="column.dataIndex == 'operation'">
+                <div class="space-x-2">
+                  <inertia-link
+                    :href="route('admin.forms.fields.index', { form: record.id })"
+                    class="ant-btn"
+                    >資料欄位</inertia-link
+                  >
+                  <a-button @click="editRecord(record)">修改</a-button>
+                  <a-popconfirm
+                    title="是否確定刪除這個表格"
+                    ok-text="是"
+                    cancel-text="否"
+                    @confirm="deleteRecord(record)"
+                  >
+                    <a-button>刪除</a-button>
+                  </a-popconfirm>
+                </div>
+              </template>
             </template>
-            <template v-if="column.key === 'for_course'">
-              {{ record.course_id !== null ? "是" : "否" }}
-            </template>
-            <template v-if="column.key === 'for_member'">
-              {{ record.for_member === 1 ? "是" : "否" }}
-            </template>
-            <template v-if="column.key === 'for_account'">
-              {{ record.require_login === 1 ? "是" : "否" }}
-            </template>
-            <template v-if="column.dataIndex == 'operation'">
-              <div class="space-x-2">
-                <inertia-link
-                  :href="route('admin.forms.fields.index', { form: record.id })"
-                  class="ant-btn"
-                  >資料欄位</inertia-link
-                >
-                <a-button @click="editRecord(record)">修改</a-button>
-                <a-popconfirm
-                  title="是否確定刪除這個表格"
-                  ok-text="是"
-                  cancel-text="否"
-                  @confirm="deleteRecord(record)"
-                >
-                  <a-button>刪除</a-button>
-                </a-popconfirm>
-              </div>
-            </template>
-          </template>
-        </a-table>
+          </a-table>
+        </div>
       </div>
 
       <!-- Modal Start-->

@@ -1,41 +1,45 @@
 <template>
   <AdminLayout title="專業認證">
-    <div class="p-8 pt-8">
+    <div class="md:p-8 pt-8">
       <div class="flex pb-2">
-        <div class="basis-1/2 font-semibold text-xl text-gray-800">專業證書</div>
+        <div
+          class="flex-auto w-1/2 font-semibold text-xl text-gray-800 truncate whitespace-nowrap"
+        >專業證書</div>
         <div class="basis-1/2 text-right">
           <a-button @click="createRecord()" type="primary" class="!rounded"
             >新增專業證書</a-button
           >
         </div>
       </div>
-      <div class="card drop-shadow-md pt-4">
-        <a-table :dataSource="professionals" :columns="columns">
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.dataIndex == 'operation'">
-              <div class="space-x-2">
-                <a-button @click="editRecord(record)">修改</a-button>
-                <a-popconfirm
-                  title="是否確定刪除這個專業證書"
-                  ok-text="是"
-                  cancel-text="否"
-                  @confirm="deleteRecord(record.id)"
-                >
-                  <a-button>刪除</a-button>
-                </a-popconfirm>
-              </div>
+      <div class="container mx-auto pt-5">
+        <div class="bg-white relative shadow rounded-lg overflow-x-auto">
+          <a-table :dataSource="professionals" :columns="columns">
+            <template #bodyCell="{ column, record }">
+              <template v-if="column.dataIndex == 'operation'">
+                <div class="space-x-2">
+                  <a-button @click="editRecord(record)">修改</a-button>
+                  <a-popconfirm
+                    title="是否確定刪除這個專業證書"
+                    ok-text="是"
+                    cancel-text="否"
+                    @confirm="deleteRecord(record.id)"
+                  >
+                    <a-button>刪除</a-button>
+                  </a-popconfirm>
+                </div>
+              </template>
+              <template v-if="column.key == 'number_display'">
+                {{
+                  certificates.find((x) => x.id == record.certificate_id)?.number_format +
+                  record.number_display
+                }}
+              </template>
+              <template v-if="column.key == 'certificate'">
+                {{ certificates.find((x) => x.id == record.certificate_id).cert_title }}
+              </template>
             </template>
-            <template v-if="column.key == 'number_display'">
-              {{
-                certificates.find((x) => x.id == record.certificate_id)?.number_format +
-                record.number_display
-              }}
-            </template>
-            <template v-if="column.key == 'certificate'">
-              {{ certificates.find((x) => x.id == record.certificate_id).cert_title }}
-            </template>
-          </template>
-        </a-table>
+          </a-table>
+        </div>
       </div>
       <!-- Modal Start-->
       <a-modal
