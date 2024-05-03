@@ -77,7 +77,7 @@ class BulletinController extends Controller
 
         if ($request->file('images') != null) {
             foreach ($request->file('images') as $idx => $image) {
-                $bulletin->addMedia($image['originFileObj'])->toMediaCollection('bulletin');
+                $bulletin->addMedia($image['originFileObj'])->preservingOriginal()->toMediaCollection('bulletin');
                 $path = Storage::putFile('public/images/bulletin', $image['originFileObj']);
 
                 $bulletin_image = new BulletinImage;
@@ -90,6 +90,7 @@ class BulletinController extends Controller
                 );
 
                 try {
+                    // location can not post the photos to facebook 
                     // Get the \Facebook\GraphNodes\GraphUser object for the current user.
                     // If you provided a 'default_access_token', the '{access-token}' is optional.
                     $response = $fb->post('/me/photos', $params, env('FACEBOOK_ACCESS_TOKEN'));

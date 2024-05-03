@@ -215,6 +215,7 @@ export default {
           this.$inertia.post(route("admin.certificates.store"), this.modal.data, {
             preserveState: false,
             onSuccess: (page) => {
+              console.log(page);
               this.modal.isOpen = false;
               message.success("新增成功");
             },

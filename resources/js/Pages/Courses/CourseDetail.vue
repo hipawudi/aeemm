@@ -144,7 +144,7 @@
               <div class="flex justify-center">
                 <img src="/images/logo.jpg" class="h-32 w-28" />
               </div>
-              <div class="flex leading-6" v-html="course.tutor"></div>
+              <div class="flex flex-col leading-6" v-html="course.tutor"></div>
             </div>
             <div class="flex flex-col bg-white rounded-md p-4 space-y-2">
               <div class="text-sm text-gray-500">

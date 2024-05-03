@@ -51,9 +51,6 @@
           :rules="rules"
           :validate-messages="validateMessages"
         >
-          <a-form-item label="名稱" name="field_name">
-            <a-input v-model:value="modal.data.field_name" />
-          </a-form-item>
           <a-form-item label="標簽" name="field_label">
             <a-input v-model:value="modal.data.field_label" />
           </a-form-item>
@@ -158,10 +155,6 @@ export default {
         { value: "select", label: "下拉單", option: true },
       ],
       columns: [
-        {
-          title: "名稱",
-          dataIndex: "field_name",
-        },
         {
           title: "標簽",
           dataIndex: "field_label",

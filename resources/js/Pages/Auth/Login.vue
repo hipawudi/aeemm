@@ -45,7 +45,7 @@ const submit = () => {
 
     <form @submit.prevent="submit">
       <div>
-        <InputLabel for="email" value="Email" />
+        <InputLabel for="email" value="電郵" />
         <TextInput
           id="email"
           v-model="form.email"
@@ -58,7 +58,7 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password" value="Password" />
+        <InputLabel for="password" value="密碼" />
         <TextInput
           id="password"
           v-model="form.password"
@@ -73,7 +73,7 @@ const submit = () => {
       <div class="block mt-4">
         <label class="flex items-center">
           <Checkbox v-model:checked="form.remember" name="remember" />
-          <span class="ml-2 text-sm text-gray-600">Remember me</span>
+          <span class="ml-2 text-sm text-gray-600">記住我</span>
         </label>
       </div>
 
@@ -83,7 +83,7 @@ const submit = () => {
           :href="route('password.request')"
           class="underline text-sm text-gray-600 hover:text-gray-900"
         >
-          Forgot your password?
+          忘記密碼?
         </Link>
 
         <PrimaryButton
@@ -91,7 +91,7 @@ const submit = () => {
           :class="{ 'opacity-25': form.processing }"
           :disabled="form.processing"
         >
-          Log in
+          登入
         </PrimaryButton>
       </div>
     </form>

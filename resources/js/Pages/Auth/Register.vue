@@ -33,7 +33,7 @@ const submit = () => {
 
     <form @submit.prevent="submit">
       <div>
-        <InputLabel for="name" value="Name" />
+        <InputLabel for="name" value="姓名" />
         <TextInput
           id="name"
           v-model="form.name"
@@ -47,7 +47,7 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="email" value="Email" />
+        <InputLabel for="email" value="電郵" />
         <TextInput
           id="email"
           v-model="form.email"
@@ -59,7 +59,7 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password" value="Password" />
+        <InputLabel for="password" value="密碼" />
         <TextInput
           id="password"
           v-model="form.password"
@@ -72,7 +72,7 @@ const submit = () => {
       </div>
 
       <div class="mt-4">
-        <InputLabel for="password_confirmation" value="Confirm Password" />
+        <InputLabel for="password_confirmation" value="確認密碼" />
         <TextInput
           id="password_confirmation"
           v-model="form.password_confirmation"
@@ -115,7 +115,7 @@ const submit = () => {
           :href="route('login')"
           class="underline text-sm text-gray-600 hover:text-gray-900"
         >
-          Already registered?
+          已經註冊?
         </Link>
 
         <PrimaryButton
@@ -123,7 +123,7 @@ const submit = () => {
           :class="{ 'opacity-25': form.processing }"
           :disabled="form.processing"
         >
-          Register
+          註冊
         </PrimaryButton>
       </div>
     </form>

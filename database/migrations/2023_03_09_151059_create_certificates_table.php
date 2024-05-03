@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('cert_title');
             $table->string('cert_body');
-            $table->text('cert_content');
+            $table->text('cert_content')->nullable();
             $table->text('cert_logo_path')->nullable();
             $table->string('number_format');
             $table->string('rank_caption')->nullable();

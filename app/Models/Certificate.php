@@ -14,6 +14,10 @@ class Certificate extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
+    protected $fillable = [
+        'cert_title', 'cert_body', 'cert_content', 'cert_logo_path', 'number_format', 'rank_caption', 'description'
+    ];
+
     protected $appends = ['cid', 'cert_number'];
 
     public function getCidAttribute()
